@@ -1,0 +1,494 @@
+﻿@using SkillBridge_System_Prototype.Enums;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model SB_Program
+@{
+    var trainingPlan = (SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlan)ViewBag.TrainingPlan; 
+    var participationPopulationList = (List<SkillBridge_System_Prototype.Models.ParticipationPopulation>)ViewBag.Participation_Population_List;
+    var jobFamilyList = (List<SkillBridge_System_Prototype.Models.JobFamily>)ViewBag.Job_Family_List;
+    var servicesList = (List<SkillBridge_System_Prototype.Models.Service>)ViewBag.Services_Supported_List;
+    var deliveryMethodList = (List<SkillBridge_System_Prototype.Models.DeliveryMethod>)ViewBag.Delivery_Method_List;
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("Admin") || User.IsInRole("Analyst"))
+        {
+            ViewData["Title"] = "Edit Program";
+        }
+        else
+        {
+            ViewData["Title"] = "View Program";
+        }
+    }
+
+    var opportunties = (List<SB_Opportunity>)ViewBag.Opportunities;
+}
+
+<div class="card mt-3">
+    <div class="card-header"><h1 class="h4 mb-0">@ViewData["Title"]</h1></div>
+    <div class="card-body p-3">
+        <div class="mb-2"><span class="bold">MOU:</span> <a href="@Model.Program.Mou_Link" target="_blank">@Model.Program.Mou_Link</a></div>
+        <div class="mb-2"><span class="bold">Organization:</span> @Html.Raw(Model.Program.Organization_Name)</div>
+        <div class="row">
+            <div class="col-6">
+                <div class="mb-1 bold">Associated Opportunities (@(opportunties.Count().ToString("0") ?? "0"))</div>
+                <div class="border p-2" style="height: 160px; overflow-y: scroll;">
+                    @foreach (var opportunity in opportunties)
+                    {
+                        <div><a href="/opportunities/editopportunity/@(opportunity.Id)?edit=true" title="@($"{opportunity.City}, {opportunity.State}: {opportunity.Jobs_Description}")" class="d-inline-block text-truncate" style="max-width: 450px;">@($"{opportunity.City}, {opportunity.State}: {opportunity.Jobs_Description}")</a></div>
+                    }
+                </div>
+            </div>
+            <div class="col-6">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    if (User.IsInRole("Admin") || User.IsInRole("Analyst"))
+                    {
+                        <div class="alert alert-secondary mt-4 p-2" role="alert">
+                            <div class="mb-2">Once you're done editing your organization's data, you'll see a <i class="fa fa-exclamation-circle fa-fw changed-field" data-toggle="tooltip" title="Pending change"></i> next to fields that were edited</div>
+                            <div class="mb-2">Any edits you make will first be reviewed by a SkillBridge Analyst before being posted on the public SkillBridge website</div>
+                            <div>If your edits are not approved, you will receive an email message stating why your change(s) were not approved</div>
+                            <div>
+                                <a class="btn d-inline-block btn-success float-right" id="edit-record-btn" data-toggle="tooltip" title="Edit Program" asp-controller="Programs" asp-action="EditProgram" asp-route-id="@Model.Program.Id" asp-route-edit="true"><i class="fa fa-edit fa-fw"></i>&nbsp;Edit</a>
+                            </div>
+                        </div>
+                    }
+                    else if (User.IsInRole("Service"))
+                    {
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col">
+
+        <form method="post" action="/Programs/Save">
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <input type="hidden" asp-for="@Model.Program.Id" />
+
+            <input type="hidden" id="StartProgramName" value="@Model.Program.Program_Name" />
+            <input type="hidden" id="StartDeliveryMethodId" value="@String.Join(",", Model.Program.ProgramDeliveryMethods.Select(o => o.Delivery_Method_Id).ToList())" />
+            <input type="hidden" id="StartProgramDuration" value="@Model.Program.Program_Duration" />
+            <input type="hidden" id="StartOpportunityType" value="@Model.Program.Opportunity_Type" />
+            <input type="hidden" id="StartOnline" value="@Model.Program.Online" />
+
+            <div class="row">
+                <div class="col">
+                    <div id="disabled-alert" class="alert alert-danger bold" role="alert" style="display:none;">Programs that belong to a disabled Organization cannot be edited directly. Please re-enable the parent Organization record to enable editing of this Program.</div>
+                    <div class="form-group">
+                        <div class="card-header" style="border: 1px solid rgba(0,0,0,.125);">
+                            <div class="row">
+                                <div class="col-3">
+                                    <label asp-for="Program.Is_Active">Program Status:</label>&nbsp;
+                                    <input type="checkbox" asp-for="Program.Is_Active" data-toggle="toggle" data-onstyle="success outline-dark" data-offstyle="secondary outline-dark" data-on="Active" data-off="Inactive" data-size="sm" data-style="fast" class="is-active-toggle">
+                                </div>
+                                <div class="col-9">
+                                    @if (Model.Program.Is_Active)
+                                    {
+                                        <div class="mt-1">Switching the program to <span class="bold" style="color: #6c757d;">INACTIVE</span> will remove the program from the SkillBridge site</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="mt-1">Switching the program to <span class="bold" style="color: #28a745;">ACTIVE</span> will display the program on the SkillBridge site</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Program.Program_Name"></label>
+                        <input asp-for="Program.Program_Name" class="form-control" data-toggle="tooltip" title="Name of SkillBridge Program" id="ProgramName" />
+                        <span asp-validation-for="Program.Program_Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Program.ProgramParticipationPopulations"></label>
+                        @for (var i = 0; i<participationPopulationList.Count; i++)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="@(participationPopulationList[i].Id)" id="Program_ProgramParticipationPopulations__@(i)__Participation_Population_Id" name="Program.ProgramParticipationPopulations[@(i)].Participation_Population_Id" @(Model.Program.ProgramParticipationPopulations.Any(o => o.Participation_Population_Id == participationPopulationList[i].Id) ? "checked" : String.Empty) />
+                                <label class="form-check-label font-weight-normal" for="Program_ProgramParticipationPopulations__@(i)__Participation_Population_Id">@Html.Raw(participationPopulationList[i].Name)</label>
+                            </div>
+                        }
+                        <span asp-validation-for="Program.ProgramParticipationPopulations" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Program.ProgramDeliveryMethods"></label>
+                        @for (var i = 0; i < deliveryMethodList.Count; i++)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="@(deliveryMethodList[i].Id)" id="Program_ProgramDeliveryMethods__@(i)_Delivery_Method_Id" name="Program.ProgramDeliveryMethods[@(i)].Delivery_Method_Id" @(Model.Program.ProgramDeliveryMethods.Any(o => o.Delivery_Method_Id == deliveryMethodList[i].Id) ? "checked" : String.Empty) />
+                                <label class="form-check-label font-weight-normal" for="Program_ProgramDeliveryMethods__@(i)_Delivery_Method_Id">@Html.Raw(deliveryMethodList[i].Name)</label>
+                            </div>
+                        }
+                        <span asp-validation-for="Program.ProgramDeliveryMethods" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="prog-duration-select-container">
+                        <label for="prog-duration-dropdown">Program Duration</label>
+                        <select id="prog-duration-dropdown" class="browser-default custom-select" asp-for="Program.Program_Duration" size="1" style="width:100%;max-width:100%" data-toggle="tooltip" title="Duration of the SkillBridge program in days">
+                            <option value="0">1 - 30 days</option>
+                            <option value="1">31 - 60 days</option>
+                            <option value="2">61 - 90 days</option>
+                            <option value="3">91 - 120 days</option>
+                            <option value="4">121 - 150 days</option>
+                            <option value="5">151 - 180 days</option>
+                            <option value="6">Individually Developed</option>
+                            <option value="7">Self-paced</option>
+                        </select>
+                        <span asp-validation-for="Program.Program_Duration" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="OpportunityType">Opportunity Type</label>
+                        <input asp-for="Program.Opportunity_Type" id="OpportunityType" class="form-control" data-toggle="tooltip" title="Type of training program" />
+                        <span asp-validation-for="Program.Opportunity_Type" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Program_ProgramJobFamilies">Job Family</label>
+                        <select id="Program_ProgramJobFamilies" class="browser-default custom-select" multiple data-toggle="tooltip" title="ONET Job Family to which the SkillBridge program relates (select all that apply)" aria-label="ONET Job Family to which the SkillBridge program relates (select all that apply)">
+                            @for (var i = 0; i < jobFamilyList.Count; i++)
+                            {
+                                <!option value="@(jobFamilyList[i].Id)" @(Model.Program.ProgramJobFamilies.Any(o => o.Job_Family_Id == jobFamilyList[i].Id) ? "selected" : String.Empty)>@Html.Raw(jobFamilyList[i].Name)</!option>
+                            }
+                        </select>
+                        <span asp-validation-for="Program.ProgramJobFamilies" class="text-danger"></span>
+                    </div>
+                    <!--<div class="form-group">
+                        <label asp-for="Services_Supported"></label>
+                        <input asp-for="Services_Supported" class="form-control" data-toggle="tooltip" title="Military branch the SkillBridge program serves (select all that apply)" />
+                        <span asp-validation-for="Services_Supported" class="text-danger"></span>
+                    </div>-->
+                    <div class="form-group">
+                        <label asp-for="Program.ProgramServices"></label>
+                        @for (var i = 0; i < servicesList.Count; i++)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="@(servicesList[i].Id)" id="Program_ProgramServices__@(i)_Service_Id" name="Program.ProgramServices[@(i)].Service_Id" @(Model.Program.ProgramServices.Any(o => o.Service_Id == servicesList[i].Id) ? "checked" : String.Empty) />
+                                <label class="form-check-label" for="Program_ProgramServices__@(i)_Service_Id">@Html.Raw(servicesList[i].Name)</label>
+                            </div>
+                        }
+                        <span asp-validation-for="Program.ProgramServices" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Program.Enrollment_Dates"></label>
+                        <input asp-for="Program.Enrollment_Dates" class="form-control" data-toggle="tooltip" title="Enrollment dates for the SkillBridge program. Enter Continuous open enrollment or start/end dates (mm/dd/yy - mm/dd/yy)" />
+                        <span asp-validation-for="Program.Enrollment_Dates" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Program.Program_Url"></label>
+                        <input asp-for="Program.Program_Url" class="form-control" data-toggle="tooltip" title="Website address of Skillbridge organization" />
+                        <span asp-validation-for="Program.Program_Url" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Program.Notes"></label>
+                        <textarea asp-for="Program.Notes" class="form-control" data-toggle="tooltip" title="Notes for analyst users"></textarea>
+                        <span asp-validation-for="Program.Notes" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group form-inline">
+                                        <div class="form-check mr-3">
+                                            <label class="form-check-label d-inline-block" asp-for="Program.Has_Multiple_Locations">
+                                                <input type="checkbox" class="form-check-input" asp-for="Program.Has_Multiple_Locations" data-toggle="tooltip" title="Does this Program have multiple locations" disabled>Has Multiple Locations
+                                            </label>
+                                            <span asp-validation-for="Program.Has_Multiple_Locations" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <div class="form-check mr-3">
+                                            <label class="form-check-label d-inline-block" asp-for="Program.Support_Cohorts">
+                                                <input type="checkbox" class="form-check-input" asp-for="Program.Support_Cohorts" data-toggle="tooltip" title="Check if program can be offered to 3 or more participants at once">Support Cohorts
+                                            </label>
+                                            <span asp-validation-for="Program.Support_Cohorts" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+
+
+                                    <div class="form-group form-inline">
+                                        <div class="form-check mr-3">
+                                            <label class="form-check-label d-inline-block" asp-for="Program.Nationwide">
+                                                <input type="checkbox" class="form-check-input" asp-for="Program.Nationwide" data-toggle="tooltip" title="Check if SkillBridge program is in 3 or more states and 2 or more regions (Cardinal Areas of US)" disabled>Nationwide
+                                            </label>
+                                            <span asp-validation-for="Program.Nationwide" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <div class="form-check mr-3">
+                                            <label class="form-check-label d-inline-block" asp-for="Program.Online">
+                                                <input id="Online" type="checkbox" class="form-check-input" asp-for="Program.Online" data-toggle="tooltip" title="Check if program is only available online. If online, then also check Nationwide.">Online
+                                            </label>
+                                            <span asp-validation-for="Program.Online" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Admin POC Information</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Program.Admin_Poc_First_Name"></label>
+                                        <input asp-for="Program.Admin_Poc_First_Name" class="form-control" data-toggle="tooltip" title="First name of SkillBridge Program administrative point of contact" />
+                                        <span asp-validation-for="Program.Admin_Poc_First_Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Program.Admin_Poc_Last_Name"></label>
+                                        <input asp-for="Program.Admin_Poc_Last_Name" class="form-control" data-toggle="tooltip" title="Last name of SkillBridge Program administrative point of contact" />
+                                        <span asp-validation-for="Program.Admin_Poc_Last_Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Program.Admin_Poc_Email"></label>
+                                <input asp-for="Program.Admin_Poc_Email" class="form-control" data-toggle="tooltip" title="Email of SkillBridge Program administrative point of contact" />
+                                <span asp-validation-for="Program.Admin_Poc_Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Program.Admin_Poc_Phone"></label>
+                                <input asp-for="Program.Admin_Poc_Phone" class="form-control" data-toggle="tooltip" title="Phone number of SkillBridge Program administrative point of contact" />
+                                <span asp-validation-for="Program.Admin_Poc_Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Public POC Information</div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="Program.Public_Poc_Name"></label>
+                                <input asp-for="Program.Public_Poc_Name" class="form-control" data-toggle="tooltip" title="Name of SkillBridge Program point of contact to publish on website" />
+                                <span asp-validation-for="Program.Public_Poc_Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Program.Public_Poc_Email"></label>
+                                <input asp-for="Program.Public_Poc_Email" class="form-control" data-toggle="tooltip" title="Email of SkillBridge Program point of contact to publish on website" />
+                                <span asp-validation-for="Program.Public_Poc_Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Program.States_Of_Program_Delivery"></label>
+                        <input asp-for="Program.States_Of_Program_Delivery" class="form-control" data-toggle="tooltip" title="States where the SkillBridge program is offered (select all that apply)" aria-label="States where the SkillBridge program is offered (select all that apply)" />
+                        <span asp-validation-for="Program.States_Of_Program_Delivery" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tp-partial-container" class="@(Model.TrainingPlan.Id == 0 ? "d-none" : String.Empty)">
+                <partial name="_TrainingPlanForm" model="@Model.TrainingPlan" />
+            </div>
+
+            <button id="update-btn" type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>   <!--INTERFERES WITH DATATABLES FOR SOME -->
+    <!-- On document load, make sure that fields that were previously edited are marked -->
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            changeDetectionEnabled = true;  // Enable field change detection for submitting updates
+
+            $(".custom-select").select2();
+
+            // Fix select2 508 issues
+            $(".select2-selection").removeAttr("role");
+            $(".select2-search__field").removeAttr("role");
+            $(".select2-search__field").attr("aria-label", "textbox");
+            $(".select2-search__field").attr("type", "text");
+
+            // Bootstrap tooltips for select2
+            $(".select2-container").tooltip({
+                title: function () {
+                    return $(this).prev().attr("data-original-title");
+                },
+                placement: "auto",
+                animation: false
+            });
+
+            $('#Services_Supported_List').on('select2:select', function (e) {
+                //var data = e.params.data;
+                //console.log(data.text);
+
+                //CheckServiceDropdownVals();
+            });
+
+            $('#Services_Supported_List').on('select2:unselect', function (e) {
+                //var data = e.params.data;
+                //console.log(data.text);
+
+                CheckServiceDropdownVals();
+            });
+
+            //console.log("shouldDisableAlert: " + shouldDisableAlert);
+            SetupDisabledAlert(0);
+            HandleEditViews();
+            HandleFieldChanges();   // Triggers showing/hiding training plan partial        
+        });
+
+        function HandleFieldChanges()
+        {
+            $("#ProgramName,#prog-duration-dropdown,#OpportunityType").on('change', function () {
+                DetermineNeedForTrainingPlan();
+            });
+
+            $("[name*='.Delivery_Method_Id'],#Online").on('click', function () {
+                DetermineNeedForTrainingPlan();
+            });
+        }
+
+        function DetermineNeedForTrainingPlan()
+        {
+            let showTrainingPlan = false;
+
+            // Program Name
+            if ($("#ProgramName").val() != $("#StartProgramName").val()) {
+                showTrainingPlan = true;
+            }
+
+            // Delivery Method
+            if (String($("[name*='.Delivery_Method_Id']:checked").map(function () { return $(this).val() }).get()) != $("#StartDeliveryMethodId").val()) {
+                showTrainingPlan = true;
+            }
+
+            // Program Duration
+            if ($("#prog-duration-dropdown").val() != $("#StartProgramDuration").val()) {
+                showTrainingPlan = true;
+            }
+
+            // Opportunity Type
+            if ($("#OpportunityType").val() != $("#StartOpportunityType").val()) {
+                showTrainingPlan = true;
+            }
+
+            // Online
+            if ($("#Online").is(':checked') != $("#StartOnline").val().toLowerCase()) {
+                showTrainingPlan = true;
+            }
+
+            // Decide if it should show
+            if (showTrainingPlan == true) {
+                console.log("should show training plan");
+                $('#tp-partial-container').removeClass('d-none');
+            } else {
+                $('#tp-partial-container').addClass('d-none');
+            }
+        }
+
+        function CheckServiceDropdownVals() {
+            var allVals = $('#Services_Supported_List').val();
+
+            //console.log("allVals: " + allVals);
+
+            var allServicesFound = false;
+
+            if (allVals.length > 0) {
+                for (var i = 0; i < allVals.length; i++) {
+                    // Check if All Services was found, if so, disable other options
+                    if (allVals[i] == 1) {
+                        allServicesFound = true;
+                    }
+                }
+            }
+
+            $('#Services_Supported_List').select2('open');
+            //$('#Services_Supported_List').select2({ data: classes, width: 'auto', containerCssClass: scope.teacher.selectedClassIds.length > 0 ? '' : 'has-error_within required' }).trigger('change');
+
+            if (allServicesFound) {
+                DisableOtherServices();
+                SelectOnlyAllServices();
+            }
+            else if (allVals.length >= 6)    // If someone manually selected all the services, just update it to be the correct option
+            {
+                DisableOtherServices();
+                SelectOnlyAllServices();
+            }
+            else {
+                EnableOtherServices();
+            }
+        }
+
+        function SelectOnlyAllServices() {
+            $('#Services_Supported_List').val('1').change();
+        }
+
+        function DisableOtherServices() {
+            $('#Services_Supported_List option').each(function () {
+                $(this).removeAttr("disabled");
+                if ($(this).text() != "All Services") {
+                    $(this).attr("disabled", "true");
+                }
+            });
+
+            // Reinitialize the select2 dropdown
+            $("#Services_Supported_List").select2();
+
+            // Fix select2 508 issues
+            $("#Services_Supported_List .select2-selection").removeAttr("role");
+            $("#Services_Supported_List .select2-search__field").removeAttr("role");
+            $("#Services_Supported_List .select2-search__field").attr("aria-label", "textbox");
+            $("#Services_Supported_List .select2-search__field").attr("type", "text");
+
+            // Bootstrap tooltips for select2
+            $("#Services_Supported_List .select2-container").tooltip({
+                title: function () {
+                    return $(this).prev().attr("data-original-title");
+                },
+                placement: "auto",
+                animation: false
+            });
+        }
+
+        function EnableOtherServices() {
+            $('#Services_Supported_List option').each(function () {
+                if ($(this).text() != "All Services") {
+                    $(this).removeAttr("disabled");
+                }
+            });
+
+            // Reinitialize the select2 dropdown
+            $("#Services_Supported_List").select2();
+
+            // Fix select2 508 issues
+            $("#Services_Supported_List .select2-selection").removeAttr("role");
+            $("#Services_Supported_List .select2-search__field").removeAttr("role");
+            $("#Services_Supported_List .select2-search__field").attr("aria-label", "textbox");
+            $("#Services_Supported_List .select2-search__field").attr("type", "text");
+
+            // Bootstrap tooltips for select2
+            $("#Services_Supported_List .select2-container").tooltip({
+                title: function () {
+                    return $(this).prev().attr("data-original-title");
+                },
+                placement: "auto",
+                animation: false
+            });
+        }
+    </script>
+}

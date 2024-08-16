@@ -1,0 +1,80 @@
+﻿@model SkillBridge_System_Prototype.Models.PendingProgramModel
+@{
+    ViewData["Title"] = $"Pending Change Review";
+    var trainingPlans = (List<SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlan>)ViewBag.TrainingPlans;
+}
+
+<h1>@Html.Raw(ViewData["Title"])</h1>
+
+@await Html.PartialAsync("~/Views/Programs/_PendingProgramHeader.cshtml", Model)
+
+<div class="card mb-3">
+    <div class="card-header"><h5 class="mb-0">Do You Need to Make a Change to a Training Plan?</h5></div>
+    <div class="card-body">
+        <div class="form-group" id="radio-container">
+                @if (trainingPlans.Any())
+                {
+                <div class="form-check mr-3">
+                    <label class="form-check-label font-weight-normal">
+                        <input type="radio" class="form-check-input" id="trainingPlanExisting" name="trainingPlan" value="existing" /> Change an Existing Training Plan
+                    </label>
+                </div>
+                }
+                <div class="form-check mr-3">
+                    <label class="form-check-label font-weight-normal">
+                        <input type="radio" class="form-check-input" id="trainingPlanNew" name="trainingPlan" value="new" /> Upload a New Training Plan
+                    </label>
+                </div>
+                <div class="form-check mr-3">
+                    <label class="form-check-label font-weight-normal">
+                        <input type="radio" class="form-check-input" id="trainingPlanNone" name="trainingPlan" value="none" /> No Training Plan Change Is Needed
+                    </label>
+                </div>
+        </div>
+    </div>
+</div>
+
+@if (trainingPlans.Any())
+{
+    <div id="existingTrainingPlans" class="card d-none">
+    <div class="card-header"><h5 class="mb-0">Change an Existing Training Plan</h5></div>
+        <div class="card-body">
+        @using (Html.BeginForm("ModifyTrainingPlan", "Programs", FormMethod.Post, new { id = "tp-form", @enctype = "multipart/form-data" }))
+        {
+            @await Html.PartialAsync("~/Views/Shared/_TrainingPlanChanges.cshtml")
+
+            <div class="mb-3">
+                <input type="hidden" id="IsAddition" name="IsAddition" value="@(Model.IsAddition.ToString())" />
+                <input type="hidden" id="PendingId" name="PendingId" value="@(Model.Id)" />
+                <button type="submit" class="btn btn-success">Change Selected Training Plan</button>
+            </div>
+
+    @Html.AntiForgeryToken()
+    }
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('[name="trainingPlan"]').click(function() {
+            $('#existingTrainingPlans').addClass('d-none');
+            switch ($(this).val())
+            {
+                case 'new':
+                    document.location = '/programs/trainingplanform/@Model.Id?isAddition=@(Model.IsAddition.ToString())';
+                    break;
+                case 'existing':
+                    $('#existingTrainingPlans').removeClass('d-none');
+                    break;
+                case 'none':
+                    document.location = '/programs/listprograms';
+                    break;
+            }
+        });
+    });
+    </script>
+}

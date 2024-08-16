@@ -1,0 +1,58 @@
+﻿@{
+    var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
+    var entryForms = entry.Forms.OrderBy(o => o.FormOrder).ToList();
+    var formTemplates = (List<IntakeForm.Models.Data.Templates.DeserializedFormTemplate>)ViewBag.FormTemplates;
+    var responses = (List<IntakeForm.Models.Data.Forms.FormResponse>)ViewBag.ProgressBar;
+}
+
+<div class="mt-3">
+    <div class="card mb-3">
+        @foreach (var entryForm in entryForms)
+        {
+            var template = formTemplates.FirstOrDefault(o => o.ID == entryForm.FormTemplateID);
+
+            foreach (var part in template.Parts)
+            {
+                foreach (var section in part.Sections)
+                {
+                    <div class="card-header bg-primary">
+                        <h5 class="mb-0">
+                            @if (!String.IsNullOrWhiteSpace(part.PartText))
+                            {
+                            @Html.Raw(part.PartText)
+                            }
+                            @if (part.PartText != section.SectionText && !String.IsNullOrWhiteSpace(section.SectionText))
+                            {
+                                if (!String.IsNullOrWhiteSpace(part.PartText))
+                                {
+                                    <span>/</span>
+                                }
+                                @Html.Raw(section.SectionText)
+                            }
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                    @foreach (var question in section.Questions)
+                    {
+                        @await Html.PartialAsync("~/Areas/Intake/Views/Form/_ViewQuestion.cshtml", new IntakeForm.Models.View.Forms.ViewQuestionModel { Question = question, Responses = responses.Where(o => o.FormID == entryForm.ID && o.SectionID == section.ID).ToList() })
+                    }
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+<script type="text/javascript">
+    $(function() { 
+        $('#EntryStatusID').on('change', function() {
+            $('[data-showifvalue]').addClass('d-none');
+            $('[data-showifvalue] [data-rule-required]').attr('data-rule-required', 'false');
+            $('[data-showifvalue="' + $(this).val() + '"]').removeClass('d-none');
+            $('[data-showifvalue="' + $(this).val() + '"] [data-rule-required]').attr('data-rule-required', 'true');
+        });
+    });
+</script>
+}

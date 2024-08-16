@@ -1,0 +1,15 @@
+﻿@{
+    var errors = (List<string>)ViewBag.Errors;
+}
+@if (errors != null && errors.Count > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        <div class="fw-bold">Message(s):</div>
+        <ul>
+        @foreach (var error in errors)
+        {
+            <li class="fw-bold">@Html.Raw(error)</li>
+        }
+        </ul>
+    </div>
+}

@@ -1,0 +1,304 @@
+﻿@{
+    ViewData["Title"] = "Get Ticket Data";
+}
+
+<h1>Get Ticket Data</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label for="ticket-id">Ticket ID</label><span class="req">&nbsp;*</span>
+                        <input type="text" id="ticket-id" placeholder="Enter Ticket ID" />
+                        <button onclick="GetTestTicket();" class="btn btn-primary">Get Ticket Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+
+    </div>
+</div>
+<h3>Fields</h3>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="private">Private</label>
+            <input id="private" class="form-control" data-toggle="tooltip" title="private" disabled />
+        </div>
+        <div class="form-group">
+            <label for="last_customer_action_date">Last Customer Action Date</label>
+            <input id="last_customer_action_date" class="form-control" data-toggle="tooltip" title="last_customer_action_date" disabled />
+        </div>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input id="name" class="form-control" data-toggle="tooltip" title="name" disabled />
+        </div>
+        <div class="form-group">
+            <label for="email_to_visitor">Email to Visitor</label>
+            <input id="email_to_visitor" class="form-control" data-toggle="tooltip" title="email_to_visitor" disabled />
+        </div>
+        <div class="form-group">
+            <label for="operator_assigned">Operator Assigned</label>
+            <input id="operator_assigned" class="form-control" data-toggle="tooltip" title="operator_assigned" disabled />
+        </div>
+        <div class="form-group">
+            <label for="country_code">Country Code</label>
+            <input id="country_code" class="form-control" data-toggle="tooltip" title="country_code" disabled />
+        </div>
+        <div class="form-group">
+            <label for="operator_acknowledge">Operator Acknowledge</label>
+            <input id="operator_acknowledge" class="form-control" data-toggle="tooltip" title="operator_acknowledge" disabled />
+        </div>
+        <div class="form-group">
+            <label for="created_time">Created Time</label>
+            <input id="created_time" class="form-control" data-toggle="tooltip" title="created_time" disabled />
+        </div>
+        <div class="form-group">
+            <label for="host_name">Host Name</label>
+            <input id="host_name" class="form-control" data-toggle="tooltip" title="host_name" disabled />
+        </div>
+        <div class="form-group">
+            <label for="department_id">Department ID</label>
+            <input id="department_id" class="form-control" data-toggle="tooltip" title="department_id" disabled />
+        </div>
+        <div class="form-group">
+            <label for="client_id">Client ID</label>
+            <input id="client_id" class="form-control" data-toggle="tooltip" title="client_id" disabled />
+        </div>
+        <div class="form-group">
+            <label for="added_to_knowledge">Added to Knowledge</label>
+            <input id="added_to_knowledge" class="form-control" data-toggle="tooltip" title="added_to_knowledge" disabled />
+        </div>
+        <div class="form-group">
+            <label for="operator_name">Operator Name</label>
+            <input id="operator_name" class="form-control" data-toggle="tooltip" title="operator_name" disabled />
+        </div>
+        <div class="form-group">
+            <label for="status_name">Status Name</label>
+            <input id="status_name" class="form-control" data-toggle="tooltip" title="status_name" disabled />
+        </div>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input id="title" class="form-control" data-toggle="tooltip" title="title" disabled />
+        </div>
+        <div class="form-group">
+            <label for="created_by">Created By</label>
+            <input id="created_by" class="form-control" data-toggle="tooltip" title="created_by" disabled />
+        </div>
+        <div class="form-group">
+            <label for="received_via">Received Via</label>
+            <input id="received_via" class="form-control" data-toggle="tooltip" title="received_via" disabled />
+        </div>
+        <div class="form-group">
+            <label for="watcher_emails">Watcher Emails</label>
+            <input id="watcher_emails" class="form-control" data-toggle="tooltip" title="watcher_emails" disabled />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="source_type_id">Source Type ID</label>
+            <input id="source_type_id" class="form-control" data-toggle="tooltip" title="source_type_id" disabled />
+        </div>
+        <div class="form-group">
+            <label for="fields">Fields</label>
+            <input id="fields" class="form-control" data-toggle="tooltip" title="fields" disabled />
+        </div>
+        <div class="form-group">
+            <label for="ticket_guid">Ticket GUID</label>
+            <input id="ticket_guid" class="form-control" data-toggle="tooltip" title="ticket_guid" disabled />
+        </div>
+        <div class="form-group">
+            <label for="category">Category</label>
+            <input id="category" class="form-control" data-toggle="tooltip" title="category" disabled />
+        </div>
+        <div class="form-group">
+            <label for="problem">Problem</label>
+            <textarea id="problem" class="form-control" data-toggle="tooltip" title="problem" disabled></textarea>
+        </div>
+        <div class="form-group">
+            <label for="visitor_id">Visitor ID</label>
+            <input id="visitor_id" class="form-control" data-toggle="tooltip" title="visitor_id" disabled />
+        </div>
+        <div class="form-group">
+            <label for="department_name">Department Name</label>
+            <input id="department_name" class="form-control" data-toggle="tooltip" title="department_name" disabled />
+        </div>
+        <div class="form-group">
+            <label for="spam_score">Spam Score</label>
+            <input id="spam_score" class="form-control" data-toggle="tooltip" title="spam_score" disabled />
+        </div>
+        <div class="form-group">
+            <label for="priority">Priority</label>
+            <input id="priority" class="form-control" data-toggle="tooltip" title="priority" disabled />
+        </div>
+        <div class="form-group">
+            <label for="has_attachments">Has Attachments</label>
+            <input id="has_attachments" class="form-control" data-toggle="tooltip" title="has_attachments" disabled />
+        </div>
+        <div class="form-group">
+            <label for="action_date">Action Date</label>
+            <input id="action_date" class="form-control" data-toggle="tooltip" title="action_date" disabled />
+        </div>
+        <div class="form-group">
+            <label for="has_surveys">Has Surveys</label>
+            <input id="has_surveys" class="form-control" data-toggle="tooltip" title="has_surveys" disabled />
+        </div>
+        <div class="form-group">
+            <label for="assigned_to_id">Assigned To ID</label>
+            <input id="assigned_to_id" class="form-control" data-toggle="tooltip" title="assigned_to_id" disabled />
+        </div>
+        <div class="form-group">
+            <label for="watcher_ids">Watcher IDs</label>
+            <input id="watcher_ids" class="form-control" data-toggle="tooltip" title="watcher_ids" disabled />
+        </div>
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input id="id" class="form-control" data-toggle="tooltip" title="id" disabled />
+        </div>
+        <div class="form-group">
+            <label for="ip_address">IP Address</label>
+            <input id="ip_address" class="form-control" data-toggle="tooltip" title="ip_address" disabled />
+        </div>
+        <div class="form-group">
+            <label for="status_id">Status ID</label>
+            <input id="status_id" class="form-control" data-toggle="tooltip" title="status_id" disabled />
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" class="form-control" data-toggle="tooltip" title="email" disabled />
+        </div>
+    </div>
+</div>
+<h3>JSON Response</h3>
+<div class="row">
+    <div class="col">
+        <div id="result" style="background:#a1aaa1;padding:1em;"></div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+<script type="text/javascript">
+    // LHN API Credentials
+    const lhnAppId = "3d42b7bc-f250-4bb3-42e3-4eec2856bec1";
+    const lhnAppSecret = "x7WVRMoGvs2x8+694G8/y3bYutdrGFuZRbr/1CXScji0GviEy4";
+
+    var token;
+
+    window.onload = function () {
+        // Try to get the token from the URL
+        token = GetToken();
+    }
+
+    function GetToken() {
+        // From LHN docs page, ajax call for token access
+        let client_id = lhnAppId;
+        let client_secret = lhnAppSecret;
+        if (client_id != "" && client_secret != "") {
+            $.ajax({
+                method: "GET",
+                url: "https://developer.livehelpnow.net/oauth/token",
+                headers: {
+                    "X-CSRF-TOKEN": "AAEqfzgCEE0pAUM0DgU-NBFsYT0JUxZSYKI0NuizH2nY6HXSf5XoZ6L7"
+                },
+                data: {
+                    client_id: lhnAppId,
+                    client_secret: lhnAppSecret,
+                    grant_type: "client_credentials"
+                },
+                dataType: "json",
+                error: function (data) {
+                    //$("#doc-authentication-message").text(data.statusText).css("color", "#a94442");
+                    //$("#authentication-message-container").show();
+                    console.log("ERROR: " + data.statusText);
+                    return false;
+                },
+                success: function (data) {
+                    document.cookie = "lhnToken=" + data.access_token + ";path=/";
+                    //document.cookie = "client_id=" + client_id + ";path=/";
+                    //document.cookie = "client_secret=" + client_secret + ";path=/";
+                    /*$("#client-id").val("")
+                    $("#client-secret").val("");
+                    $("#doc-authentication-message").text("Your access token has been set, you can now test specific api endpoints").css("color", "#3c763d");
+                    $("#authentication-message-container").show().delay(5000).queue(function (next) {
+                        showTestToken();
+                        $("#doc-authentication-message").text("Get your access token to test endpoints").css("color", "#656565");;
+                        next();
+                        location.reload();
+                    });*/
+                    token = data.access_token;
+                    //console.log("TOKEN: " + data.access_token);
+                    $("#result").html(JSON.stringify(data, null, 2));
+                }
+            });
+        } else {
+            //$("#authentication-message-container").show();
+            //$("#doc-authentication-message").text("Your app id and client secret are required fields, please try again").css("color", "#a94442");
+            console.log("Your app id and client secret are required fields, please try again");
+        }
+    }
+
+    function GetTestTicket() {
+        $.ajax({
+            url: ("https://developer.livehelpnow.net/api/ticket/" + $("#ticket-id").val()),
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            error: function (data) {
+                console.log("ERROR: " + data.statusText);
+                return false;
+            },
+            success: function (response) {
+                $("#result").html(JSON.stringify(response, null, 2));
+
+                //console.log("result payload id: " + response.payload.id);
+
+                $("#private").val(response.payload.private);
+                $("#last_customer_action_date").val(response.payload.last_customer_action_date);
+                $("#name").val(response.payload.name);
+                $("#email_to_visitor").val(response.payload.email_to_visitor);
+                $("#operator_assigned").val(response.payload.operator_assigned);
+                $("#country_code").val(response.payload.country_code);
+                $("#operator_acknowledge").val(response.payload.operator_acknowledge);
+                $("#created_time").val(response.payload.created_time);
+                $("#host_name").val(response.payload.host_name);
+                $("#department_id").val(response.payload.department_id);
+                $("#client_id").val(response.payload.client_id);
+                $("#added_to_knowledge").val(response.payload.added_to_knowledge);
+                $("#operator_name").val(response.payload.operator_name);
+                $("#status_name").val(response.payload.status_name);
+                $("#title").val(response.payload.title);
+                $("#created_by").val(response.payload.created_by);
+                $("#received_via").val(response.payload.received_via);
+                $("#watcher_emails").val(response.payload.watcher_emails);
+                $("#source_type_id").val(response.payload.source_type_id);
+                $("#fields").val(response.payload.fields);
+                $("#ticket_guid").val(response.payload.ticket_guid);
+                $("#category").val(response.payload.category);
+                $("#problem").val(response.payload.problem);
+                $("#visitor_id").val(response.payload.visitor_id);
+                $("#department_name").val(response.payload.department_name);
+                $("#spam_score").val(response.payload.spam_score);
+                $("#priority").val(response.payload.priority);
+                $("#has_attachments").val(response.payload.has_attachments);
+                $("#action_date").val(response.payload.action_date);
+                $("#has_surveys").val(response.payload.has_surveys);
+                $("#assigned_to_id").val(response.payload.assigned_to_id);
+                $("#watcher_ids").val(response.payload.watcher_ids);
+                $("#id").val(response.payload.id);
+                $("#ip_address").val(response.payload.ip_address);
+                $("#status_id").val(response.payload.status_id);
+                $("#email").val(response.payload.email);
+            }
+        });
+    }
+</script>
+}
+
+

@@ -1,0 +1,282 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewBag.Title = "All Opportunities (Server Side Datatables Test)";
+
+    ViewBag.IsAdmin = User.IsInRole("Admin");//var isAdmin = '@ViewBag.IsAdmin'
+    ViewBag.IsAnalyst = User.IsInRole("Analyst");//var isAnalyst = '@ViewBag.IsAnalyst'
+}
+
+<h1>All Opportunities</h1>
+
+<div class="row">
+    <div class="col">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            if (User.IsInRole("Admin") || User.IsInRole("Analyst"))
+            {
+                <p>Below is a list of the opportunities associated with your organization—use this page to view or edit the details for each opportunity. Once submitted and approved by the SkillBridge team, updated opportunities appear on the SkillBridge Locations page.</p>
+                <ul>
+                    <li>To view opportunity details, select the <i class="fa fa-eye fa-fw edit-btn" data-toggle="tooltip" title="View Record"></i></li>
+                    <li>To edit opportunity details, select the <i class="fa fa-edit fa-fw edit-btn" data-toggle="tooltip" title="Edit Record"></i></li>
+                    <!--<li>When complete, a <i class="fa fa-exclamation-circle fa-fw changed-field" data-toggle="tooltip" title="Pending change"></i> will appear next to fields that have been edited</li>-->
+                </ul>
+            }
+            else if (User.IsInRole("Service"))
+            {
+                <p>Use the search bar to locate opportunities based on their name, location, etc.</p>
+            }
+        }
+
+        <!--<ul>
+        <li>To view your opportunity's data, select the <img src="~/images/plus-icon.png" class="txt-plus-icon" data-toggle="tooltip" title="View Record" /> button</li>
+        <li>To edit your opportunity's data, select the <i class="fa fa-edit fa-fw edit-btn" data-toggle="tooltip" title="Edit Record"></i> button</li>
+        <li>Once you're done editing your opportunity's data, you'll see a <i class="fa fa-exclamation-circle fa-fw changed-field" data-toggle="tooltip" title="Pending change"></i> next to fields that were edited</li>
+        <li>Any edits you make will first be reviewed by a SkillBridge Analyst before being posted on the public SkillBridge website</li>
+        <li>If your edits are not approved, you will receive an email message stating why your change(s) were not approved</li>
+    </ul>-->
+
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            if(User.IsInRole("Admin") || User.IsInRole("Analyst"))
+            {
+                <a class="btn btn-primary mb-3 d-inline-block" asp-controller="Opportunities" asp-action="CreateOpportunity">Add New Opportunity</a>
+            }
+            if(User.IsInRole("Admin") || User.IsInRole("Analyst") || User.IsInRole("Service"))
+            {
+                <a id="download-btn" class="btn btn-success mb-3 d-inline-block" asp-action="DownloadCSV">Download Opportunities CSV</a>
+            }
+        }
+    </div>
+</div>
+
+<table id="example" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Actions</th>
+            <th>Active</th>
+            <th>Program_Name</th>
+            <th>Organization</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Date Program Initiated</th>
+            <th>MOU Expiration</th>
+            <th>Employer POC Name</th>
+            <th>Employer POC Email</th>
+        </tr>
+    </thead>
+</table>
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+        var table;
+        $('.leftmenutrigger').on('click', function (e) {
+            setTimeout(ResizeTable, 500);
+        });
+        function ResizeTable() {
+            table.columns.adjust().draw();
+        }
+        $(document).resize(function () {
+            ResizeTable();
+        });
+        $(document).ready(function () {
+            if ($('#example').length > 0) {
+                table = $("#example").DataTable({
+                    dom: 'Bfrtip',
+                    /*buttons: [
+                        {
+                            extend: 'copy', className: 'dtBtn',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                            }
+                        },
+                        {
+                            extend: 'csv', className: 'dtBtn',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                            }
+                        },
+                        {
+                            extend: 'excel', className: 'dtBtn',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                            }
+                        }
+                    ],*/
+                    "processing": true, // for show progress bar
+                    "serverSide": true, // for process server side
+                    "stateSave": true,  // saves the position/page in the table by using localStorage in the browser
+                    "ajax": {
+                        "url": "/api/Oss/GetOppsData",
+                        "type": "POST",
+                        "datatype": "json"
+                    },
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "responsive": true,
+                    "autoWidth": false,
+                    "bAutoWidth": false,
+                    /*"order": [
+                        [2, 'asc']
+                    ],*/
+                    /*"columnDefs": [{
+                        "targets": [0],
+                        "visible": true,
+                        "searchable": false
+                    }],*/
+                    "columns": [
+                        //{ "data": null, "render": function (data, row) { return "Actions here"; } },
+
+                        {
+                            "data": "id", "render": function (data, row) {
+
+                                var isAdmin = '@ViewBag.IsAdmin';
+                                var isAnalyst = '@ViewBag.IsAnalyst';
+
+                                console.log("isAdmin: " + isAdmin);
+                                console.log("isAnalyst: " + isAnalyst);
+
+                                if (isAdmin == "True" || isAnalyst == "True") {
+                                    return "<a class='btn d-inline-block edit-btn' data-toggle='tooltip' title='View Opportunity' href='EditOpportunity?id=" + data + "&edit=false' aria-label='View Opportunity'><i class='fa fa-eye fa-fw'></i></a><a class='btn d-inline-block edit-btn' data-toggle='tooltip' title='Edit Opportunity' asp-controller='Opportunities' asp-action='EditOpportunity' asp-route-id='" + data + "' asp-route-edit='true' aria-label='Edit Opportunity'><i class='fa fa-edit fa-fw'></i></a>";
+                                }
+                                else {
+                                    return "<a class='btn d-inline-block edit-btn' data-toggle='tooltip' title='View Opportunity' asp-controller='Opportunities' asp-action='EditOpportunity' asp-route-id='" + data + "' asp-route-edit='false aria-label='View Opportunity'><i class='fa fa-eye fa-fw'></i></a>";
+                                }
+                            }
+                        },
+                        { "data": "is_Active", "name": "Is_Active", "autoWidth": true },
+                        { "data": "program_Name", "name": "Program_Name", "autoWidth": true },
+                        { "data": "organization_Name", "name": "Organization_Name", "autoWidth": true },
+                        { "data": "city", "name": "City", "autoWidth": true },
+                        { "data": "state", "name": "State", "autoWidth": true },
+                        //{ "data": "date_Program_Initiated", "name": "Date_Program_Initiated", "autoWidth": true },
+                        {
+                            "data": "date_Program_Initiated", "name": "Date_Program_Initiated", "render": function (data, row) {
+                                var initialSplit = data.split("T");
+
+                                var extractedDate = initialSplit[0].split("-");
+
+                                var year = extractedDate[0];
+                                var month = extractedDate[1];
+                                var day = extractedDate[2];
+
+                                //console.log("day: " + day);
+                                //console.log("month: " + month);
+                                //console.log("year: " + year);
+
+                                var formattedDay = day.toLocaleString('en-US', {
+                                    minimumIntegerDigits: 2,
+                                    useGrouping: false
+                                });
+                                //console.log("formattedDay: " + formattedDay);
+                                var formattedMonth = month.toLocaleString('en-US', {
+                                    minimumIntegerDigits: 2,
+                                    useGrouping: false
+                                });
+                                //console.log("formattedMonth: " + formattedMonth);
+                                var formattedYear = year.toLocaleString('en-US', {
+                                    minimumIntegerDigits: 4,
+                                    useGrouping: false
+                                });
+                                //console.log("formattedYear: " + formattedYear);
+
+                                return formattedMonth + "/" + formattedDay + "/" + formattedYear;
+                            }
+                        },
+                        //{ "data": "mou_Expiration_Date", "name": "Mou_Expiration_Date", "autoWidth": true },
+                        {
+                            "data": "mou_Expiration_Date", "name": "Mou_Expiration_Date", "render": function (data, row) {
+                                var initialSplit = data.split("T");
+
+                                var extractedDate = initialSplit[0].split("-");
+
+                                var year = extractedDate[0];
+                                var month = extractedDate[1];
+                                var day = extractedDate[2];
+
+                                //console.log("day: " + day);
+                                //console.log("month: " + month);
+                                //console.log("year: " + year);
+
+                                var formattedDay = day.toLocaleString('en-US', {
+                                    minimumIntegerDigits: 2,
+                                    useGrouping: false
+                                });
+                                //console.log("formattedDay: " + formattedDay);
+                                var formattedMonth = month.toLocaleString('en-US', {
+                                    minimumIntegerDigits: 2,
+                                    useGrouping: false
+                                });
+                                //console.log("formattedMonth: " + formattedMonth);
+                                var formattedYear = year.toLocaleString('en-US', {
+                                    minimumIntegerDigits: 4,
+                                    useGrouping: false
+                                });
+                                //console.log("formattedYear: " + formattedYear);
+
+                                return formattedMonth + "/" + formattedDay + "/" + formattedYear;
+                            }
+                        },
+                        { "data": "employer_Poc_Name", "name": "Employer_Poc_Name", "autoWidth": true },
+                        { "data": "employer_Poc_Email", "name": "Employer_Poc_Email", "autoWidth": true }
+                    ],
+                    /*"columnDefs": [{
+                        "targets": 0,
+                        "width": "60px",
+                        "orderable": false
+                    },
+                    {
+                        "targets": 2,
+                        "width": "200px",
+                        "render": $.fn.dataTable.render.ellipsis()
+                    }]*/
+                    
+                });
+
+                // Recalc column widths on paging
+                table.on('page.dt', function () {
+                    //table.columns.adjust()
+                    table.responsive.recalc();
+                });
+            }
+
+            $("#download-btn").click(function (e) {
+                $('#loader').css("display", "block");
+                $('#loader-bg').css("display", "block");
+                $('#loader-text').css("display", "block");
+                $('#generating-file').css("display", "block");
+
+                setCookie('opportunitiesDownloadStarted', "0", 100); //Expiration could be anything... As long as we reset the value
+                setTimeout(checkDownloadCookie, 1000); //Initiate the loop to check the cookie.
+
+                //console.log("downloadStarted: " + getCookie('downloadStarted'));
+                //$('main').css("visibility", "hidden");
+            });
+
+            var downloadTimeout;
+            var checkDownloadCookie = function () {
+                //console.log("downloadStarted: " + getCookie('downloadStarted'));
+                if (getCookie("opportunitiesDownloadStarted") == "1") {
+                    setCookie("opportunitiesDownloadStarted", "false", 0); //Expiration could be anything... As long as we reset the value
+                    HideLoader();
+                } else {
+                    downloadTimeout = setTimeout(checkDownloadCookie, 1000); //Re-run this function in 1 second.
+                }
+            };
+        });
+    </script>
+}
+
+

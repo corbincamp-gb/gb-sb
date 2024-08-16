@@ -1,0 +1,20 @@
+﻿@model IntakeForm.Models.Data.Templates.DeserializedFormTemplate
+@{
+    ViewData["Title"] = "Review the Application";
+
+    var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
+    var entryForms = entry.Forms.OrderBy(o => o.FormOrder).ToList();
+    var formTemplates = (List<IntakeForm.Models.Data.Templates.DeserializedFormTemplate>)ViewBag.FormTemplates;
+    var responses = (List<IntakeForm.Models.Data.Forms.FormResponse>)ViewBag.ProgressBar;
+}
+
+@section Breadcrumb {
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item">@Html.Raw(entry.OrganizationName)</li>
+}
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Shared/_Entry.cshtml")
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Shared/_Messages.cshtml")
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Form/_Review.cshtml")

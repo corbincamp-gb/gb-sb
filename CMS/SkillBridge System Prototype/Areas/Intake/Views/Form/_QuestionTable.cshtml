@@ -1,0 +1,84 @@
+﻿@model IntakeForm.Models.Data.Templates.Question
+@{
+    var states = (List<IntakeForm.Models.Data.Forms.State>)ViewBag.States;
+
+    var formTemplate = (IntakeForm.Models.Data.Templates.DeserializedFormTemplate)ViewBag.FormTemplate;
+    var part = (IntakeForm.Models.Data.Templates.Part)ViewBag.Part;
+
+    var form = (IntakeForm.Models.Data.Forms.Form)ViewBag.Form;
+
+    var responses = (List<IntakeForm.Models.Data.Forms.FormResponse>)ViewBag.Responses;
+    var numberOfResponses = (responses.Any(o => o.FormID == form.ID && o.PartID == part.ID && o.QuestionID == Model.ID) ? responses.Where(o => o.FormID == form.ID && o.PartID == part.ID && o.QuestionID == Model.ID).SelectMany(o => o.FormResponseRows).Max(o => o.RowID) : 1);
+
+    if (Context.Request.Method == "POST")
+    {
+        numberOfResponses = (Context.Request.Form.Where(o => o.Key.StartsWith("question_" + Model.ID)).Count() / Model.AnswerColumns.Count());
+    }
+}
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                @foreach (var col in Model.AnswerColumns.OrderBy(o => o.Order).ToList())
+                {
+                    <th>@Html.Raw(col.Label)</th>
+                }
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < numberOfResponses; i++)
+            {
+                <tr>
+                    <td>@(i+1)</td>
+                    @foreach (var col in Model.AnswerColumns.OrderBy(o => o.Order).ToList())
+                    {
+                        var answer = responses.Where(o => o.FormID == form.ID && o.PartID == part.ID && o.QuestionID == Model.ID).SelectMany(o => o.FormResponseRows)?.FirstOrDefault(o => o.RowID == i + 1 && o.ColumnID == col.ID)?.Answer ?? String.Empty;
+                        if (Context.Request.Method == "POST")
+                        {
+                            answer = Context.Request.Form[$"question_{Model.ID}_{col.ID}_{i+1}"];
+                        }
+                        <td data-questionid="@(Model.ID)" data-columnid="@(col.ID)" data-answerrequired="@(col.Required)">
+                        @switch (col.QuestionType)
+                        {
+                                case IntakeForm.Models.Enumerations.QuestionType.Number:
+                                    <input type="number" class="form-control" id="question_@(Model.ID)_@(col.ID)_@(i+1)" name="question_@(Model.ID)_@(col.ID)_@(i+1)"
+                           data-val="@(col.Required ? "true" : "false")" 
+                                    data-rule-required="@(col.Required ? "true" : "false")" 
+                                    data-msg-required="Please provide a response." 
+                                    value="@(answer)"  />
+                                    <div><em>ex: #.## or #</em></div>
+                                    break;
+                                case IntakeForm.Models.Enumerations.QuestionType.State:
+                                    <select class="form-control" id="question_@(Model.ID)_@(col.ID)_@(i+1)" name="question_@(Model.ID)_@(col.ID)_@(i+1)"
+                            data-val="@(col.Required ? "true" : "false")" 
+                                        data-rule-required="@(col.Required ? "true" : "false")" 
+                                        data-msg-required="Please provide a response." >
+                                            <option value="">[Select a state]</option>
+                                            @foreach (var state in states)
+                                            {
+                                            <!option value="@(state.Code)" @(answer == state.Code ? "selected" : String.Empty)>@Html.Raw(state.Label)</!option>
+                                            }
+                                        </select>
+                                    break;
+                                default:
+                                    <input type="text" class="form-control" id="question_@(Model.ID)_@(col.ID)_@(i+1)" name="question_@(Model.ID)_@(col.ID)_@(i+1)"
+                           data-val="@(col.Required ? "true" : "false")" 
+                                    data-rule-required="@(col.Required ? "true" : "false")" 
+                                    data-msg-required="Please provide a response." 
+                                    value="@(answer)" />
+                                    break;
+                            }
+                            <div data-valmsg-for="question_@(Model.ID)_@(col.ID)_@(i+1)" data-valmsg-replace="true"></div>
+                        </td>
+                    }
+                    <td><button type="button" class="btn btn-primary btn-remove-row @(i == 0 && Model.Required ? "btn-dark" : "btn-primary")" @(i == 0 && Model.Required ? "disabled" : String.Empty)>Remove</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary btn-add-another-row">Add Another Row</button>
+</div>

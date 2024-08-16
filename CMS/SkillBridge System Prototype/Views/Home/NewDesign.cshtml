@@ -1,0 +1,534 @@
+﻿@using System.Web
+@{
+    Layout = "_CmsLayout";
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>Pending Changes (Admin/Analyst/OSD View)</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item">Pending Changes</li>
+    </ol>
+</nav>
+
+<div class="alert alert-primary">
+    <div class="h5">Filter Criteria for Pending Changes</div>
+    <div class="row mb-2">
+        <div class="col-12 col-md-3">
+            <label for="Organziation" class="form-label">Organization</label>
+            <input type="text" id="Organization" class="form-control" />
+        </div>
+        <div class="col-12 col-md-3">
+            <label for="Program" class="form-label">Program</label>
+            <input type="text" id="Program" class="form-control" />
+        </div>
+        <div class="col-12 col-md-3">
+            <label for="City" class="form-label">City</label>
+            <input type="text" id="City" class="form-control" />
+        </div>
+        <div class="col-12 col-md-3">
+            <label for="State" class="form-label">State</label>
+            <select id="State" class="form-control">
+                <option>[All]</option>
+                <option>AL - Alabama</option>
+                <option>AK - Alaska</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-12 col-md-2">
+            <label for="ChangeStartOn" class="form-label">Submitted Starting On</label>
+            <input id="ChangeStartOn" type="date" />
+        </div>
+        <div class="col-12 col-md-2">
+            <label for="ChangeEndOn" class="form-label">Submitted Ending On</label>
+            <input id="ChangeEndOn" type="date" />
+        </div>
+        <div class="col-12 col-md-2">
+            <label for="OSD" class="form-label">Requires OSD Approval</label>
+            <select id="OSD" class="form-control">
+                <option>[All]</option>
+                <option>Yes</option>
+                <option>No</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2">
+            <label for="Type" class="form-label">Type</label>
+            <select id="Type" class="form-control">
+                <option>[All]</option>
+                <option>Add</option>
+                <option>Update</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2">
+            <label for="Status" class="form-label">Status</label>
+            <select id="Status" class="form-control">
+                <option>[All]</option>
+                <option>Pending</option>
+                <option>Approved</option>
+                <option>Disapproved</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2">
+            <label for="Change" class="form-label">Change</label>
+            <select id="Change" class="form-control">
+                <option>[All]</option>
+                <option>Organization</option>
+                <option>Program</option>
+                <option>Opportunity</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-6">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <button type="reset" class="btn btn-danger">Reset</button>
+        </div>
+        <div class="col-6 text-end">
+            <button type="submit" class="btn btn-secondary">Export</button>
+            <button type="submit" class="btn btn-secondary">Legend</button>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped mt-4">
+    <thead class="sticky-top">
+        <tr class="bg-table-header">
+            <th><a href="#" class="text-white">OSD</a></th>
+            <th><a href="#" class="text-white">Type</a></th>
+            <th><a href="#" class="text-white">Status</a></th>
+            <th><a href="#" class="text-white">Change</a></th>
+            <th><a href="#" class="text-white">Details</a></th>
+            <th><a href="#" class="text-white">Status Updated On</a></th>
+            <th><a href="#" class="text-white">Status Updated By</a></th>
+            <th><a href="#" class="text-white">Submitted On</a> <i class="fa fa-chevron-down"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="text-center"></td>
+            <td class="text-center"><i class="fa fa-plus" aria-label="Add" title="Add"></i></td>
+            <td class="text-center"><i class="fa fa-minus" aria-label="Pending" title="Pending"></i></td>
+            <td class="text-center"><i class="fa fa-building" aria-label="Organization" title="Organization"></i></td>
+            <td><a href="#">Cushman and Wakefield</a></td>
+            <td></td>
+            <td></td>
+            <td>12/21/2022 19:36:01</td>
+        </tr>
+        <tr>
+            <td class="text-center"><i class="fa fa-asterisk" aria-label="Requires OSD Approval" title="Requires OSD Approval"></i></td>
+            <td class="text-center"><i class="fa fa-edit" aria-label="Update" title="Update"></i></td>
+            <td class="text-center"><i class="fa fa-thumbs-up text-success" aria-label="Approved" title="Approved"></i></td>
+            <td class="text-center"><i class="fa fa-book" aria-label="Program" title="Program"></i></td>
+            <td><a href="#">Cushman and Wakefield: Military Order of the World Wars - Social Media Manager Program</a></td>
+            <td>11/09/2022 18:25:27</td>
+            <td>Name</td>
+            <td>11/09/2022 18:25:27</td>
+        </tr>
+        <tr>
+            <td class="text-center"><i class="fa fa-asterisk" aria-label="Requires OSD Approval" title="Requires OSD Approval"></i></td>
+            <td class="text-center"><i class="fa fa-edit" aria-label="Update" title="Update"></i></td>
+            <td class="text-center"><i class="fa fa-thumbs-down text-danger" aria-label="Disapproved" title="Disapproved"></i></td>
+            <td class="text-center"><i class="fa fa-map-marker" aria-label="Opportunity" title="Opportunity"></i></td>
+            <td><a href="#">Cushman and Wakefield: Professional, Administrative and Management Internships Washington, MD 20008</a></td>
+            <td>08/16/2022 15:30:23</td>
+            <td>Name</td>
+            <td>08/16/2022 15:30:23</td>
+        </tr>
+    </tbody>
+</table>
+
+<nav aria-label="Table results and navigation" class="d-flex justify-content-between">
+  <div>Showing 1 - 10 of 25</div>
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+
+
+<h1>Organization With Multiple Programs</h1>
+
+<div class="alert alert-warning">This organization has change(s) that are pending review, and are not reflected below. However, until those change(s) have been addressed, you may not submit an additional change during this time.</div>
+
+<div class="card mt-3">
+    <div class="card-header"><h4 class="mb-0">Sunbelt Rentals <span class="badge bg-success">Active</span></h4> </div>
+    <div class="card-body p-3">
+        <div class="row mb-2">
+            <div class="col-lg-3">
+                <div class="fw-bold">Organization Type:</div>
+                <div>Profit</div>
+            </div>
+            <div class="col-lg-4">
+                <div class="fw-bold">POC Information:</div>
+                <div>Edward Orsted</div>
+                <div>e: <a href="mailto:edward.orsted@sunbeltrentals.com">edward.orsted@sunbeltrentals.com</a></div>
+                <div>p: 803-487-5979</div>
+            </div>
+            <div class="col-lg-5">
+                <div class="fw-bold">MOU Information:</div>
+                <div>Owned by: Sunbelt Rentals</div>
+                <div>Created on: 11/19/2021</div>
+                <div>Expires on: 11/18/2024</div>
+                <div>Servies: All Services</div>
+                <div><a href="#">View PDF</a></div>
+            </div>
+        </div>
+
+        <div class="alert alert-primary mb-2">
+            <strong>Analyst Notes:</strong>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped mt-4">
+    <thead class="sticky-top">
+        <tr class="bg-table-header">
+            <th><a href="#" class="text-white">Program</a> <i class="fa fa-chevron-down"></i></th>
+            <th><a href="#" class="text-white">Duration</a></th>
+            <th class="text-end"><a href="#" class="text-white">No. of Opp</a></th>
+            <th class="text-end"><a href="#" class="text-white">Active</a></th>
+            <th class="text-end"><a href="#" class="text-white">Pending Review?</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="alert-warning">
+            <td><a href="#">Afloat Cryptology & ISR Program</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">6</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end fw-bold">Yes</td>
+        </tr>
+        <tr>
+            <td><a href="#">Combatant Craft</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">1</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Communication Emitter Sensing and Attacking System (CESAS)</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">1</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr class="alert-warning">
+            <td><a href="#">CSRR & CSRR PITCO Program</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">1</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end fw-bold">Yes</td>
+        </tr>
+        <tr>
+            <td><a href="#">Cyber Internship</a></td>
+            <td class="text-nowrap">91 - 120 days</td>
+            <td class="text-end">2</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Join Threat Warning System (JTWS) Air, R&D and Sustainment</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">2</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Joint Space Operations Center (JSpOC) Mission System (JMS) / Section 31 (S31) Integration, Architecture, Test, Logistics and Sustainment Support</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">1</td>
+            <td class="text-end">No</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Joint Threat Warning System (JTWS) Maintenance Support (JaMS)</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">3</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Navy Computer Network Defense (CND)</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">1</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">NWCF Maritime Command & Control (MC2) Installations and Fleet Support</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">1</td>
+            <td class="text-end">No</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Recruiting Internship</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">4</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Shore Tactical Assured Command & Control (STACC) Engineering and Cyber Readiness</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">1</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Special Networks Infrastructure</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">1</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">TacMobile Engineering, Integration, and Installation (TEII)</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">2</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Technical Control and Analysis Center (TCAC)</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">1</td>
+            <td class="text-end">No</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">Test and Evaluation Threat Resource Activity (TETRA)</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">2</td>
+            <td class="text-end">No</td>
+            <td class="text-end">No</td>
+        </tr>
+        <tr>
+            <td><a href="#">United States Marine Corps (USMC) Signal's Intelligence (SIGINT), Electronic Warfare (EW) and Intelligence Program</a></td>
+            <td class="text-nowrap">121 - 150 days</td>
+            <td class="text-end">3</td>
+            <td class="text-end">Yes</td>
+            <td class="text-end">No</td>
+        </tr>
+    </tbody>
+</table>
+
+<nav aria-label="Table results and navigation" class="d-flex justify-content-between">
+    <div>Showing 1 - 10 of 25</div>
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+</nav>
+
+
+<h1 class="mt-5">Organizations With 1 Program/Program View</h1>
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Sunbelt Rentals</a></li>
+        <li class="breadcrumb-item">Sunbelt Rentals SkillBridge Program</li>
+    </ol>
+</nav>
+
+<div class="card mt-3">
+    <div class="card-header"><h5 class="mb-0">Sunbelt Rentals SkillBridge Program <span class="badge bg-success">Active</span></h5></div>
+    <div class="card-body p-3">
+        <div class="row mb-2">
+            <div class="col-4">
+                <span class="fw-bold">Population(s):</span><br /> Military Spouses, Service Members, Veterans<br />
+                <span class="fw-bold">Delivery Method:</span><br />  Hybrid (In-Person and Online)<br />
+                <span class="fw-bold">Program Duration:</span><br />  91 - 120 days<br />
+                <span class="fw-bold">Opportunity Type:</span><br />  Internship Program<br />
+                <span class="fw-bold">States of Program Delivery:</span><br />  Nationwide (All States)<br />
+            </div>
+            <div class="col-4">
+                <span class="fw-bold">Job Families:</span><br /> Building and Groups Cleaning and Maintenance, Business and Financial Operations, Construction and Extraction, Management, Other, Tranportation and Material Moving<br />
+                <span class="fw-bold">Services Supported:</span><br />  All Services<br />
+                <span class="fw-bold">Enrollment Dates:</span><br />  Continuous open enrollment<br />
+            </div>
+            <div class="col-4">
+                <strong>Admin POC:</strong><br />
+                Edward Orsted<br />
+                e: <a href="mailto:edward.orsted@sunbeltrentals.com">edward.orsted@sunbeltrentals.com</a><br />
+                p: 803-487-5979<br />
+                <strong>Public POC:</strong><br />
+                Edward Orsted<br />
+                e: <a href="mailto:SBRskillbridge@sunbeltrentals.com">SBRskillbridge@sunbeltrentals.com</a><br />
+                <strong>Program URL:</strong><br />
+                <a href="https://www.sunbeltrentals.com/careers/veteran-spotlight/" target="_blank">https://www.sunbeltrentals.com/careers/veteran-spotlight/</a><br />
+            </div>
+        </div>
+
+        <div class="alert alert-primary mb-2">
+            <strong>Analyst Notes:</strong>
+        </div>
+
+        <div><a href="#" class="btn btn-primary">Change</a></div>
+
+    </div>
+</div>
+
+<table class="table table-striped mt-4">
+    <thead class="sticky-top">
+        <tr class="bg-table-header">
+            <th><a href="#" class="text-white">City</a></th>
+            <th><a href="#" class="text-white">State</a> <i class="fa fa-chevron-down"></i></th>
+            <th><a href="#" class="text-white">Zip</a></th>
+            <th><a href="#" class="text-white">Duration</a></th>
+            <th><a href="#" class="text-white">Active</a></th>
+            <th><a href="#" class="text-white">Pending Review?</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="alert-warning"><td><a href="#">Birmingham</a></td><td>AL</td><td>35005</td><td>91 - 120 days</td><td>Yes</td><td class="fw-bold">Yes</td></tr>
+        <tr class="alert-warning"><td><a href="#">Huntsville</a></td><td>AL</td><td>35649</td><td>91 - 120 days</td><td>Yes</td><td class="fw-bold">Yes</td></tr>
+        <tr><td><a href="#">Fayetteville - Little Rock</a></td><td>AR</td><td>72002</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Phoenix (Prescott)</a></td><td>AZ</td><td>85001</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Chula Vista</a></td><td>CA</td><td>91950</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Los Angeles</a></td><td>CA</td><td>90001</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Oceanside</a></td><td>CA</td><td>92054</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Sacramento</a></td><td>CA</td><td>94203</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">San Diego</a></td><td>CA</td><td>22400</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">San Francisco-Oakland-San Jose</a></td><td>CA</td><td>94501</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Denver</a></td><td>CO</td><td>80014</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Washington, D.C.</a></td><td>DC</td><td>20001</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Jacksonville</a></td><td>FL</td><td>32034</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Miami - Ft Lauderdale</a></td><td>FL</td><td>33101</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Orlando - Dayotona</a></td><td>FL</td><td>32789</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Pensacola</a></td><td>FL</td><td>32501</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Tampa</a></td><td>FL</td><td>33601</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Atlanta</a></td><td>GA</td><td>30301</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Savannah</a></td><td>GA</td><td>31302</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Chicago</a></td><td>IL</td><td>60007</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Indianapolis</a></td><td>IN</td><td>46077</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Louisville</a></td><td>KY</td><td>40018</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">New Orleans</a></td><td>LA</td><td>70032</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Boston</a></td><td>MA</td><td>2101</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Baltimore</a></td><td>MD</td><td>21201</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">St Louis</a></td><td>MO</td><td>63101</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Charlotte</a></td><td>NC</td><td>28105</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Fayetteville</a></td><td>NC</td><td>28301</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Greensboro</a></td><td>NC</td><td>27214</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Jacksonville</a></td><td>NC</td><td>28547</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Raliegh - Durham</a></td><td>NC</td><td>27513</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Las Vegas</a></td><td>NV</td><td>88901</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">New York</a></td><td>NY</td><td>10001</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Cincinnati</a></td><td>OH</td><td>45201</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Cleveland</a></td><td>OH</td><td>44101</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Portland</a></td><td>OR</td><td>97035</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Pittsburgh</a></td><td>PA</td><td>15106</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Fort Mill</a></td><td>SC</td><td>29715</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Knoxville</a></td><td>TN</td><td>37901</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Nashville</a></td><td>TN</td><td>37011</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Austin</a></td><td>TX</td><td>73301</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Dallas - Ft Worth</a></td><td>TX</td><td>75001</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Houston</a></td><td>TX</td><td>77001</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">San Antonio</a></td><td>TX</td><td>78006</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Salt Lake City</a></td><td>UT</td><td>84606</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Norfolk</a></td><td>VA</td><td>23324</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Quantico</a></td><td>VA</td><td>22193</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Richmond</a></td><td>VA</td><td>23173</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Burlington</a></td><td>VT</td><td>5401</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+        <tr><td><a href="#">Tacoma</a></td><td>WA</td><td>98433</td><td>91 - 120 days</td><td>Yes</td><td>No</td></tr>
+    </tbody>
+</table>
+
+<nav aria-label="Table results and navigation" class="d-flex justify-content-between">
+    <div>Showing 1 - 10 of 25</div>
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+</nav>
+
+
+<h1 class="mt-5">Opportunity View</h1>
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Sunbelt Rentals</a></li>
+        <li class="breadcrumb-item"><a href="#">Sunbelt Rentals SkillBridge Program</a></li>
+        <li class="breadcrumb-item">Birmingham, AL 35005</li>
+    </ol>
+</nav>
+
+<div class="card mt-3">
+    <div class="card-header"><h5 class="mb-0">Birmingham, AL 35005 <span class="badge bg-success">Active</span></h5></div>
+    <div class="card-body p-3">
+        <div class="row mb-2">
+            <div class="col-8">
+                <div class="fw-bold">Summary Description</div>
+                <div>Sunbelt Rentals is a Commercial and Residential Equipment Rental Company. We currently have over 1000 locations located within the Continental United States and have over 17000 employees. The Sunbelt Rentals SkillBridge program is designed to provide a structured training program at any of our locations throughout the United States. This program will provide all the tools to leverage the peer and manager teaching that happens at our branches every day to ensure each Service Member knows what their post transition role is, how to perform that role at the highest level and where to go for help when needed. During the program, Service Members will work to learn through guided on-the-job experience, on-line coursework and regular discussions with leaders. Ultimately, we want Service Members to feel valued for their service, welcomed at Sunbelt Rentals and excited for the opportunities ahead of them, determined to excel in this program.</div>
+
+                <div class="fw-bold mt-2">Jobs Description</div>
+                <div>All of the Service Members internship and training will occur at a location determined through the interview process, at a location nearest to where they desire to live, which will meet the requirements of the program they are enrolled in. Training will focus on preparing participants for various roles within the organization and the equipment rental industry, including: Mechanics / Technicians (multiple lines of equipment, including General Construction, pumps, power-generation, HVAC, and more), Drivers (Class A and Class B CDL), Logistics / Dispatcher, Equipment Rental Specialist, Outside Sales (non-commission), Recruiting and Management Training programs.</div>
+
+                <div class="fw-bold mt-2">Other Eligibility Factors</div>
+                <div>The ideal candidate will have a background in mechanics, machine maintenance, equipment repair, avionics, electronics, hydraulics, heavy equipment operator, construction equipment repair, light wheel mechanics, engine mechanics, logistics, recruiting, administrative, motor transport, and other backgrounds which may fit into Sunbelt Rentals.</div>
+
+                <div class="fw-bold mt-2">Additional Information (Note: use the data in the &quot;Other&quot; column)</div>
+                <div>Our goal with the Sunbelt Rentals SkillBridge program is to provide transitioning Service Members with the opportunity to learn the aspects of the equipment rental industry, the Sunbelt Culture, skills and behaviors that are specific to the jobs we offer.</div>
+            </div>
+            <div class="col-4">
+                <div class="fw-bold">Employer POC</div>
+                <div>Edward Orsted</div>
+
+                <div class="fw-bold mt-2">Employer POC Email</div>
+                <div><a href="#">SBRskillbridge@sunbeltrentals.com</a></div>
+               
+                <div class="fw-bold mt-2">Opportunity URL</div>
+                <div><a href="#" target="_blank">https://www.sunbeltrentals.com/careers/veteran-spotlight/</a></div>
+
+                <div class="fw-bold mt-2">Enrollement Dates</div>
+                <div>Continuous open enrollment</div>
+
+                <div class="fw-bold mt-2">Links to Prospective Jobs</div>
+                <div><a href="#" target="_blank">https://www.sunbeltrentals.com/careers/veteran-spotlight/</a></div>
+
+                <div class="fw-bold mt-2">Locations of Prospective Jobs by State</div>
+                <div>Nationwide (All States)</div>
+
+                <div class="fw-bold mt-2">Salary</div>
+                <div>$50,000 - $80,000</div>
+
+                <div class="fw-bold mt-2">Prospective Job Labor Demand</div>
+                <div>Growing</div>
+
+                <div class="fw-bold mt-2">Target MOCs</div>
+                <div>All</div>
+
+                <div class="fw-bold mt-2">Delivery Method</div>
+                <div>Hybrid</div>
+
+                <div class="fw-bold mt-2">Cost</div>
+                <div>No cost to participate</div>
+
+            </div>
+        </div>
+
+
+        <div class="alert alert-primary mb-2">
+            <strong>Analyst Notes:</strong>
+        </div>
+
+        <div><a href="#" class="btn btn-primary">Change</a></div>
+
+    </div>
+</div>
+
+<div class="mt-5"></div>

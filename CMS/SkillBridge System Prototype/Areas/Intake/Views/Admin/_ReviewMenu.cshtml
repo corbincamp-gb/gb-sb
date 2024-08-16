@@ -1,0 +1,14 @@
+﻿@model String 
+@{
+    var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
+}
+
+<ul class="nav nav-tabs mb-3 ps-3">
+    <li class="nav-item">
+        <a class="nav-link @(Model.ToLower() == "application" ? "active" : String.Empty)" @(Model.ToLower() == "application" ? "aria-current=\"page\"" : String.Empty) href="/intake/admin/review/@entry.ZohoTicketId">Application</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.ToLower() == "status tracking history" ? "active" : String.Empty)" @(Model.ToLower() == "status tracking history" ? "aria-current=\"page\"" : String.Empty) href="/intake/admin/statustrackinghistory/@entry.ZohoTicketId">Status Tracking History</a>
+    </li>
+</ul>
+

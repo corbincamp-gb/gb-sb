@@ -1,0 +1,197 @@
+﻿@model IntakeForm.Models.Data.Templates.DeserializedFormTemplate
+@{
+    var formTemplate = Model;
+    var part = (IntakeForm.Models.Data.Templates.Part)ViewBag.Part;
+    var form = (IntakeForm.Models.Data.Forms.Form)ViewBag.Form;
+    var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
+    ViewData["Title"] = part.Label;
+}
+
+@if (entry.EntryStatusID == (int)IntakeForm.Models.Enumerations.EntryStatus.Incomplete)
+{
+    var tracking = entry.EntryStatusTracking.FirstOrDefault(o => o.NewEntryStatusID == (int)IntakeForm.Models.Enumerations.EntryStatus.Incomplete);
+    if (tracking != null)
+    {
+        <div class="alert alert-warning" role="alert">
+            <div class="fw-bold">Application Incomplete</div>
+            <pre>@Html.Raw(tracking.Notes)</pre>
+        </div>
+    }
+}
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Shared/_Entry.cshtml")
+
+<div class="row">
+    <div class="col-md-3">
+        @await Html.PartialAsync("~/Areas/Intake/Views/Form/_ProgressBar.cshtml")
+    </div>
+    <div class="col-md-9">
+        @await Html.PartialAsync("~/Areas/Intake/Views/Shared/_Messages.cshtml")
+
+        @await Html.PartialAsync("~/Areas/Intake/Views/Shared/_Errors.cshtml")
+
+        @await Html.PartialAsync("~/Areas/Intake/Views/Shared/_ValidationErrors.cshtml")
+
+        @using (Html.BeginForm("SavePart", "Form", FormMethod.Post, new { area = "Intake", id = "part-form", @enctype = "multipart/form-data" }))
+        {
+            <input type="hidden" id="ID" name="ID" value="@(form.ID)" />
+            <input type="hidden" id="ZohoTicketId" name="ZohoTicketId" value="@(entry.ZohoTicketId)" />
+            <input type="hidden" id="PartId" name="PartId" value="@(part.ID)" />
+
+            <div class="mb-3">
+                @if (!String.IsNullOrWhiteSpace(part.PartText))
+                {
+                    <h2 class="h6">@Html.Raw(part.PartText)</h2>
+                }
+        
+                @if (!String.IsNullOrWhiteSpace(part.Description))
+                {
+                    <p class="small">@Html.Raw(part.Description)</p>
+                }
+        
+                @if (part.Sections != null && part.Sections.Count > 0)
+                {
+                    foreach (var section in part.Sections)
+                    {
+                    <div class="card mb-3">
+                        @if (!String.IsNullOrWhiteSpace(section.SectionText))
+                        {
+                            <div class="card-header bg-primary"><h5 class="mb-0">@Html.Raw(section.SectionText)</h5></div>
+                        }
+                                
+                        <div class="card-body">
+                            @if (!String.IsNullOrWhiteSpace(section.Description))
+                            {
+                                <div class="mb-3">@Html.Raw(section.Description)</div>
+                            }
+
+                            @foreach (var question in section.Questions)
+                            {
+                                @await Html.PartialAsync("~/Areas/Intake/Views/Form/_Question.cshtml", question)
+                            }
+                        </div>
+                    </div>
+                    }
+                }
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-success mb-3">Save</button>
+                </div>
+
+                @Html.AntiForgeryToken()
+            </div>
+        }
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Form/_FileUploadModal.cshtml")
+
+@section Scripts
+{
+<script type="text/javascript">
+    $(function() { 
+        $('.visually-hidden [data-val]').attr('data-val', 'false');
+        $('.visually-hidden [data-rule-required]').attr('data-rule-required', 'false');
+        $('.visually-hidden input,.visually-hidden select,.visually-hidden textarea').attr('disabled', true).addClass('ignore');
+
+        $('.form-check-input').change(function () {
+                var input = $(this);
+                var questionId = $(input).data('questionid');
+
+                var childQuestions = $('.child-question[data-questionid="' + questionId + '"]');
+
+                if ($(childQuestions))
+                {
+                    for (var i = 0; i<$(childQuestions).length; i++)
+                    {
+                        var childQuestion = $(childQuestions)[i];
+                        $(childQuestion).addClass('visually-hidden');
+                        $(childQuestion).find('input,select,textarea').attr('disabled', true).addClass('ignore');
+                        $(childQuestion).find('input,select,textarea').data('val', 'false');
+                        $(childQuestion).find('input,select,textarea').data('rule-required', 'false');
+                        $(childQuestion).find('input,select,textarea').rules('remove', 'required')
+                        $('[name="question_' + questionId + '"]:checked').each(function (i, o) {
+                            if ($(childQuestion).data('answerchoiceids') == $(o).val() || ($(childQuestion).data('answerchoiceids').toString().indexOf(',') > -1 && $(childQuestion).data('answerchoiceids').split(',').indexOf($(o).val()) > -1)) {
+                                $(childQuestion).removeClass('visually-hidden');
+                                $(childQuestion).find('input,select,textarea').attr('data-val', 'true');
+                                $(childQuestion).find('input,select,textarea').attr('data-rule-required', 'true');
+                                $(childQuestion).find('input,select,textarea').rules('add', 'required')
+                                $(childQuestion).find('input,select,textarea').attr('disabled', false).removeClass('ignore');
+                            }
+                            else {
+                                $(childQuestion).find('input').attr('checked', false);
+                                $(childQuestion).find('input,option').attr('selected', false);
+                            }
+                        });
+                    }
+                }
+
+            $("#part-form").validate().settings.ignore = ".ignore";
+        });
+
+        $('.btn-add-another-row').click(function()         {
+            var tableContainer = $(this).closest('.table-container');
+            var table = $(tableContainer).find('table');
+            var numberOfRows = $(table).find('tr').length;
+            var numberOfColumns = $(table).find('th').length;
+
+            var html = '<tr>';
+            html = html + '<td>' + (numberOfRows) + '</td>';
+            for (var i = 1; i<numberOfColumns - 1; i++)
+            {
+                var questionid = $(table).find('tbody tr td:eq(' + i + ')').data('questionid');
+                var columnid = $(table).find('tbody tr td:eq(' + i + ')').data('columnid');
+                var answerrequired = $(table).find('tbody tr td:eq(' + i + ')').data('answerrequired').toLowerCase();
+                html = html + '<td data-questionid="' + questionid + '" data-columnid="' + columnid + '" data-answerrequired="' + answerrequired + '">';
+
+                var td = $(table).find('tbody tr:eq(0) td:eq(' + i + ')');
+                if ($(td).find('input').length > 0)
+                {
+                    html = html + '<input type="' + $(td).find('input').attr('type') + '" class="form-control" id="question_' + questionid + '_' + columnid + '_' + numberOfRows + '" name="question_' + questionid + '_' + columnid + '_' + numberOfRows + '"';
+                    if (answerrequired) 
+                    {
+                        html = html + 'required data-val="true" data-rule-required="true" data-msg-required="Please provide a response."';
+                    }
+                    html = html + 'value="" />';
+                }
+                if ($(td).find('select').length > 0)
+                {
+                    html = html + '<select class="form-control" id = "question_' + questionid + '_' + columnid + '_' + numberOfRows + '" name="question_' + questionid + '_' + columnid + '_' + numberOfRows + '"';
+                    if (answerrequired) 
+                    {
+                        html = html + 'required data-val="true" data-rule-required="true" data-msg-required="Please provide a response."';
+                    }
+                    html = html + '>';
+                    $(td).find('select option').each(function(i,o) {
+                            html = html + '<option value="' + $(o).val() + '">' + $(o).text() + '</option>';
+                    });
+                    html = html + '</select>';
+                }
+
+                html = html + '<div data-valmsg-for="question_' + questionid + '_' + columnid + '_' + numberOfRows + '" data-valmsg-replace="true"></div></td>';
+            }
+            html = html + '<td><input type="button" class="btn btn-primary btn-remove-row" value="Remove" /></td>';
+            html = html + '</tr>';
+
+            $(table).find('tbody').append(html);
+
+            $('.btn-remove-row').on('click', function() {
+                var table = $(this).closest('table');
+                var rows = $(table).find('tbody tr');
+                var row = $(this).closest('tr');
+
+                var index = $(rows).index(row);
+
+                for (var i = index; i<rows.length; i++)
+                {
+                    var col = $(rows[i]).find('td:first');
+                    $(col).text(i);
+                }
+
+                $(row).remove();
+
+            });
+        });
+    });
+</script>
+}

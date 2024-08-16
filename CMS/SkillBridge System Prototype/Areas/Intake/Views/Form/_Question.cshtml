@@ -1,0 +1,345 @@
+﻿@model IntakeForm.Models.Data.Templates.Question
+@{
+    var states = (List<IntakeForm.Models.Data.Forms.State>)ViewBag.States;
+
+    var formTemplate = (IntakeForm.Models.Data.Templates.DeserializedFormTemplate)ViewBag.FormTemplate;
+    var part = (IntakeForm.Models.Data.Templates.Part)ViewBag.Part;
+    var section = (IntakeForm.Models.Data.Templates.Section)ViewBag.Section;
+
+    var form = (IntakeForm.Models.Data.Forms.Form)ViewBag.Form;
+
+    var responses = (List<IntakeForm.Models.Data.Forms.FormResponse>)ViewBag.Responses;
+    var response =  Context.Request.Method == "POST" ? Context.Request.Form["response_" + Model.ID] : new Microsoft.Extensions.Primitives.StringValues();
+
+    var answers = (responses != null ? responses.Where(o => o.QuestionID == Model.ID).ToList() : new List<IntakeForm.Models.Data.Forms.FormResponse>());
+    var formAnswers = Context.Request.Method == "POST" ? Context.Request.Form["question_" + Model.ID] : new Microsoft.Extensions.Primitives.StringValues();
+
+    var fileAnswers = answers.SelectMany(o => o.FormResponseFiles).Select(o => o.FileID).ToList();
+    var formFileAnswers = Context.Request.Method == "POST" ? Context.Request.Form["files_" + Model.ID] : new Microsoft.Extensions.Primitives.StringValues();
+}
+
+<fieldset class="mb-4">
+
+@if (!String.IsNullOrWhiteSpace(Model.Label) || !String.IsNullOrWhiteSpace(Model.QuestionText))
+{
+    if (Model.QuestionType == IntakeForm.Models.Enumerations.QuestionType.RadioButtonList || Model.QuestionType == IntakeForm.Models.Enumerations.QuestionType.CheckBoxList || Model.QuestionType == IntakeForm.Models.Enumerations.QuestionType.CheckBoxList2Columns || Model.QuestionType == IntakeForm.Models.Enumerations.QuestionType.Multiselect)
+    {
+    <legend class="h6 form-label @(Model.Required ? "form-label-required" : String.Empty)">@Html.Raw(!String.IsNullOrWhiteSpace(Model.Label) ? Model.Label : String.Empty) @Html.Raw(Model.QuestionText)</legend>
+    }
+    else
+    {
+    <label class="h6 form-label @(Model.Required ? "form-label-required" : String.Empty)" for="question_@(Model.ID)">@Html.Raw(!String.IsNullOrWhiteSpace(Model.Label) ? Model.Label : String.Empty) @Html.Raw(Model.QuestionText)</label>
+    }
+}
+
+@if (!String.IsNullOrWhiteSpace(Model.Description))
+{
+    <div class="small">@Html.Raw(Model.Description)</div>
+}
+
+<div data-valmsg-for="question_@(Model.ID)" data-valmsg-replace="true"></div>
+
+<input type="hidden" id="QuestionID" name="QuestionID" value="@(Model.ID)" />
+
+@switch (Model.QuestionType)
+{
+    case IntakeForm.Models.Enumerations.QuestionType.Text:
+        <div class="">
+                <input type="text" class="form-control" id="question_@(Model.ID)" name="question_@(Model.ID)" @(Model.Required ? "required" : String.Empty) 
+                data-val="@(Model.Required ? "true" : "false")" 
+                data-rule-required="@(Model.Required ? "true" : "false")" 
+                data-msg-required="Please provide a response." 
+                value="@(formAnswers.Any() ? formAnswers.FirstOrDefault() : answers.FirstOrDefault()?.Answer)" />
+        </div>
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.PhoneNumber:
+        <div class="">
+            <input type="tel" class="form-control" id="question_@(Model.ID)" name="question_@(Model.ID)" @(Model.Required ? "required" : String.Empty) 
+            data-val="@(Model.Required ? "true" : "false")" 
+            data-rule-required="@(Model.Required ? "true" : "false")" 
+            data-msg-required="Please provide a response."
+            data-rule-pattern="\(\d\d\d\) \d\d\d\-\d\d\d\d(.*)"
+            data-msg-pattern="Phone number is not in the correct format."
+            value="@(formAnswers.Any() ? formAnswers.FirstOrDefault() : answers.FirstOrDefault()?.Answer)" />
+        </div>
+        <div><em>ex: (###) ###-####</em></div>
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.Email:
+        <div class="">
+            <input type="text" class="form-control" id="question_@(Model.ID)" name="question_@(Model.ID)" 
+            @(Model.Required ? "required" : String.Empty) 
+            data-val="@(Model.Required ? "true" : "false")" 
+            data-rule-required="@(Model.Required ? "true" : "false")" 
+            data-msg-required="Please provide a response."
+            data-rule-pattern="(.*)@@(.*)\.(.*)"
+            data-msg-pattern="@(Model.QuestionText) is not in the correct format."
+            value="@(formAnswers.Any() ? formAnswers.FirstOrDefault() : answers.FirstOrDefault()?.Answer)" />
+        </div>
+        <div><em>ex: myname@mycompany.com</em></div>
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.Number:
+        <div class="">
+            <input type="number" class="form-control" id="question_@(Model.ID)" name="question_@(Model.ID)" 
+            @(Model.Required ? "required" : String.Empty) 
+            data-val="@(Model.Required ? "true" : "false")" 
+            data-rule-required="@(Model.Required ? "true" : "false")" 
+            data-msg-required="Please provide a response." 
+            value="@(formAnswers.Any() ? formAnswers.FirstOrDefault() : answers.FirstOrDefault()?.Answer)" />
+            <div><em>ex: #.## or #</em></div>
+        </div>
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.Textarea:
+        <div class="">
+            <textarea class="form-control" id="question_@(Model.ID)" name="question_@(Model.ID)" rows="3" 
+            data-val="@(Model.Required ? "true" : "false")" 
+            data-rule-required="@(Model.Required ? "true" : "false")" 
+            data-msg-required="Please provide a response.">@(formAnswers.Any() ? formAnswers.FirstOrDefault() : answers.FirstOrDefault()?.Answer)</textarea>
+        </div>
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.Select:
+    case IntakeForm.Models.Enumerations.QuestionType.Multiselect:
+        <div class="">
+            <select class="form-control" id="question_@(Model.ID)" name="question_@(Model.ID)" @(Model.Required ? "required" : String.Empty) 
+            data-val="@(Model.Required ? "true" : "false")" 
+            data-rule-required="@(Model.Required ? "true" : "false")" 
+            data-msg-requireddata-val-required="Please provide a response." 
+            @(Model.QuestionType == IntakeForm.Models.Enumerations.QuestionType.Multiselect ? "multiple" : String.Empty)>
+            @if (Model.AnswerChoices != null && Model.AnswerChoices.Count > 0)
+            {
+                foreach (var answerChoice in Model.AnswerChoices)
+                {
+                    if (formAnswers.Any() && formAnswers.Any(o => o == answerChoice.ID.ToString()))
+                    {
+                        <option value="@(answerChoice.ID)" selected>@Html.Raw(answerChoice.AnswerText)</option>
+                    }
+                    else if (answers.Any() && answers.Any(o => o.FormResponseChoices.Any(c => c.AnswerChoiceID == answerChoice.ID)))
+                    {
+                        <option value="@(answerChoice.ID)" selected>@Html.Raw(answerChoice.AnswerText)</option>
+                    }
+                    else
+                    {
+                        <option value="@(answerChoice.ID)">@Html.Raw(answerChoice.AnswerText)</option>
+                    }
+                }
+            }
+            </select>
+        </div>
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.State:
+        <div class="">
+            <select class="form-control" id="question_@(Model.ID)" name="question_@(Model.ID)" @(Model.Required ? "required" : String.Empty) 
+            data-val="@(Model.Required ? "true" : "false")" 
+            data-rule-required="@(Model.Required ? "true" : "false")" 
+            data-msg-requireddata-val-required="Please provide a response." >
+                <option value="">[Select a state]</option>
+                @foreach (var state in states)
+                {
+                    <!option value="@(state.Code)" @((formAnswers.Any() ? formAnswers.FirstOrDefault() : answers.FirstOrDefault()?.Answer) == state.Code ? "selected" : String.Empty)>@Html.Raw(state.Label)</!option>
+                }
+            </select>
+        </div>        
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.RadioButtonList:
+        if (Model.AnswerChoices != null && Model.AnswerChoices.Count > 0)
+        {
+            <div class="">
+            @foreach (var answerChoice in Model.AnswerChoices)
+            {
+                <div class="form-check">
+                    @if (Context.Request.Method == "POST")
+                    {
+                        @if (formAnswers.Any() && formAnswers.Any(o => o == answerChoice.ID.ToString()))
+                        {
+                        <input class="form-check-input" type="radio" id="question_@(Model.ID)_@(answerChoice.ID)" name="question_@(Model.ID)"
+                            data-questionid="@Model.ID" 
+                            data-val="@(Model.Required ? "true" : "false")" 
+                            data-rule-required="@(Model.Required ? "true" : "false")" 
+                            data-msg-required="Please provide a response."
+                            checked
+                            value="@(answerChoice.ID)" />
+                        }
+                        else
+                        {
+                        <input class="form-check-input" type="radio" id="question_@(Model.ID)_@(answerChoice.ID)" name="question_@(Model.ID)"
+                            data-questionid="@Model.ID" 
+                            data-val="@(Model.Required ? "true" : "false")" 
+                            data-rule-required="@(Model.Required ? "true" : "false")" 
+                            data-msg-required="Please provide a response."
+                            value="@(answerChoice.ID)" />
+                        }
+                    }
+                    else if (answers.Any() && answers.Any(o => o.FormResponseChoices.Any(c => c.AnswerChoiceID == answerChoice.ID)))
+                    {
+                        <input class="form-check-input" type="radio" id="question_@(Model.ID)_@(answerChoice.ID)" name="question_@(Model.ID)" 
+                        data-questionid="@Model.ID" 
+                        data-val="@(Model.Required ? "true" : "false")" 
+                        data-rule-required="@(Model.Required ? "true" : "false")" 
+                        data-msg-required="Please provide a response." 
+                        checked 
+                        value="@(answerChoice.ID)" />
+                    }
+                    else
+                    {
+                        <input class="form-check-input" type="radio" id="question_@(Model.ID)_@(answerChoice.ID)" name="question_@(Model.ID)" 
+                        data-questionid="@Model.ID" 
+                        data-val="@(Model.Required ? "true" : "false")" 
+                        data-rule-required="@(Model.Required ? "true" : "false")" 
+                        data-msg-required="Please provide a response." 
+                        value="@(answerChoice.ID)" />
+                    }
+                    <label class="form-check-label" for="question_@(Model.ID)_@(answerChoice.ID)">@Html.Raw(answerChoice.AnswerText)</label>
+                    @if (answerChoice.AnswerType == IntakeForm.Models.Enumerations.AnswerType.Other)
+                    {
+                        <label for="response_@(Model.ID)" class="visually-hidden">Other (Please specify)</label>
+                        <input class="form-control d-inline w-50" type="text" id="response_@(Model.ID)" name="response_@(Model.ID)" 
+                        data-valmsg-for="question_@(Model.ID)_@(answerChoice.ID)" 
+                        value="@(response.Any() ? response.FirstOrDefault() : answers.FirstOrDefault()?.Answer)" />
+                    }
+                </div>
+            }
+            </div>
+        }
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.CheckBoxList:
+    case IntakeForm.Models.Enumerations.QuestionType.CheckBoxList2Columns:
+        if (Model.AnswerChoices != null && Model.AnswerChoices.Count > 0)
+        {
+                <div class="row">
+                    <div class="col">
+            @foreach (var answerChoice in Model.AnswerChoices)
+            {
+                if (Model.QuestionType == IntakeForm.Models.Enumerations.QuestionType.CheckBoxList2Columns && Model.AnswerChoices.IndexOf(answerChoice) == Model.AnswerChoices.Count / 2) 
+                {
+                    @Html.Raw("</div><div class=\"col\">")
+                }
+                <div class="form-check">
+                    @if (Context.Request.Method == "POST")
+                    {
+                        @if (formAnswers.Any() && formAnswers.Any(o => o == answerChoice.ID.ToString()))
+                        {
+                            <input class="form-check-input" type="checkbox" id="question_@(Model.ID)_@(answerChoice.ID)" name="question_@(Model.ID)" 
+                            data-questionid="@Model.ID" 
+                            data-val="@(Model.Required ? "true" : "false")" 
+                            data-rule-required="@(Model.Required ? "true" : "false")" 
+                            data-msg-required="Please provide a response." 
+                            checked 
+                            value="@(answerChoice.ID)" />
+                        }
+                        else
+                        {
+                            <input class="form-check-input" type="checkbox" id="question_@(Model.ID)_@(answerChoice.ID)" name="question_@(Model.ID)" 
+                            data-questionid="@Model.ID" 
+                            data-val="@(Model.Required ? "true" : "false")" 
+                            data-rule-required="@(Model.Required ? "true" : "false")" 
+                            data-msg-required="Please provide a response."
+                            value="@(answerChoice.ID)" />
+                        }
+                    }
+                    else if (answers.Any() && answers.Any(o => o.FormResponseChoices.Any(c => c.AnswerChoiceID == answerChoice.ID)))
+                    {
+                        <input class="form-check-input" type="checkbox" id="question_@(Model.ID)_@(answerChoice.ID)" name="question_@(Model.ID)" 
+                        data-questionid="@Model.ID" 
+                        data-val="@(Model.Required ? "true" : "false")" 
+                        data-rule-required="@(Model.Required ? "true" : "false")" 
+                        data-msg-required="Please provide a response." 
+                        checked 
+                        value="@(answerChoice.ID)" />
+                    }
+                    else
+                    {
+                        <input class="form-check-input" type="checkbox" id="question_@(Model.ID)_@(answerChoice.ID)" name="question_@(Model.ID)" 
+                        data-questionid="@Model.ID" 
+                        data-val="@(Model.Required ? "true" : "false")" 
+                        data-rule-required="@(Model.Required ? "true" : "false")" 
+                        data-msg-required="Please provide a response." 
+                        value="@(answerChoice.ID)" />
+                    }
+                    <label class="form-check-label" for="question_@(Model.ID)_@(answerChoice.ID)" data-valmsg-for="question_@(Model.ID)_@(answerChoice.ID)" data-valmsg-replace="false">@Html.Raw(answerChoice.AnswerText)</label>
+                    @if (answerChoice.AnswerType == IntakeForm.Models.Enumerations.AnswerType.Other)
+                    {
+                        <label for="response_@(Model.ID)" class="visually-hidden">Other (Please specify)</label>
+                        <input class="form-control d-inline w-50" type="text" id="response_@(Model.ID)" name="response_@(Model.ID)" 
+                        data-valmsg-for="question_@(Model.ID)_@(answerChoice.ID)" 
+                        value="@(response.Any() ? response.FirstOrDefault() : answers.FirstOrDefault()?.Answer)" />
+                    }
+                </div>
+            }
+
+                    </div>
+                </div>
+            }
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.FileUpload:
+    case IntakeForm.Models.Enumerations.QuestionType.MultiFileUpload:
+
+        <div class="">
+            <div class="h6">Supporting Files</div>
+
+                    <table class="table">
+                        <thead class="sticky-top">
+                            <tr>
+                                <th class="sortable text-decoration-underline" scope="col">
+                                    File Name
+                                    <img class="icon-small" src="~/img/fontawesome/svgs/solid/caret-down.svg" style="display: none" />
+                                </th>
+                                <th class="sortable text-decoration-underline text-end" scope="col">
+                                    File Size
+                                    <img class="icon-small" src="~/img/fontawesome/svgs/solid/caret-down.svg" style="display: none" />
+                                </th>
+                                <th class="sortable text-decoration-underline text-end" scope="col">
+                                    Uploaded On
+                                    <img class="icon-small" src="~/img/fontawesome/svgs/solid/caret-down.svg" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+        </div>
+
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.Table:
+            @await Html.PartialAsync("~/Areas/Intake/Views/Form/_QuestionTable.cshtml", Model)
+        break;
+}
+
+</fieldset>
+
+
+@if (Model.ChildQuestionsAppearUsingAnswerChoiceIDs.Any() && Model.ChildQuestions != null && Model.ChildQuestions.Count > 0)
+{
+    foreach (var childQuestion in Model.ChildQuestions)
+    {
+        var isVisuallyHidden = true;
+        if (Context.Request.Method == "POST" && formAnswers.Any(o => Model.ChildQuestionsAppearUsingAnswerChoiceIDs.Contains(int.Parse(o)) || Model.ChildQuestionsAppearUsingAnswerChoiceIDs.Contains(int.Parse(o))))
+        {
+            if ((!childQuestion.ChildQuestionOfAnswerChoiceIDs.Any() && formAnswers.Select(o => int.Parse(o)).Any(o => Model.ChildQuestionsAppearUsingAnswerChoiceIDs.Contains(o))) || formAnswers.Select(o => int.Parse(o)).Any(o => childQuestion.ChildQuestionOfAnswerChoiceIDs.Contains(o)))
+            {
+                isVisuallyHidden = false;
+            }
+        }
+
+        if (Context.Request.Method != "POST" && responses.Where(o => o.QuestionID == Model.ID).Any(o => o.FormResponseChoices.Any(c => Model.ChildQuestionsAppearUsingAnswerChoiceIDs.Contains(c.AnswerChoiceID) || Model.ChildQuestionsAppearUsingAnswerChoiceIDs.Contains(c.AnswerChoiceID))))
+        {
+            if ((!childQuestion.ChildQuestionOfAnswerChoiceIDs.Any() && responses.SelectMany(o => o.FormResponseChoices).Any(o => Model.ChildQuestionsAppearUsingAnswerChoiceIDs.Contains(o.AnswerChoiceID))) || responses.SelectMany(o => o.FormResponseChoices).Any(o => childQuestion.ChildQuestionOfAnswerChoiceIDs.Contains(o.AnswerChoiceID)))
+            {
+                isVisuallyHidden = false;
+            }
+        }
+        <div class="@(isVisuallyHidden ? "visually-hidden" : String.Empty) ms-5 child-question" 
+        data-questionid="@(Model.ID)" 
+        data-answerchoiceids="@(String.Join(",", (childQuestion.ChildQuestionOfAnswerChoiceIDs.Any() ? childQuestion.ChildQuestionOfAnswerChoiceIDs : Model.ChildQuestionsAppearUsingAnswerChoiceIDs)))">
+            @await Html.PartialAsync("~/Areas/Intake/Views/Form/_Question.cshtml", childQuestion)
+        </div>
+    }
+}

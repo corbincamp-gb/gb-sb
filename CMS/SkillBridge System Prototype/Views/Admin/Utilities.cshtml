@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Ingest Opportunities";
+}
+
+<h1>Utilities</h1>
+
+<div class="row">
+    <div class="col">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <!--<button class="btn btn-danger" asp-action="AddStates">Add States</button>&nbsp;-->
+            <h2>Update States Of Delivery for Organizations and Programs</h2>
+            <button class="btn btn-danger" asp-action="UpdateStatesOfDelivery" disabled>Update</button>
+            <hr/>
+            <h2>Update MOU Dates on Lower Records (Progs/Opps)</h2>
+            <button class="btn btn-danger" asp-action="UpdateMOUDates" disabled>Update</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

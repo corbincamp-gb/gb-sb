@@ -1,0 +1,68 @@
+﻿@{
+    var path = Context.Request.Path.Value.ToLower();
+    var formTemplates = (List<IntakeForm.Models.Data.Templates.DeserializedFormTemplate>)ViewBag.FormTemplates;
+
+    var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
+    var entryForms = entry.Forms.OrderBy(o => o.FormOrder).ToList();
+    var form = (IntakeForm.Models.Data.Forms.Form)ViewBag.Form;
+    var responses = (List<IntakeForm.Models.Data.Forms.FormResponse>)ViewBag.ProgressBar;
+
+    var isReadyForSubmission = true;
+}
+
+<div class="list-group sticky-top">
+    <div class="list-group-item list-item-hover" aria-current="false">
+        <img src="~/images/circle.svg" class="icon svg-grey" alt="Incomplete" width="16" /> = Incomplete
+        <img src="~/images/circle-check.svg" class="icon svg-success ms-2" alt="Complete" width="16" /> = Complete
+    </div>
+    <div class="nav-scroll">
+        <div class="list-group-item list-item-hover bg-light">
+            <div class="d-flex justify-content-between align-items-center ms-1">
+                <a class="@(path.Contains("/intake/form/introduction") ? "fw-bold" : String.Empty)" href="~/intake/form/introduction/@(entry.ZohoTicketId)">Introduction</a>
+            </div>
+        </div>
+        @foreach (var entryForm in entryForms)
+        {
+            var formTemplate = formTemplates.FirstOrDefault(o => o.ID == entryForm.FormTemplateID);
+            <div class="list-group-item list-item-hover bg-light">
+                <div class="d-flex justify-content-between align-items-center ms-1">
+                    <a href="#form@(entryForm.ID)" id="ft@(entryForm.ID)_MenuLink" class="" data-bs-toggle="collapse" aria-haspopup="true" aria-expanded="true">@Html.Raw(formTemplate.Name) @(formTemplate.ID == (int)IntakeForm.Models.Enumerations.TemplateType.ProgramForm ? entryForms.IndexOf(entryForm) : String.Empty)</a>
+                </div>
+                <div id="form@(entryForm.ID)" class="mt-1 collapse show" aria-labelledby="form@(entryForm.ID)_MenuLink">
+                    @foreach (var part in formTemplate.Parts.OrderBy(o => o.Order))
+                    {                        
+                        <div class="d-flex justify-content-between align-items-center ms-3">
+                            <a class="@(form != null && form.ID == entryForm.ID && ViewBag.CurrentPart == part.ID ? "fw-bold" : String.Empty)" href="~/intake/form/@(entry.ZohoTicketId)/part@(part.ID)/@(entryForm.ID)" title="@Html.Raw(part.Label)">@Html.Raw(part.Label)</a>
+                            <div class="d-flex justify-content-end align-items-end">
+                                <a href="~/intake/form/@(entry.ZohoTicketId)/part@(part.ID)/@(entryForm.ID)">
+                                    @if (part.IsComplete(responses.Where(o => o.FormID == entryForm.ID).ToList()))
+                                    {
+                                        <img src="~/images/circle-check.svg" class="icon" alt="Complete" title="Complete" />
+                                    }
+                                    else
+                                    {
+                                        isReadyForSubmission = false;
+                                        <img src="~/images/circle.svg" class="icon" alt="Incomplete" title="Incomplete" />
+                                    }
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        <div class="list-group-item list-item-hover bg-light">
+            @if (isReadyForSubmission)
+            {
+                <a class="@(path.Contains("/intake/form/submit") ? "fw-bold" : String.Empty)" href="~/intake/form/submit/@(entry.ZohoTicketId)" title="Submit the Application">Submit the Application</a>
+            }
+            else
+            {
+                <div class="text-muted">Submit the Application</div>
+                <div class="text-muted small">(will activate when all sections are complete)</div>
+            }
+        </div>
+    </div>
+</div>
+
+

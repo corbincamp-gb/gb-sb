@@ -1,0 +1,16 @@
+﻿@{
+    var msgs = (List<string>)ViewBag.Messages;
+}
+@if (msgs != null && msgs.Count > 0)
+{
+    <div class="alert alert-warning" role="alert">
+        <div class="fw-bold">Message(s):</div>
+        <ul>
+        @foreach (var msg in msgs)
+        {
+            <li class="fw-bold">@Html.Raw(msg)</li>
+        }
+        </ul>
+    </div>
+}
+

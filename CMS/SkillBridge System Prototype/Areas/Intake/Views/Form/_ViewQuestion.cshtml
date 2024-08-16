@@ -1,0 +1,102 @@
+﻿@model IntakeForm.Models.View.Forms.ViewQuestionModel
+@{
+    var question = Model.Question;
+    var responses = Model.Responses;
+
+    var states = (List<IntakeForm.Models.Data.Forms.State>)ViewBag.States;
+
+    var formTemplate = (IntakeForm.Models.Data.Templates.DeserializedFormTemplate)ViewBag.FormTemplate;
+    var part = (IntakeForm.Models.Data.Templates.Part)ViewBag.Part;
+    var section = (IntakeForm.Models.Data.Templates.Section)ViewBag.Section;
+
+    var answers = Model.Responses.Where(o => o.QuestionID == question.ID).ToList();
+
+    var fileAnswers = answers.SelectMany(o => o.FormResponseFiles).Select(o => o.FileID).ToList();
+}
+
+<fieldset class="mb-2">
+
+@if (!String.IsNullOrWhiteSpace(question.Label) || !String.IsNullOrWhiteSpace(question.QuestionText))
+{
+    if (question.QuestionType == IntakeForm.Models.Enumerations.QuestionType.RadioButtonList || question.QuestionType == IntakeForm.Models.Enumerations.QuestionType.CheckBoxList || question.QuestionType == IntakeForm.Models.Enumerations.QuestionType.CheckBoxList2Columns || question.QuestionType == IntakeForm.Models.Enumerations.QuestionType.Multiselect)
+    {
+    <legend class="h6 form-label @(question.Required ? "form-label-required" : String.Empty)">@Html.Raw(!String.IsNullOrWhiteSpace(question.Label) ? question.Label : String.Empty) @Html.Raw(question.QuestionText)</legend>
+    }
+    else
+    {
+    <label class="h6 form-label @(question.Required ? "form-label-required" : String.Empty)" for="question_@(question.ID)">@Html.Raw(!String.IsNullOrWhiteSpace(question.Label) ? question.Label : String.Empty) @Html.Raw(question.QuestionText)</label>
+    }
+}
+
+@if (!String.IsNullOrWhiteSpace(question.Description))
+{
+    <div class="small">@Html.Raw(question.Description)</div>
+}
+
+<div data-valmsg-for="question_@(question.ID)" data-valmsg-replace="true"></div>
+
+<input type="hidden" id="QuestionID" name="QuestionID" value="@(question.ID)" />
+
+@switch (question.QuestionType)
+{
+    case IntakeForm.Models.Enumerations.QuestionType.Text:
+    case IntakeForm.Models.Enumerations.QuestionType.PhoneNumber:
+    case IntakeForm.Models.Enumerations.QuestionType.Email:
+    case IntakeForm.Models.Enumerations.QuestionType.Number:
+    case IntakeForm.Models.Enumerations.QuestionType.Textarea:
+    case IntakeForm.Models.Enumerations.QuestionType.State:
+            <div class="">@(answers.FirstOrDefault()?.Answer)</div>
+        break;
+
+    case IntakeForm.Models.Enumerations.QuestionType.Select:
+    case IntakeForm.Models.Enumerations.QuestionType.Multiselect:
+    case IntakeForm.Models.Enumerations.QuestionType.RadioButtonList:
+    case IntakeForm.Models.Enumerations.QuestionType.CheckBoxList:
+    case IntakeForm.Models.Enumerations.QuestionType.CheckBoxList2Columns:
+            @if (question.AnswerChoices != null && question.AnswerChoices.Count > 0)
+            {
+                <ul>
+                @foreach (var answerChoice in question.AnswerChoices)
+                {
+                    @if (answers.Any() && answers.Any(o => o.FormResponseChoices.Any(c => c.AnswerChoiceID == answerChoice.ID)))
+                    {
+                        <li>
+                            @Html.Raw(answerChoice.AnswerText)
+
+                            @if (answerChoice.AnswerType == IntakeForm.Models.Enumerations.AnswerType.Other)
+                            {
+                                @Html.Raw($" - {answers.FirstOrDefault().Answer}")
+                            }
+                        </li>
+                    }
+                }
+                </ul>
+            }
+        break;
+
+
+    case IntakeForm.Models.Enumerations.QuestionType.Table:
+            @await Html.PartialAsync("~/Areas/Intake/Views/Form/_ViewQuestionTable.cshtml", Model)
+        break;
+}
+
+</fieldset>
+
+
+@if (question.ChildQuestionsAppearUsingAnswerChoiceIDs.Any() && question.ChildQuestions != null && question.ChildQuestions.Count > 0)
+{
+    foreach (var childQuestion in question.ChildQuestions)
+    {
+        var isVisuallyHidden = true;
+        if (responses.Where(o => o.QuestionID == question.ID).Any(o => o.FormResponseChoices.Any(c => question.ChildQuestionsAppearUsingAnswerChoiceIDs.Contains(c.AnswerChoiceID) || question.ChildQuestionsAppearUsingAnswerChoiceIDs.Contains(c.AnswerChoiceID))))
+        {
+            if (childQuestion.ChildQuestionOfAnswerChoiceIDs == null || responses.SelectMany(o => o.FormResponseChoices).Any(o => childQuestion.ChildQuestionOfAnswerChoiceIDs.Contains(o.AnswerChoiceID)))
+            {
+                isVisuallyHidden = false;
+            }
+        }
+        <div class="@(isVisuallyHidden ? "visually-hidden" : String.Empty) ms-5 child-question">
+            @await Html.PartialAsync("~/Areas/Intake/Views/Form/_ViewQuestion.cshtml", new IntakeForm.Models.View.Forms.ViewQuestionModel { Question = childQuestion, Responses = responses }))
+        </div>
+    }
+}

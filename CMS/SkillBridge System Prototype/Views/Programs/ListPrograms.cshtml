@@ -1,0 +1,271 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model IEnumerable<SB_Program>
+
+@{
+    ViewBag.Title = "All Programs";
+}
+
+<h1>All Programs</h1>
+
+<div class="row">
+    <div class="col">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            if (User.IsInRole("Admin") || User.IsInRole("Analyst"))
+            {
+                <p>Below is a list of the approved SkillBridge programs—use this page to view and edit program details. Once submitted and approved by the SkillBridge team, programs appear on the SkillBridge Locations page.</p>
+                <ul>
+                    <li>To view program details, select the <i class="fa fa-eye fa-fw edit-btn" data-toggle="tooltip" title="View Record"></i></li>
+                    <li>To edit program details, select the <i class="fa fa-edit fa-fw edit-btn" data-toggle="tooltip" title="Edit Record"></i></li>
+                    <!--<li>When complete, a <i class="fa fa-exclamation-circle fa-fw changed-field" data-toggle="tooltip" title="Pending change"></i> will appear next to fields that have been edited</li>-->
+                </ul>
+            }
+            else if (User.IsInRole("Service"))
+            {
+                <p>Use the search bar to locate programs based on their name, delivery method, etc.</p>
+            }
+        }
+    </div>
+</div>
+
+@if (Model.Any())
+{
+
+    <div class="row">
+        <div class="col">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                if (User.IsInRole("Admin") || User.IsInRole("Analyst"))
+                {
+                    <a class="btn btn-primary mb-3" asp-controller="Programs" asp-action="CreateProgram">Add New Program</a>
+                }
+                if (User.IsInRole("Admin") || User.IsInRole("Analyst") || User.IsInRole("Service"))
+                {
+                    <a id="download-btn" class="btn btn-success mb-3 d-inline-block" asp-action="DownloadCSV">Download Programs CSV</a>
+                }
+            }
+        </div>
+    </div>
+
+    <table id="example" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Active</th>
+                <th>Program/Program Office/Agency</th>
+                <th>Organization</th>
+                <!--<th>Date Authorized</th>
+    <th>MOU Link</th>
+                <th>MOU Creation Date</th>
+                <th>MOU Expiration Date</th>-->
+                <th>Admin Poc Name</th>
+                <th>Admin Poc Email</th>
+                <th>Admin Poc Phone</th>
+                <th>Delivery Method</th>
+                <th>Program Duration</th>
+                <th>Job Family</th>
+                <th>Services Supported</th>
+                <!--<th>Program Status</th>-->
+
+
+                <th>Public Poc Name</th>
+                <th>Public Poc Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prog in Model)
+            {
+            <tr>
+                <td>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a class="btn d-inline-block edit-btn" data-toggle='tooltip' title="View Program" asp-controller="Programs" asp-action="EditProgram" asp-route-id="@prog.Id.ToString()" asp-route-edit="false" aria-label="View Program"><i class="fa fa-eye fa-fw"></i></a>
+                        if (User.IsInRole("Admin") || User.IsInRole("Analyst"))
+                        {
+                            <a class="btn d-inline-block edit-btn" data-toggle='tooltip' title="Edit Program" asp-controller="Programs" asp-action="EditProgram" asp-route-id="@prog.Id.ToString()" asp-route-edit="true" aria-label="Edit Program"><i class="fa fa-edit fa-fw"></i></a>
+                            <!--<form method="post" asp-controller="Programs" asp-action="DeleteProgram" asp-route-id="prog.Id.ToString()" class="d-inline-block">
+                    <button type="submit" class="btn delete-btn" title="Delete Program" onclick="return confirm('Are you sure you want to DELETE Program prog.Program_Name ?')"><i class="fa fa-trash fa-fw"></i></button>
+                </form>-->
+                        }
+                    }
+                </td>
+                <td>@prog.Is_Active</td>
+                <td>@prog.Program_Name</td>
+                <td>@prog.Organization_Name</td>
+                <!--<td data-sort='@prog.Date_Authorized.Year@prog.Date_Authorized.Month@prog.Date_Authorized.Day'>@prog.Date_Authorized.ToString("MM/dd/yyyy")</td>
+    <td>prog.Mou_Link</td>
+                <td data-sort='@prog.Mou_Creation_Date.Year.ToString("0000")@prog.Mou_Creation_Date.Month.ToString("00")@prog.Mou_Creation_Date.Day.ToString("00")'>@prog.Mou_Creation_Date.ToString("MM/dd/yyyy")</td>
+                <td data-sort='@prog.Mou_Expiration_Date.Year.ToString("0000")@prog.Mou_Expiration_Date.Month.ToString("00")@prog.Mou_Expiration_Date.Day.ToString("00")'>@prog.Mou_Expiration_Date.ToString("MM/dd/yyyy")</td>-->
+                <td>@(prog.Admin_Poc_First_Name + " " + prog.Admin_Poc_Last_Name)</td>
+                <td>@prog.Admin_Poc_Email</td>
+                <td>@prog.Admin_Poc_Phone</td>
+                <td>@prog.Delivery_Method</td>
+
+                <td>
+                    @if (prog.Program_Duration == 0)
+                    {
+                        <span>1 - 30 days</span>
+                    }
+                    else if (prog.Program_Duration == 1)
+                    {
+                        <span>31 - 60 days</span>
+                    }
+                    else if (prog.Program_Duration == 2)
+                    {
+                        <span>61 - 90 days</span>
+                    }
+                    else if (prog.Program_Duration == 3)
+                    {
+                        <span>91 - 120 days</span>
+                    }
+                    else if (prog.Program_Duration == 4)
+                    {
+                        <span>121 - 150 days</span>
+                    }
+                    else if (prog.Program_Duration == 5)
+                    {
+                        <span>151 - 180 days</span>
+                    }
+                    else if (prog.Program_Duration == 6)
+                    {
+                        <span>Individually Developed – not to exceed 40 hours</span>
+                    }
+                    else if (prog.Program_Duration == 7)
+                    {
+                        <span>Self-paced</span>
+                    }
+                </td>
+                <td>@prog.Job_Family</td>
+                <td>@prog.Services_Supported</td>
+                <!--<td>@prog.Program_Status</td>-->
+
+                <td>@prog.Public_Poc_Name</td>
+                <td>@prog.Public_Poc_Email</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No Programs Created Yet
+        </div>
+        <div class="card-body">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                if (User.IsInRole("Admin") || User.IsInRole("Analyst"))
+                {
+                    <h5 class="card-title">
+                        Use the button below to create a program
+                    </h5>
+                    <a class="btn btn-primary" asp-controller="Programs" asp-action="CreateProgram">Create Program</a>
+                }
+            }
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var table;
+        $('.leftmenutrigger').on('click', function (e) {
+            setTimeout(ResizeTable, 500);
+        });
+        function ResizeTable() {
+            table.columns.adjust().draw();
+        }
+        $(document).resize(function () {
+            ResizeTable();
+        });
+        $(document).ready(function () {
+            if ($('#example').length > 0) {
+                table = $("#example").DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'copy', className: 'dtBtn',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                            }
+                        },
+                        {
+                            extend: 'csv', className: 'dtBtn',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                            }
+                        },
+                        {
+                            extend: 'excel', className: 'dtBtn',
+                            exportOptions: {
+                                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                            }
+                        }
+                    ],
+                    "processing": false, // for show progress bar
+                    "serverSide": false, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    responsive: true,
+                    "autoWidth": true,
+                    "bAutoWidth": true,
+                    "order": [
+                        [2, 'asc']
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "width": "60px",
+                            "orderable": false
+                        },
+                        {
+                            "targets": 1,
+                            "width": "60px",
+                            "orderable": false
+                        },
+                        {
+                            "targets": 2,
+                            "width": "200px",
+                            "render": $.fn.dataTable.render.ellipsis()
+                        }
+                    ]
+                });
+
+                // Recalc column widths on paging
+                table.on('page.dt', function () {
+                    //table.columns.adjust()
+                    table.responsive.recalc();
+                });
+            }
+
+            $("#download-btn").click(function (e) {
+                $('#loader').css("display", "block");
+                $('#loader-bg').css("display", "block");
+                $('#loader-text').css("display", "block");
+                $('#generating-file').css("display", "block");
+
+                setCookie('programsDownloadStarted', "0", 100); //Expiration could be anything... As long as we reset the value
+                setTimeout(checkDownloadCookie, 1000); //Initiate the loop to check the cookie.
+
+                //console.log("downloadStarted: " + getCookie('downloadStarted'));
+                //$('main').css("visibility", "hidden");
+            });
+
+            var downloadTimeout;
+            var checkDownloadCookie = function () {
+                //console.log("downloadStarted: " + getCookie('downloadStarted'));
+                if (getCookie("programsDownloadStarted") == "1") {
+                    setCookie("programsDownloadStarted", "false", 0); //Expiration could be anything... As long as we reset the value
+                    HideLoader();
+                } else {
+                    downloadTimeout = setTimeout(checkDownloadCookie, 1000); //Re-run this function in 1 second.
+                }
+            };
+        });
+    </script>
+}
+
+

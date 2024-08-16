@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "DELETE EVERYTHING";
+}
+
+<h1>DELETE</h1>
+
+<div class="row">
+    <div class="col">
+        <p>This will delete ALL</p>
+        <ul>
+            <!--<li>MOUs</li>-->
+            <li>Audit Logs</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-4">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <button type="submit" class="btn btn-danger" asp-action="DeleteAllAuditRecords">DELETE AUDIT LOGS</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

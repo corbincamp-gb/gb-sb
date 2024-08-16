@@ -1,0 +1,76 @@
+﻿@model IntakeForm.Models.Data.Templates.DeserializedFormTemplate
+@{
+    ViewData["Title"] = "Introduction";
+
+    var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
+}
+
+@if (entry.EntryStatusID == (int)IntakeForm.Models.Enumerations.EntryStatus.Incomplete)
+{
+    var tracking = entry.EntryStatusTracking.FirstOrDefault(o => o.NewEntryStatusID == (int)IntakeForm.Models.Enumerations.EntryStatus.Incomplete);
+    if (tracking != null)
+    {
+        <div class="alert alert-warning" role="alert">
+            <div class="fw-bold">Application Incomplete</div>
+            <pre>@Html.Raw(tracking.Notes)</pre>
+        </div>
+    }
+}
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Shared/_Entry.cshtml")
+
+<div class="row">
+    <div class="col-md-3">
+        @await Html.PartialAsync("~/Areas/Intake/Views/Form/_ProgressBar.cshtml")
+    </div>
+    <div class="col-md-9">
+
+        <div class="mt-3">
+            <h2 class="h6">@Html.Raw(ViewData["Title"])</h2>
+
+            <div class="alert alert-danger" role="alert">
+                <div class="fw-bold">Warning</div>
+                <div>
+                    If this survey is opened in multiple windows or in a private browser, you may
+                    lose your survey responses and have to start over. Please be careful to only
+                    have one copy of the survey open at a time. Please do not use a private
+                    browsing window to complete this survey. If you need to step away, select the
+                    "Save and continue" option at the bottom of the page.
+                </div>
+            </div>
+
+            <p>This questionnaire will address four types of SkillBridge programs:</p>
+                    
+            <ul>
+                <li><strong>Job Training Programs</strong> - A method of preparing individuals to perform
+                    specific tasks by providing information about the task; demonstrations of
+                    how the tasks are performed; opportunities for the individuals to perform
+                    the tasks; and assessments of each individual's level of performance. (The
+                    majority of SkillBridge programs fall in this category and organizations
+                    have a specific career and position in mind that they are seeking to place
+                    the Service member in upon completion of the SkillBridge Training
+                    program).
+                </li>
+                <li><strong>Apprenticeship Programs</strong> - A combination of on-the-job training (OJT) and
+                    related classroom instruction under the supervision of a journey-level
+                    craft person or trade professional in which workers learn the practical and
+                    theoretical aspects of a highly skilled occupation.
+                </li>
+                <li><strong>Internship Programs</strong> - An internship is a workplace learning experience
+                    that assists participants to prepare for employment by observing and
+                    performing, within the employer's operating environment, the work
+                    activities performed by members of the employer's workforce. Internships
+                    may be completed in Federal, State, or local government or in the private
+                    sector (either for-profit or not-for-profit).
+                </li>
+                <li><strong>Employment Skills Programs</strong> - Training or education to acquire the skills
+                    required to obtain employment, advance in employment, or adapt to the
+                    changing demands of the workplace.
+                </li>
+            </ul>
+
+            <p>Please keep these descriptors in mind as you indicate the details of your proposed SkillBridge program.</p>
+
+        </div>
+    </div>
+</div>

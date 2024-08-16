@@ -1,0 +1,343 @@
+﻿@model EditOrganizationModel
+@{
+    ViewData["Title"] = "Review Organization Change";
+}
+
+<h1>Review Organization Change</h1>
+<p><span class="badge badge-dark" style="padding:6px;">Organization ID: @Model.Id</span></p>
+<div class="row">
+    <div class="col">
+
+        @{
+            // If there are changed fields and its status is set to pending
+            if (@Model.Pending_Fields.Count > 0 && @Model.Pending_Change_Status == 0)
+            {
+            <div class="change-msg">Fields marked with <i class='fa fa-exclamation-circle fa-fw'></i> have a pending update already waiting for approval from an analyst. Changes to these fields will replace the previous change!</div>
+
+                //ViewBag.RowClass = "pending-row-alt";
+                ViewBag.InputFieldClass = "col-5";
+            }
+            else
+            {
+                //ViewBag.RowClass = "";
+                ViewBag.InputFieldClass = "col";
+            }
+        }
+        @{
+            // If there are changed OSD only fields and its status is set to pending
+            if (@Model.Pending_Fields.Count > 0 && @Model.Pending_Change_Status == 0 && ViewBag.ShowOSDNotice)
+            {
+                <div class="osd-msg"><i class='fa fa-gavel fa-fw'></i>There are fields in this change that REQUIRE OSD APPROVAL. Do not approve/reject this record unless you have explicit permission from OSD!</div>
+
+                //ViewBag.RowClass = "pending-row-alt";
+                ViewBag.InputFieldClass = "col-5";
+            }
+            else
+            {
+                //ViewBag.RowClass = "";
+                ViewBag.InputFieldClass = "col";
+            }
+        }
+
+    <form method="post" id="form" class="pending-changes-form">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <!--Hidden Fields for Fields Not Editable by Users-->
+        <!--MAY WANT TO SHOW ACTUAL DATA FOR ANALYSTS/ADMINS-->
+
+        <input asp-for="@Model.Date_Created" type="hidden" />
+        <input asp-for="@Model.Created_By" type="hidden" />
+        <input asp-for="@Model.Legacy_Provider_Id" type="hidden" />
+        <input asp-for="@Model.Id" type="hidden" />
+        <input asp-for="@Model.Date_Deactivated" type="hidden" />
+
+        <div class="row">
+            @if (@Model.Pending_Change_Status == 0)
+            {
+                <div class="col-5">
+                    <div class="form-group">
+                        <label>Is Active</label>
+                        <!--<input id="original-is-active" type="checkbox" class="form-control" disabled data-toggle="tooltip" title="Is Active Opportunity" value="(bool)ViewBag.Original_Is_Active" />-->
+                        @Html.CheckBox("original-is-active", (bool)ViewBag.Original_Is_Active, new { @class = "form-control", @disabled = "true", @data_toggle = "tooltip", @title = "Is Active Opportunity" })
+                    </div>
+                </div>
+                <div class="col-2">
+                    <i class="fa fa-arrow-circle-right fa-fw" style="font-size: 40px; margin: 20px auto 0; display: block;"></i>
+                </div>
+            }
+            <div class="@ViewBag.InputFieldClass">
+                <div class="form-group">
+                    <label asp-for="Is_Active"></label>
+                    <input type="checkbox" asp-for="Is_Active" class="form-control disable-on-archived" data-toggle="tooltip" title="Is Active Opportunity" />
+                    <span asp-validation-for="Is_Active" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @if (@Model.Pending_Change_Status == 0)
+            {
+                <div class="col-5">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control" disabled value="@ViewBag.Original_Name" />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <i class="fa fa-arrow-circle-right fa-fw" style="font-size: 40px; margin: 20px auto 0; display: block;"></i>
+                </div>
+            }
+            <div class="@ViewBag.InputFieldClass">
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control disable-on-archived" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @if (@Model.Pending_Change_Status == 0)
+            {
+                <div class="col-5">
+                    <div class="form-group">
+                        <label>Organization Web Site</label>
+                        <input class="form-control" disabled value="@ViewBag.Original_Organization_Url" />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <i class="fa fa-arrow-circle-right fa-fw" style="font-size: 40px; margin: 20px auto 0; display: block;"></i>
+                </div>
+            }
+            <div class="@ViewBag.InputFieldClass">
+                <div class="form-group">
+                    <label asp-for="Organization_Url"></label>
+                    <input asp-for="Organization_Url" class="form-control disable-on-archived" />
+                    <span asp-validation-for="Organization_Url" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @if (@Model.Pending_Change_Status == 0)
+            {
+                <div class="col-5">
+                    <!--<div class="form-group">
+                    <label>Type of Organization</label>
+                    <input class="form-control" value="ViewBag.Original_Organization_Type" />
+                </div>-->
+                    <div class="form-group" id="orig-org-type-select-container">
+                        <label>Organization Type</label>
+                        <select disabled id="orig-org-type-dropdown" class="browser-default custom-select" size="1" style="width:100%;max-width:100%" value="@ViewBag.Original_Organization_Type">
+                            <option value="0">Profit</option>
+                            <option value="1">Non or Not for Profit</option>
+                            <option value="2">County, Municipal, City</option>
+                            <option value="3">State</option>
+                            <option value="4">Federal</option>
+                        </select>
+                        <!--<span asp-validation-for="Organization_Type" class="text-danger"></span>-->
+                    </div>
+                </div>
+                <div class="col-2">
+                    <i class="fa fa-arrow-circle-right fa-fw" style="font-size: 40px; margin: 20px auto 0; display: block;"></i>
+                </div>
+            }
+            <div class="@ViewBag.InputFieldClass">
+                <!--<div class="form-group">
+                <label asp-for="Organization_Type"></label>
+                <input asp-for="Organization_Type" class="form-control disable-on-archived" />
+                <span asp-validation-for="Organization_Type" class="text-danger"></span>
+            </div>-->
+                <div class="form-group" id="org-type-select-container">
+                    <label asp-for="Organization_Type">Organization Type</label>
+                    <!--<input type="hidden" asp-for="OrganizationId" />-->
+                    <select id="org-type-dropdown" class="browser-default custom-select disable-on-archived" asp-for="Organization_Type" size="1" style="width:100%;max-width:100%">
+                        <option value="0">Profit</option>
+                        <option value="1">Non or Not for Profit</option>
+                        <option value="2">County, Municipal, City</option>
+                        <option value="3">State</option>
+                        <option value="4">Federal</option>
+                    </select>
+                    <span asp-validation-for="Organization_Type" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @if (@Model.Pending_Change_Status == 0)
+            {
+                <div class="col-5">
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea class="form-control" disabled value="@ViewBag.Original_Notes" data-toggle="tooltip" title="Analyst notes">@ViewBag.Original_Notes</textarea>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <i class="fa fa-arrow-circle-right fa-fw" style="font-size: 40px; margin: 20px auto 0; display: block;"></i>
+                </div>
+            }
+            <div class="@ViewBag.InputFieldClass">
+                <div class="form-group">
+                    <label asp-for="Notes"></label>
+                    <textarea asp-for="Notes" class="form-control disable-on-archived" data-toggle="tooltip" title="Analyst notes"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @if (@Model.Pending_Change_Status == 0)
+            {
+                <div class="col-5">
+                    <div class="form-group">
+                        <label>POC First Name</label>
+                        <input class="form-control" disabled value="@ViewBag.Original_Poc_First_Name" />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <i class="fa fa-arrow-circle-right fa-fw" style="font-size: 40px; margin: 20px auto 0; display: block;"></i>
+                </div>
+            }
+            <div class="@ViewBag.InputFieldClass">
+                <div class="form-group">
+                    <label asp-for="Poc_First_Name"></label>
+                    <input asp-for="Poc_First_Name" class="form-control disable-on-archived" />
+                    <span asp-validation-for="Poc_First_Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @if (@Model.Pending_Change_Status == 0)
+            {
+                <div class="col-5">
+                    <div class="form-group">
+                        <label>POC Last Name</label>
+                        <input class="form-control" disabled value="@ViewBag.Original_Poc_Last_Name" />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <i class="fa fa-arrow-circle-right fa-fw" style="font-size: 40px; margin: 20px auto 0; display: block;"></i>
+                </div>
+            }
+            <div class="@ViewBag.InputFieldClass">
+                <div class="form-group">
+                    <label asp-for="Poc_Last_Name"></label>
+                    <input asp-for="Poc_Last_Name" class="form-control disable-on-archived" />
+                    <span asp-validation-for="Poc_Last_Name" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @if (@Model.Pending_Change_Status == 0)
+            {
+                <div class="col-5">
+                    <div class="form-group">
+                        <label>POC Email</label>
+                        <input class="form-control" disabled value="@ViewBag.Original_Poc_Email" />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <i class="fa fa-arrow-circle-right fa-fw" style="font-size: 40px; margin: 20px auto 0; display: block;"></i>
+                </div>
+            }
+            <div class="@ViewBag.InputFieldClass">
+                <div class="form-group">
+                    <label asp-for="Poc_Email"></label>
+                    <input asp-for="Poc_Email" class="form-control disable-on-archived" />
+                    <span asp-validation-for="Poc_Email" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @if (@Model.Pending_Change_Status == 0)
+            {
+                <div class="col-5">
+                    <div class="form-group">
+                        <label>POC Phone</label>
+                        <input class="form-control" disabled value="@ViewBag.Original_Poc_Phone" />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <i class="fa fa-arrow-circle-right fa-fw" style="font-size: 40px; margin: 20px auto 0; display: block;"></i>
+                </div>
+            }
+            <div class="@ViewBag.InputFieldClass">
+                <div class="form-group">
+                    <label asp-for="Poc_Phone"></label>
+                    <input asp-for="Poc_Phone" class="form-control disable-on-archived" />
+                    <span asp-validation-for="Poc_Phone" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Rejection_Reason"></label>
+                    <textarea asp-for="Rejection_Reason" id="Rejection_Reason" class="form-control disable-on-archived" required></textarea>
+                    <span asp-validation-for="Rejection_Reason" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        @if (@Model.Pending_Change_Status == 0)
+        {
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <button id="submit" class="btn btn-success" asp-route-orgId="@Model.Id">Approve</button>
+                        <button asp-controller="Analyst" asp-action="RejectPendingOrgChange" asp-route-orgId="@Model.Id" class="btn btn-danger">Reject</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>   <!--INTERFERES WITH DATATABLES FOR SOME -->
+    <!-- On document load, make sure that fields that were previously edited are marked -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var listOfFields = @Json.Serialize(Model.Pending_Fields);
+            var count = @Model.Pending_Fields.Count;
+            //console.log("listOfFields: " + listOfFields);
+            //var listOfFields = JSON.parse('');
+            for (var i = 0; i < count; i++) {
+                var field = listOfFields[i];
+                $("label[for=" + field + "]").append("<i class='fa fa-exclamation-circle fa-fw changed-field' data-toggle='tooltip' title='This field has a pending change that will be replaced if you edit it.'></i>");
+            }
+
+            $(".custom-select").select2();
+            $("#orig-org-type-dropdown").select2("val", '@ViewBag.Original_Organization_Type');
+
+            // Bootstrap tooltips for select2
+            $(".select2-container").tooltip({
+                title: function () {
+                    return $(this).prev().attr("data-original-title");
+                },
+                placement: "auto",
+                animation: false
+            });
+
+            // If this was already resolved, disable the input fields
+            var status = @Model.Pending_Change_Status;
+            if (status != 0)
+            {
+                $(".disable-on-archived").attr("disabled", "");
+            }
+
+            $("#submit").click(function() {
+              EnsureRejectionReasonFilled();
+            });
+
+            function EnsureRejectionReasonFilled() {
+              $('#Rejection_Reason').val(' ');
+              $('#form').submit();
+            }
+        });
+    </script>
+}

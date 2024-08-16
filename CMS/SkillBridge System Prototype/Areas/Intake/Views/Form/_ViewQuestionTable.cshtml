@@ -1,0 +1,41 @@
+﻿@model IntakeForm.Models.View.Forms.ViewQuestionModel
+@{
+    var question = Model.Question;
+    var states = (List<IntakeForm.Models.Data.Forms.State>)ViewBag.States;
+
+    var formTemplate = (IntakeForm.Models.Data.Templates.DeserializedFormTemplate)ViewBag.FormTemplate;
+    var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
+    var entryForms = entry.Forms.OrderBy(o => o.FormOrder).ToList();
+
+    var responses = Model.Responses;
+    var numberOfResponses = (responses.Any(o => o.QuestionID == Model.Question.ID) ? responses.Where(o => o.QuestionID == Model.Question.ID).SelectMany(o => o.FormResponseRows).Max(o => o.RowID) : 1);
+}
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                @foreach (var col in question.AnswerColumns.OrderBy(o => o.Order).ToList())
+                {
+                    <th>@Html.Raw(col.Label)</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < numberOfResponses; i++)
+            {
+                <tr>
+                    <td>@(i+1)</td>
+                    @foreach (var col in question.AnswerColumns.OrderBy(o => o.Order).ToList())
+                    {
+                        var answer = responses.SelectMany(o => o.FormResponseRows)?.FirstOrDefault(o => o.RowID == i + 1 && o.ColumnID == col.ID)?.Answer ?? String.Empty;
+                        <td>
+                            @Html.Raw(answer)
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

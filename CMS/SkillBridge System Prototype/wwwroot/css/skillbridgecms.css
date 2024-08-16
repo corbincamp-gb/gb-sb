@@ -1,0 +1,157 @@
+﻿/**
+ * Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+ * for details on configuring this project to bundle and minify static web assets.
+ *
+ * @format
+ */
+
+:root {
+    --cms-red: #C42031;
+    --cms-lt-blue: #0877B7;
+    --cms-peacock-blue: #003E7E;
+    --cms-navy-blue: #0B3561;
+    --cms-lt-navy-blue: #daeafa;
+    --cms-text-color: #333;
+    --cms-green: #039278;
+    --white: #fff;
+}
+
+
+header {
+    border-top: 10px solid var(--cms-red);
+    padding: 16px;
+    background-color: var(--white);
+}
+
+    header .dropdown a, header .dropdown a:active, header .dropdown a:hover {
+        color: var(--cms-text-color);
+        text-decoration: none;
+    }
+
+a, a:visited, a:active, a:hover { 
+    color: var(--cms-lt-blue);
+}
+
+pre {
+    white-space: pre-wrap; /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    font-family: unset;
+}
+
+.navbar {
+    background-color: var(--cms-peacock-blue);
+    color: var(--white);
+    padding: 0;
+}
+
+    .navbar .nav-link {
+        margin: 0 8px;
+    }
+
+    .navbar a, .navbar a:hover, .navbar a:active, .navbar a:visited {
+        color: var(--white) !important;
+    }
+
+    .navbar .nav-link:hover {
+        background-color: var(--cms-navy-blue) !important;
+    }
+
+    .navbar .dropdown-menu {
+        background-color: var(--cms-peacock-blue) !important;
+        color: var(--white) !important;
+    }
+
+        .navbar .dropdown-menu a:hover {
+            background-color: var(--cms-navy-blue) !important;
+            color: var(--white) !important;
+        }
+
+.btn-primary, .bg-primary {
+    background-color: var(--cms-peacock-blue) !important;
+    color: var(--white) !important;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: var(--cms-navy-blue) !important;
+    }
+
+.btn-secondary, .bg-secondary, .bg-table-header {
+    background-color: var(--cms-navy-blue) !important;
+    color: var(--white) !important;
+    border: none;
+}
+
+    .btn-secondary:hover {
+        background-color: #66c2f8 !important;
+    }
+
+    .btn-tertiary, .bg-tertiary {
+        background-color: var(--cms-green) !important;
+        color: var(--cms-text-color) !important;
+    }
+
+        .btn-tertiary:hover {
+            background-color: #fedf6c !important;
+            color: var(--cms-text-color) !important;
+        }
+
+
+    .btn-danger, .alert-danger, .bg-danger {
+        background-color: var(--cms-red) !important;
+        color: var(--white) !important;
+    }
+
+    .navbar-toggler {
+        color: rgba(255, 255, 255, 0.55) !important;
+        border: none !important;
+    }
+
+.table-primary {
+    background-color: var(--cms-navy-blue) !important;
+}
+
+.btn-success, .bg-success {
+    background-color: var(--cms-green) !important;
+}
+
+.alert-primary {
+    border: 1px solid var(--cms-navy-blue) !important;
+    background-color: var(--cms-lt-navy-blue) !important;
+}
+
+.icon {
+    width: 16px;
+}
+
+.form-label-required::after {
+    content: " *";
+}
+
+.form-check-input {
+    margin-left: unset;
+    position: unset;
+}
+
+.field-validation-error {
+    color: var(--cms-red) !important;
+}
+
+.input-validation-error {
+    border: 1px solid var(--cms-red) !important;
+}
+
+.btn-danger, .bg-danger {
+    background-color: var(--cms-red) !important;
+}
+
+@media (max-width: 992px) {
+    .navbar .nav-link.active {
+        background-color: var(--cms-peacock-blue);
+        color: var(--white);
+        font-weight: normal;
+    }
+}

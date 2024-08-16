@@ -1,0 +1,147 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model SB_SiteConfiguration
+
+@{
+    ViewBag.Title = "Edit Homepage Notification";
+}
+
+<h1>Edit Homepage Notification</h1>
+
+<form method="post">
+    <div class="row">
+        <div class="col">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group" id="notification-dropdown-container">
+                <label asp-for="NotificationType">Notification Type</label><!--<span class="req">&nbsp;*</span>-->
+                <!--<input type="hidden" asp-for="OrganizationId" />-->
+                <select id="notification-dropdown" class="browser-default custom-select" asp-for="NotificationType" size="1" style="width:100%;max-width:100%" data-toggle="tooltip" title="Which type of notification should the homepage display, or should it be hidden (0)?">
+                    <option value="0">0 - Off</option>
+                    <option value="1">1 - Warning</option>
+                    <option value="2">2 - Danger</option>
+                    <option value="3">3 - Success</option>
+                </select>
+                <span asp-validation-for="NotificationType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NotificationHTML"></label>
+                <textarea id="notification-html" asp-for="NotificationHTML" class="form-control" data-toggle="tooltip" title="HTML message to display in the notification area"></textarea>
+                <span asp-validation-for="NotificationHTML" class="text-danger"></span>
+            </div>
+            <button id="update-btn" type="submit" class="btn btn-primary mb-3">Update</button>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Notification Types</h4>
+                </div>
+                <div class="card-body">
+                    <ul style="margin:0;padding:0;list-style:none;">
+                        <li>
+                            <div class="alert alert-light"><span class="bold">0</span> - Off</div>
+                        </li>
+                        <li>
+                            <div class="alert alert-warning"><span class="bold">1</span> - Warning</div>
+                        </li>
+                        <li>
+                            <div class="alert alert-danger"><span class="bold">2</span> - Danger</div>
+                        </li>
+                        <li>
+                            <div class="alert alert-success"><span class="bold">3</span> - Success</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Notification Preview</h4>
+                </div>
+                <div class="card-body">
+                    <div id="notification-preview-container" style="text-align:center;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        var table;
+        $('.leftmenutrigger').on('click', function (e) {
+            setTimeout(ResizeTable, 500);
+        });
+        function ResizeTable() {
+            table.columns.adjust().draw();
+        }
+        $(document).resize(function () {
+            ResizeTable();
+        });
+        $(document).ready(function () {
+            if ($('#example').length > 0) {
+                table = $("#example").DataTable({
+                    "processing": false, // for show progress bar
+                    "serverSide": false, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    responsive: true,
+                    "autoWidth": false,
+                    "bAutoWidth": false,
+                    "order": [
+                        [2, 'asc']
+                    ],
+                    "columnDefs": [{
+                        "targets": 0,
+                        "orderable": false
+                    }]
+                });
+            }
+
+            $("#notification-dropdown").on("change", function () {
+                var val = $(this).val();
+                //console.log("dropdown val updated: " + val);
+                UpdateNotificationPreview();
+            });
+
+            $("#notification-html").keyup(function (e) {
+                var val = $(this).val();
+                //console.log("html val updated: " + val);
+                UpdateNotificationPreview();
+            });
+
+            UpdateNotificationPreview();    // Update the preview immediately
+        });
+
+        function UpdateNotificationPreview() {
+            var type = $("#notification-dropdown").val();
+            var html = $("#notification-html").val();
+
+            var newHTML;
+
+            if (type == 0) {
+                newHTML = '<div class="alert alert-light" role="alert" style="font-weight:bold;">NOTIFICATION IS TURNED OFF</div>';
+            }
+            else if (type == 1) {
+                newHTML = '<div class="alert alert-warning" role="alert">' + html + '</div>';
+            }
+            else if (type == 2) {
+                newHTML = '<div class="alert alert-danger" role="alert">' + html + '</div>';
+            }
+            else if (type == 3) {
+                newHTML = '<div class="alert alert-success" role="alert">' + html + '</div>';
+            }
+
+
+            const reg = /<script[\s\S]*?>[\s\S]*?<\/script>|<style[\s\S]*?>[\s\S]*?<\/style>/gi;
+            const newStr = newHTML.replace(reg, "");
+            console.log(newStr);
+
+            $("#notification-preview-container").html(newStr);
+        }
+    </script>
+}

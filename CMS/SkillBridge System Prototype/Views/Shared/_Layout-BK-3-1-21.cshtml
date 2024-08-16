@@ -1,0 +1,95 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SkillBridge_System_Prototype</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" href="css/jquery.dataTables.css" rel="stylesheet" />
+    <link type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet" />
+    <link type="text/css" href="css/dataTables.tableTools.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/logo.png" alt="SkillBridge System Prototype" /></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-3">
+                <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2">
+                    <div class="collapse navbar-collapse">
+                        <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home fa-fw"></i> <span class="font-weight-bold">Home</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" asp-area="" asp-controller="Admin" asp-action="Index"><i class="fa fa-person-booth fa-fw"></i> <span class="d-none d-md-inline">Admin</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" asp-area="" asp-controller="Analyst" asp-action="Index"><i class="fa fa-chalkboard-teacher fa-fw"></i> <span class="d-none d-md-inline">Analyst</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" asp-area="" asp-controller="Organizations" asp-action="Index"><i class="fa fa-building codeply fa-fw"></i> <span class="d-none d-md-inline">Organizations</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" asp-area="" asp-controller="Programs" asp-action="Index"><i class="fa fa-book codeply fa-fw"></i> <span class="d-none d-md-inline">Programs</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" asp-area="" asp-controller="Opportunities" asp-action="Index"><i class="fa fa-star codeply fa-fw"></i> <span class="d-none d-md-inline">Opportunities</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" asp-area="" asp-controller="MyAccount" asp-action="Index"><i class="fa fa-cog codeply fa-fw"></i> <span class="d-none d-md-inline">My Account</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" asp-area="" asp-controller="Reports" asp-action="Index"><i class="fa fa-cog codeply fa-fw"></i> <span class="d-none d-md-inline">Reports</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+            <main role="main" class="col-9">
+                @RenderBody()
+            </main>
+        </div>
+
+
+        <footer class="border-top footer">
+            <div class="container">
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,128 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model IEnumerable<MOUViewModel>
+
+@{
+    ViewBag.Title = "All Mous";
+}
+
+<h1>All MOUs</h1>
+
+@if (Model.Any())
+{
+@if (SignInManager.IsSignedIn(User))
+{
+    if(User.IsInRole("Admin") || User.IsInRole("Analyst"))
+    {
+        <!--<a class="btn btn-primary mb-3" asp-controller="Mous" asp-action="CreateMou">Add New MOU</a>-->
+    }
+}
+
+<table id="example" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Parent Organization</th>
+            <th>Creation Date</th>
+            <th>Expiration Date</th>
+            <th>Url</th>
+            <th>Service</th>
+            <th>Is OSD</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mou in Model)
+            {
+        <tr>
+            <td>@mou.Id</td>
+            <td>@mou.Orgs</td>
+            <td data-sort='@mou.Creation_Date.Year@mou.Creation_Date.Month@mou.Creation_Date.Day'>@mou.Creation_Date.ToString("MM/dd/yyyy")</td>
+            <td data-sort='@mou.Expiration_Date.Year@mou.Expiration_Date.Month@mou.Expiration_Date.Day'>@mou.Expiration_Date.ToString("MM/dd/yyyy")</td>
+            <td>@mou.Url</td>
+            <td>@mou.Service</td>
+            <td>@mou.Is_OSD</td>
+        </tr>
+            }
+    </tbody>
+</table>
+}
+else
+{
+<div class="card">
+    <div class="card-header">
+        No MOUs Added Yet
+    </div>
+    <div class="card-body">
+        @if (SignInManager.IsSignedIn(User))
+            {
+                if(User.IsInRole("Admin") || User.IsInRole("Analyst"))
+                {
+        <h5 class="card-title">
+            Use the button below to create an MOU
+        </h5>
+        <a class="btn btn-primary" asp-controller="Mous" asp-action="CreateMou">Create MOU</a>
+                }
+            }
+    </div>
+</div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var table;
+        $('.leftmenutrigger').on('click', function (e) {
+            setTimeout(ResizeTable, 500);
+        });
+        function ResizeTable() {
+            table.columns.adjust().draw();
+        }
+        $(document).resize(function () {
+            ResizeTable();
+        });
+        $(document).ready(function () {
+            if ($('#example').length > 0) {
+                table = $("#example").DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'copy', className: 'dtBtn',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5, 6]
+                            }
+                        },
+                        {
+                            extend: 'csv', className: 'dtBtn',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5, 6]
+                            }
+                        },
+                        {
+                            extend: 'excel', className: 'dtBtn',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5, 6]
+                            }
+                        }
+                    ],
+                    "processing": false, // for show progress bar
+                    "serverSide": false, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    responsive: true,
+                    "autoWidth": false,
+                    "bAutoWidth": false,
+                    "order": [
+                        [3, 'asc']
+                    ],
+                    "columnDefs": [{
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    }]
+                });
+            }
+        });
+    </script>
+}
+
+

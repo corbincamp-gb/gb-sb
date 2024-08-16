@@ -1,0 +1,102 @@
+﻿<!-- Modal -->
+<div class="modal fade" id="uploadFile" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Upload File(s)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("UploadFileFromForm", "Files", FormMethod.Post, new { area = "Intake", @id = "uploadFormFile", @enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                    <div class="mb-3">
+                        The system only accepts PDF, Word, and Excel files for upload. Files must be no larger than 4MB.
+                        <div id="fileUploadModalErrorMsg" class="text-danger d-none">TEST</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fileupload" class="visually-hidden">Upload</label>
+                        <input type="hidden" id="CBFormID" name="CBFormID" value="" />
+                        <input type="hidden" id="PartID" name="PartID" value="" />
+                        <input type="file" class="form-control d-inline w-50" id="fileupload" name="fileupload" multiple />
+                    </div>
+                    @Html.AntiForgeryToken()
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="uploadFile(this);">Upload</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function showFileUpload(formID, partID) {
+        $('#CBFormID').val(formID);
+        $('#PartID').val(partID);
+        $('#uploadFile').modal('show');
+    }
+
+    function uploadFile(btn, formResponseID) {
+        event.preventDefault();
+
+        $('#fileUploadModalErrorMsg').addClass('d-none');
+
+        var fileUpload = $('#fileupload').get(0);
+        var files = fileUpload.files;
+
+        // Create FormData object  
+        var fileData = new FormData();
+        fileData.append("CBFormID", $('#CBFormID').val());
+        fileData.append("PartID", $('#PartID').val());
+
+        // Looping over all files and add it to FormData object  
+        for (var i = 0; i < files.length; i++) {
+            fileData.append("files", files[i]);
+        }
+
+        // Post the file upload and then reload the file section
+        $.ajax({
+            url: "/files/UploadFileFromForm",
+            type: "POST",
+            contentType: false, // Not to set any content header  
+            processData: false, // Not to process data  
+            data: fileData,
+            success: function (data) {
+                if (data.hasErrors) {
+                    var msg = 'The following errors occurred: ';
+                    for (var i = 0; i < data.errors.length; i++) 
+                    {
+                        msg = msg + '\n' + data.errors[i];
+                    }
+                    $('#fileUploadModalErrorMsg').removeClass('d-none');
+                    $('#fileUploadModalErrorMsg').html(msg);
+                }
+                else 
+                {
+                    var newTbody = '';
+                    for (var i = 0; i < data.files.length; i++) {
+                        newTbody = newTbody + `<tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="` + data.files[i].ID + `" id="files_` + data.files[i].ID + `" name="files" ` + data.files[i].Checked + ` />
+                                        <label class="form-check-label visually-hidden">Select this form</label>
+                                    </div>
+                                </td>
+                                <td><a href="~/intake/form/getfile/` + data.files[i].ID + `" target="_blank">` + data.files[i].FileName + `</a></td>
+                                <td class="text-end"><span class="d-none sort-text">` + data.files[i].ContentLength + `</span>` + data.files[i].FileSize + `</td>
+                                <td class="text-end"><span class="sort-text">` + data.files[i].AddedDate + `</span></td>
+                            </tr>`;
+                    }
+
+                    $('table.files-table tbody').html(newTbody);
+
+                    $('#uploadFile').modal('hide');
+                }
+            }
+        });
+    }
+</script>
