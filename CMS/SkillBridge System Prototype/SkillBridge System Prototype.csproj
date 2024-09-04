@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Util\NewFolder\**" />
+    <Content Remove="Util\NewFolder\**" />
+    <EmbeddedResource Remove="Util\NewFolder\**" />
+    <None Remove="Util\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\AdminController - Copy.cs" />
     <Compile Remove="Startup-BK-5-4-21.cs" />
   </ItemGroup>
@@ -20,11 +27,12 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.0.2" />
-    <PackageReference Include="Azure.Identity" Version="1.6.0" />
+    <PackageReference Include="Azure.Identity" Version="1.12.0" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.1.0" />
     <PackageReference Include="ClosedXML" Version="0.95.4" />
     <PackageReference Include="CsvHelper" Version="26.1.0" />
     <PackageReference Include="EvoPdf.HtmlToPdf.NetCore" Version="9.0.0" />
+    <PackageReference Include="jQuery" Version="3.3.1" />
     <PackageReference Include="jquery.datatables" Version="1.10.15" />
     <PackageReference Include="MailKit" Version="2.11.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
@@ -50,7 +58,6 @@
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="Persistence\" />
-    <Folder Include="Util\NewFolder\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

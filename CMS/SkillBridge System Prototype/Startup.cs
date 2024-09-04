@@ -7,20 +7,24 @@ using SkillBridge_System_Prototype.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SkillBridge_System_Prototype.Util.MailKit;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SkillBridge_System_Prototype.Models;
 using Microsoft.AspNetCore.HttpOverrides;
 using SkillBridge_System_Prototype.Services;
-using System.Configuration;
+using System.Text.Json;
+using SkillBridge_System_Prototype.Util.SMTP;
+
 
 namespace SkillBridge_System_Prototype
 {
+    
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly bool _dev = true;
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _dev = env.IsDevelopment();
         }
 
         public IConfiguration Configuration { get; }
@@ -29,29 +33,17 @@ namespace SkillBridge_System_Prototype
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connStr = $"SBConnectionString{(_dev ? "Test" : "Production")}";
+          
             /* BEFORE PUBLISHING ANYTHING, MAKE SURE THE APPROPRIATE DB CONNECTION IS UNCOMMENTED HERE, 
              * IF PUBLISHING TO PRODUCTION SITE, MAKE SURE HEADER REWRITE CODE ON LINE 168 IS UNCOMMENTED AS WELL */
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-#if DEBUG
-                    //Configuration["ConnectionStrings:DefaultConnection"]
-                    Configuration.GetValue<string>("SBConnectionStringTest")  // Current Test DB Server
-#else
-                    Configuration.GetValue<string>("SBConnectionStringProduction")  // Current Production DB Server
-#endif
-                    ));
+                options.UseSqlServer(Configuration.GetValue<string>(connStr)));
 
             // Intake form context
             services.AddDbContext<Intake.Data.IntakeFormContext>(options =>
-                options.UseSqlServer(
-#if DEBUG
-                    //Configuration["ConnectionStrings:DefaultConnection"]
-                    Configuration.GetValue<string>("SBConnectionStringTest")  // Current Test DB Server
-#else
-                    Configuration.GetValue<string>("SBConnectionStringProduction") // Current Production DB Server
-#endif
-                    ));
+                options.UseSqlServer(Configuration.GetValue<string>(connStr)));
 
 
 #region Dependency Injection
@@ -89,17 +81,18 @@ namespace SkillBridge_System_Prototype
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddHttpContextAccessor();
-            services.AddTransient<IEmailSender, MailKitEmailSender>();// Add email sending using mailkit
-            //Console.WriteLine("Configuration.GetValue<string>('SMTP - Account'): " + Configuration.GetValue<string>("SMTP-Account"));
-            //Console.WriteLine("Configuration.GetValue<string>('SMTP - Password'): " + Configuration.GetValue<string>("SMTP-Password"));
-            services.Configure<MailKitEmailSenderOptions>(options =>
+            services.AddTransient<IEmailSender, SMTP>();// Add email sending using mailkit
+
+             var smtp = JsonSerializer.Deserialize<SMTPOptions>(Configuration.GetValue<string>("SMTP"));
+           
+            services.Configure<SMTPOptions>(options =>
             {
-                options.Host_Address = Configuration["ExternalProviders:MailKit:SMTP:Address"];
-                options.Host_Port = Convert.ToInt32(Configuration["ExternalProviders:MailKit:SMTP:Port"]);
-                options.Host_Username = Configuration.GetValue<string>("SMTP-Account");//Configuration["ExternalProviders:MailKit:SMTP:Account"];
-                options.Host_Password = Configuration.GetValue<string>("SMTP-Password");//Configuration["ExternalProviders:MailKit:SMTP:Password"];
-                options.Sender_EMail = Configuration["ExternalProviders:MailKit:SMTP:SenderEmail"];
-                options.Sender_Name = Configuration["ExternalProviders:MailKit:SMTP:SenderName"];
+                options.Server = smtp.Server;
+                options.Port = smtp.Port;
+                options.Account = smtp.Account;
+                options.Password = smtp.Password;
+                options.SenderEmail = smtp.SenderEmail;
+                options.SenderName = smtp.SenderName;
             });
 
             // Prevent wrong URL on live site
@@ -114,6 +107,7 @@ namespace SkillBridge_System_Prototype
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+           
             app.Use(async (context, next) =>
             {
                 var url = context.Request.Path.Value;
@@ -132,7 +126,7 @@ namespace SkillBridge_System_Prototype
                 await next();
             });
 
-            if (env.IsDevelopment())
+            if (_dev)
             {
                 app.UseDeveloperExceptionPage();
                 app.UseForwardedHeaders();
@@ -142,7 +136,6 @@ namespace SkillBridge_System_Prototype
             {
                 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 // MAKE SURE THIS CODE IS PUBLISHING IN RELEASE MODE FOR THIS TO TAKE EFFECT
-#if !DEBUG
                 app.Use(async (context, next) =>
                 {
                     string originalHost = string.Empty;
@@ -151,16 +144,15 @@ namespace SkillBridge_System_Prototype
                         originalHost = traceValue;
                     }
 
-                    if (originalHost != "SkillBridge-Frontend.azurefd.us" && originalHost != "skillbridge-cms-test.azurewebsites.us")
+                    if (originalHost != "skillbridge-cms-test.azurewebsites.us")
                     {
                         //var originalHost = context.Request.Headers.GetValues("X-Original-Host").FirstOrDefault();
-                        context.Request.Headers.Add("Host", "skillbridge.org");
+                        //context.Request.Headers.Add("Host", "skillbridge.org");
                         context.Request.Headers.Add("OriginalHost", originalHost);   
                         //context.Request.Headers.Set("Host", originalHost);
                     }
                     await next.Invoke();
                 });
-#endif
                 
                 app.UseExceptionHandler("/Home/Error");
                 app.UseForwardedHeaders();

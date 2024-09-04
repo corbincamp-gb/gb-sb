@@ -7,6 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<DefineConstants>MYDEBUGCONSTANT</DefineConstants>
+	</PropertyGroup>
+
   <ItemGroup>
     <None Remove="appsettings.json" />
   </ItemGroup>

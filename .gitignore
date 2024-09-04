@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CMS/IntakeForm.Models/bin
+/.vs
+/CMS/IntakeForm.Models/obj
+/CMS/SkillBridge System Prototype/.vs
+/CMS/SkillBridge System Prototype/bin

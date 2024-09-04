@@ -4,7 +4,9 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://skillbridgecmskeyvault.vault.usgovcloudapi.net/",
+        "AZURE_USERNAME": "corbin.camp@takuhealthservices.onmicrosoft.us"
       },
       "applicationUrl": "https://localhost:65172;http://localhost:65173"
     }
