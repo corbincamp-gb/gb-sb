@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Skillbridge.Business.Model.Db;
 
 namespace Skillbridge.Business.Util.Audit
 {
@@ -18,7 +19,7 @@ namespace Skillbridge.Business.Util.Audit
             List<AuditEntry> auditEntries = new List<AuditEntry>();
             foreach (EntityEntry entry in Db.ChangeTracker.Entries())
             {
-                if (entry.Entity is SB_Audit || entry.State == EntityState.Detached ||
+                if (entry.Entity is AuditModel || entry.State == EntityState.Detached ||
                     entry.State == EntityState.Unchanged)
                 {
                     continue;
@@ -27,9 +28,9 @@ namespace Skillbridge.Business.Util.Audit
                 auditEntries.Add(auditEntry);
             }
 
-            if (Enumerable.Any())
+            if (auditEntries.Any())
             {
-                var logs = Enumerable.Select(x => x.ToAudit());
+                var logs = auditEntries.Select(x => x.ToAudit());
                 Db.Audits.AddRange(logs);
             }
         }
