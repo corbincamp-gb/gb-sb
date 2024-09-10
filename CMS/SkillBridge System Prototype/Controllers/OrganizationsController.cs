@@ -20,7 +20,6 @@ using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
-using SkillBridge_System_Prototype.Repositories;
 using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace SkillBridge_System_Prototype.Controllers

@@ -9,13 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Util\NewFolder\**" />
-    <Content Remove="Util\NewFolder\**" />
-    <EmbeddedResource Remove="Util\NewFolder\**" />
-    <None Remove="Util\NewFolder\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Controllers\AdminController - Copy.cs" />
     <Compile Remove="Startup-BK-5-4-21.cs" />
   </ItemGroup>
@@ -34,7 +27,7 @@
     <PackageReference Include="EvoPdf.HtmlToPdf.NetCore" Version="9.0.0" />
     <PackageReference Include="jQuery" Version="3.3.1" />
     <PackageReference Include="jquery.datatables" Version="1.10.15" />
-    <PackageReference Include="MailKit" Version="2.11.1" />
+    <PackageReference Include="MailKit" Version="2.12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.15" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.15" />
@@ -56,8 +49,8 @@
 
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
     <Folder Include="Persistence\" />
+    <Folder Include="Repositories\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

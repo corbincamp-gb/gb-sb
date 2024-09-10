@@ -18,7 +18,6 @@ using SkillBridge_System_Prototype.Models.TrainingPlans;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using DocumentFormat.OpenXml.Spreadsheet;
-using SkillBridge_System_Prototype.Repositories;
 
 namespace SkillBridge_System_Prototype.Controllers
 {

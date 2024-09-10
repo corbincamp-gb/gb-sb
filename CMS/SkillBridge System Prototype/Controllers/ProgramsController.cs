@@ -23,7 +23,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
 using SkillBridge_System_Prototype.Models.TrainingPlans;
-using SkillBridge_System_Prototype.Repositories;
 using NuGet.Protocol.Core.Types;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.Extensions.Configuration;

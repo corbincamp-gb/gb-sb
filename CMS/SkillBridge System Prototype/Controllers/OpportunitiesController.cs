@@ -24,7 +24,6 @@ using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
 using SkillBridge_System_Prototype.Models.TrainingPlans;
-using SkillBridge_System_Prototype.Repositories;
 using Microsoft.Extensions.Configuration;
 
 namespace SkillBridge_System_Prototype.Controllers

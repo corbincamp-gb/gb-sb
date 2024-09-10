@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using SkillBridge_System_Prototype.Data;
 using SkillBridge_System_Prototype.Models;
 using SkillBridge_System_Prototype.Models.TrainingPlans;
-using SkillBridge_System_Prototype.Repositories;
 using SkillBridge_System_Prototype.Util.Global;
 using System;
 using System.Collections.Generic;

@@ -14,7 +14,6 @@ using SkillBridge_System_Prototype.Models;
 using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
-using SkillBridge_System_Prototype.Repositories;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
