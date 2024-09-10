@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using SkillBridge_System_Prototype.Data;
 using SkillBridge_System_Prototype.Models;
 using SkillBridge_System_Prototype.Models.TrainingPlans;
 using SkillBridge_System_Prototype.Util.Global;
@@ -16,6 +15,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Skillbridge.Business.Data;
 
 namespace SkillBridge_System_Prototype.Controllers
 {

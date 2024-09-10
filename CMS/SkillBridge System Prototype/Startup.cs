@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using SkillBridge_System_Prototype.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +12,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using SkillBridge_System_Prototype.Services;
 using System.Text.Json;
 using SkillBridge_System_Prototype.Util.SMTP;
+using Skillbridge.Business.Data;
 
 
 namespace SkillBridge_System_Prototype

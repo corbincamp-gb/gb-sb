@@ -1,79 +1,84 @@
-﻿using Skillbridge.Business.Model.Db;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Model.Db.QuestionPro;
 using Skillbridge.Business.Model.Db.TrainingPlans;
+using Skillbridge.Business.Util.Audit;
 
 namespace Skillbridge.Business.Data
 {
-    public class ApplicationDbContext : Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext<ApplicationUser>, Audit.EntityFramework.IAuditDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IAuditDbContext
     {
-        public Microsoft.EntityFrameworkCore.DbSet<AspNetUserAuthorityModel> AspNetUserAuthorities { get; set; }
+        public DbSet<AspNetUserAuthorityModel> AspNetUserAuthorities { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<OrganizationModel> Organizations { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<SB_PendingOrganizationChange> PendingOrganizationChanges { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<ProgramModel> Programs { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramChangeModel> PendingProgramChanges { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramAdditionModel> PendingProgramAdditions { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<OpportunityModel> Opportunities { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingOpportunityChangeModel> PendingOpportunityChanges { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingOpportunityAdditionModel> PendingOpportunityAdditions { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<OpportunityGroupModel> OpportunityGroups { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<MouModel> Mous { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<AuditModel> Audits { get; set; }
+        public DbSet<OrganizationModel> Organizations { get; set; }
+        public DbSet<PendingOrganizationChangeModel> PendingOrganizationChanges { get; set; }
+        public DbSet<ProgramModel> Programs { get; set; }
+        public DbSet<PendingProgramChangeModel> PendingProgramChanges { get; set; }
+        public DbSet<PendingProgramAdditionModel> PendingProgramAdditions { get; set; }
+        public DbSet<OpportunityModel> Opportunities { get; set; }
+        public DbSet<PendingOpportunityChangeModel> PendingOpportunityChanges { get; set; }
+        public DbSet<PendingOpportunityAdditionModel> PendingOpportunityAdditions { get; set; }
+        public DbSet<OpportunityGroupModel> OpportunityGroups { get; set; }
+        public DbSet<MouModel> Mous { get; set; }
+        public DbSet<AuditModel> Audits { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<ParticipationPopulation> ParticipationPopulations { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<ProgramParticipationPopulation> ProgramParticipationPopulation { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramParticipationPopulation> PendingProgramParticipationPopulation { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramAdditionParticipationPopulation> PendingProgramAdditionsParticipationPopulation { get; set; }
+        public DbSet<ParticipationPopulation> ParticipationPopulations { get; set; }
+        public DbSet<ProgramParticipationPopulation> ProgramParticipationPopulation { get; set; }
+        public DbSet<PendingProgramParticipationPopulation> PendingProgramParticipationPopulation { get; set; }
+        public DbSet<PendingProgramAdditionParticipationPopulation> PendingProgramAdditionsParticipationPopulation { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<JobFamily> JobFamilies { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<ProgramJobFamily> ProgramJobFamily { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramJobFamily> PendingProgramJobFamily { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramAdditionJobFamily> PendingProgramAdditionsJobFamily { get; set; }
+        public DbSet<JobFamily> JobFamilies { get; set; }
+        public DbSet<ProgramJobFamily> ProgramJobFamily { get; set; }
+        public DbSet<PendingProgramJobFamily> PendingProgramJobFamily { get; set; }
+        public DbSet<PendingProgramAdditionJobFamily> PendingProgramAdditionsJobFamily { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<Service> Services { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<ProgramService> ProgramService { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramService> PendingProgramService { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramAdditionService> PendingProgramAdditionsService { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<ProgramService> ProgramService { get; set; }
+        public DbSet<PendingProgramService> PendingProgramService { get; set; }
+        public DbSet<PendingProgramAdditionService> PendingProgramAdditionsService { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<DeliveryMethod> DeliveryMethods { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<ProgramDeliveryMethod> ProgramDeliveryMethod { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramDeliveryMethod> PendingProgramDeliveryMethod { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<PendingProgramAdditionDeliveryMethod> PendingProgramAdditionsDeliveryMethod { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+        public DbSet<ProgramDeliveryMethod> ProgramDeliveryMethod { get; set; }
+        public DbSet<PendingProgramDeliveryMethod> PendingProgramDeliveryMethod { get; set; }
+        public DbSet<PendingProgramAdditionDeliveryMethod> PendingProgramAdditionsDeliveryMethod { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<State> States { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<ProgramState> ProgramStates { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<ProgramState> ProgramStates { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<SiteConfigurationModel> SiteConfiguration { get; set; }  // Stores the notification information (and can be used for other site wide options editable by users in the future)
+        public DbSet<SiteConfigurationModel> SiteConfiguration { get; set; }  // Stores the notification information (and can be used for other site wide options editable by users in the future)
 
-        public Microsoft.EntityFrameworkCore.DbSet<APIStateModel> APIState { get; set; }
+        public DbSet<APIStateModel> APIState { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<Model.Db.QuestionPro.QPResponse> QPResponses { get; set; }
+        public DbSet<QPResponse> QPResponses { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<Model.Db.QuestionPro.QPResponseQuestion> QPResponseQuestions { get; set; }
+        public DbSet<QPResponseQuestion> QPResponseQuestions { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<Model.Db.QuestionPro.QPResponseQuestionAnswer> QPResponseQuestionAnswers { get; set; }
+        public DbSet<QPResponseQuestionAnswer> QPResponseQuestionAnswers { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<Model.Db.QuestionPro.QPPdf> QPPdfs { get; set; }
+        public DbSet<QPPdf> QPPdfs { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<QuestionProPdfModel> QuestionProPdfModels { get; set; }
+        public DbSet<QuestionProPdfModel> QuestionProPdfModels { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<ProgramTrainingPlan> ProgramTrainingPlans { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<InstructionalMethod> InstructionalMethods { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<TrainingPlan> TrainingPlans { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<TrainingPlanInstructionalMethod> TrainingPlanInstructionalMethods { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<TrainingPlanLength> TrainingPlanLengths { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<TrainingPlanBreakdown> TrainingPlanBreakdowns { get; set; }
+        public DbSet<ProgramTrainingPlan> ProgramTrainingPlans { get; set; }
+        public DbSet<InstructionalMethod> InstructionalMethods { get; set; }
+        public DbSet<TrainingPlan> TrainingPlans { get; set; }
+        public DbSet<TrainingPlanInstructionalMethod> TrainingPlanInstructionalMethods { get; set; }
+        public DbSet<TrainingPlanLength> TrainingPlanLengths { get; set; }
+        public DbSet<TrainingPlanBreakdown> TrainingPlanBreakdowns { get; set; }
 
-        public Microsoft.EntityFrameworkCore.DbSet<OrganizationFile> OrganizationFiles { get; set; }
-        public Microsoft.EntityFrameworkCore.DbSet<MouFile> MouFiles { get; set; }
+        public DbSet<OrganizationFile> OrganizationFiles { get; set; }
+        public DbSet<MouFile> MouFiles { get; set; }
 
 
         private string _user;
         private string userName;
 
-        private readonly Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         //public ChangeTracker ChangeTracker { get; }
-        public ApplicationDbContext(Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext> options/*, UserResolverService userService*/, Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options/*, UserResolverService userService*/, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
             /*if(userService != null)
@@ -98,18 +103,18 @@ namespace Skillbridge.Business.Data
 
             Database.EnsureCreated();
 
-            Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.SetCommandTimeout(240);
+            Database.SetCommandTimeout(240);
             //Console.WriteLine("================================Database.GetCommandTimeout: " + Database.GetCommandTimeout());
             //SqlCommand.Timeout
         }
 
-        protected override void OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            foreach (var foreignKey in Enumerable.SelectMany(e => e.GetForeignKeys()))
+            foreach (var foreignKey in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
-                foreignKey.DeleteBehavior = Microsoft.EntityFrameworkCore.DeleteBehavior.Restrict;
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
             builder
@@ -171,14 +176,14 @@ namespace Skillbridge.Business.Data
             builder.Entity<FileBlob>(
                 dob =>
                 {
-                    Microsoft.EntityFrameworkCore.RelationalPropertyBuilderExtensions.HasColumnName("Id");
+                    dob.Property(o => o.Id).HasColumnName("Id");
                 }
             );
 
             builder.Entity<OrganizationFile>(
                 dob =>
                 {
-                    Microsoft.EntityFrameworkCore.RelationalPropertyBuilderExtensions.HasColumnName("Id");
+                    dob.Property(o => o.Id).HasColumnName("Id");
                     dob.HasOne(o => o.FileBlob).WithOne()
                     .HasForeignKey<FileBlob>(o => o.Id);
                 }
@@ -187,7 +192,7 @@ namespace Skillbridge.Business.Data
             builder.Entity<MouFile>(
                 dob =>
                 {
-                    Microsoft.EntityFrameworkCore.RelationalPropertyBuilderExtensions.HasColumnName("Id");
+                    dob.Property(o => o.Id).HasColumnName("Id");
                     dob.HasOne(o => o.FileBlob).WithOne()
                     .HasForeignKey<MouFileBlob>(o => o.Id);
                 }
@@ -197,14 +202,14 @@ namespace Skillbridge.Business.Data
 
         public override int SaveChanges()
         {
-            new global::Skillbridge.Business.Util.Audit.AuditHelper(this).AddAuditLogs(_httpContextAccessor.HttpContext.User.Identity.Name);
+            new AuditHelper(this).AddAuditLogs(_httpContextAccessor.HttpContext.User.Identity.Name);
             //OnBeforeSaveChanges("");
             return base.SaveChanges();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            new global::Skillbridge.Business.Util.Audit.AuditHelper(this).AddAuditLogs(_httpContextAccessor.HttpContext.User.Identity.Name);
+            new AuditHelper(this).AddAuditLogs(_httpContextAccessor.HttpContext.User.Identity.Name);
             //OnBeforeSaveChanges("");
             return base.SaveChangesAsync(cancellationToken);
         }
@@ -412,33 +417,5 @@ namespace Skillbridge.Business.Data
                 Audit.Add(auditEntry.ToAudit());
             }
         }*/
-        public void OnScopeCreated(Audit.Core.IAuditScope auditScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnScopeSaving(Audit.Core.IAuditScope auditScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnScopeSaved(Audit.Core.IAuditScope auditScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string AuditEventType { get; set; }
-        public bool AuditDisabled { get; set; }
-        public bool IncludeEntityObjects { get; set; }
-        public bool ExcludeValidationResults { get; set; }
-        public Audit.EntityFramework.AuditOptionMode Mode { get; set; }
-        public Audit.Core.AuditDataProvider AuditDataProvider { get; set; }
-        public Audit.Core.IAuditScopeFactory AuditScopeFactory { get; set; }
-        public Dictionary<string, object> ExtraFields { get; }
-        public bool ExcludeTransactionId { get; set; }
-        public bool EarlySavingAudit { get; set; }
-        public Microsoft.EntityFrameworkCore.DbContext DbContext { get; }
-        public Dictionary<Type, Audit.EntityFramework.ConfigurationApi.EfEntitySettings> EntitySettings { get; set; }
-        public bool ReloadDatabaseValues { get; set; }
     }
 }

@@ -1653,7 +1653,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramChanges");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_Program", b =>
+            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

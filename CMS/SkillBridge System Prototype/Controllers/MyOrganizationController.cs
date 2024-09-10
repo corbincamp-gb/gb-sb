@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Data;
 using SkillBridge_System_Prototype.Models;
 using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.EntityFrameworkCore;
+using Skillbridge.Business.Data;
 using Z.EntityFramework.Plus;
 
 namespace SkillBridge_System_Prototype.Controllers

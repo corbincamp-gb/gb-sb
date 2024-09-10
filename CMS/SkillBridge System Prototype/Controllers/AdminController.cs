@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Logging;
 using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Data;
 using System.IO;
 using CsvHelper;
 using System.Globalization;
@@ -21,6 +20,7 @@ using SkillBridge_System_Prototype.Util.Ingest;
 using MoreLinq.Extensions;
 using Z.EntityFramework.Plus;
 using SkillBridge_System_Prototype.Util.Global;
+using Skillbridge.Business.Data;
 
 namespace SkillBridge_System_Prototype.Controllers
 {

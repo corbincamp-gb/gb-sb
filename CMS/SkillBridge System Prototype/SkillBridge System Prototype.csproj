@@ -57,6 +57,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IntakeForm.Models\IntakeForm.Models.csproj" />
+    <ProjectReference Include="..\Skillbridge.Business\Skillbridge.Business.csproj" />
   </ItemGroup>
 
 </Project>

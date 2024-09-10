@@ -1,0 +1,6 @@
+C:\Projects\Skillbridge\CMS\SkillBridgeConsoleApp\SkillBridgeConsoleApp\obj\Debug\net6.0\SkillBridgeConsoleApp.csproj.AssemblyReference.cache
+C:\Projects\Skillbridge\CMS\SkillBridgeConsoleApp\SkillBridgeConsoleApp\obj\Debug\net6.0\SkillBridgeConsoleApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Skillbridge\CMS\SkillBridgeConsoleApp\SkillBridgeConsoleApp\obj\Debug\net6.0\SkillBridgeConsoleApp.AssemblyInfoInputs.cache
+C:\Projects\Skillbridge\CMS\SkillBridgeConsoleApp\SkillBridgeConsoleApp\obj\Debug\net6.0\SkillBridgeConsoleApp.AssemblyInfo.cs
+C:\Projects\Skillbridge\CMS\SkillBridgeConsoleApp\SkillBridgeConsoleApp\obj\Debug\net6.0\SkillBridgeConsoleApp.csproj.CoreCompileInputs.cache
+C:\Projects\Skillbridge\CMS\SkillBridgeConsoleApp\SkillBridgeConsoleApp\obj\Debug\net6.0\SkillBridgeConsoleApp.sourcelink.json

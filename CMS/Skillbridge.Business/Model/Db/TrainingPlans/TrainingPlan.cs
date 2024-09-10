@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using Skillbridge.Business.Model.Models;
 
 namespace Skillbridge.Business.Model.Db.TrainingPlans
 {

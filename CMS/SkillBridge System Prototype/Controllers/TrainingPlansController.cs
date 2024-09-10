@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Data;
 using SkillBridge_System_Prototype.Models;
 using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +24,7 @@ using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Security.Policy;
 using Microsoft.AspNetCore.Http.Extensions;
+using Skillbridge.Business.Data;
 using Syncfusion.HtmlConverter;
 
 namespace SkillBridge_System_Prototype.Controllers

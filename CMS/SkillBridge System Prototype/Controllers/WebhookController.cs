@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Data;
 using SkillBridge_System_Prototype.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -16,6 +15,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using SkillBridge_System_Prototype.Models.QuestionPro;
 using Microsoft.AspNetCore.Authorization;
+using Skillbridge.Business.Data;
 
 namespace SkillBridge_System_Prototype.Controllers
 {

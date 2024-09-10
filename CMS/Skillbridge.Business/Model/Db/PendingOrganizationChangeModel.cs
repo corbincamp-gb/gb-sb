@@ -2,7 +2,7 @@
 
 namespace Skillbridge.Business.Model.Db
 {
-    public class SB_PendingOrganizationChange
+    public class PendingOrganizationChangeModel
     {
         public int Id { get; set; }  // auto-increment, this is the ID of the actual change in the pending change table
         public int Organization_Id { get; set; }    //This is the actual ID for the referenced Organization that the change will happen on

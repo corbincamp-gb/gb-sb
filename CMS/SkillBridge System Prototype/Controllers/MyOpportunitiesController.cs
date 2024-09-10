@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Data;
 using SkillBridge_System_Prototype.Models;
 using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +23,7 @@ using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
 using Microsoft.Extensions.Configuration;
+using Skillbridge.Business.Data;
 
 namespace SkillBridge_System_Prototype.Controllers
 {

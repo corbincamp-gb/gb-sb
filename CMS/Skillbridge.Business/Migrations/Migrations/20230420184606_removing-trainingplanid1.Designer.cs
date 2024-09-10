@@ -1924,7 +1924,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramChanges");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_Program", b =>
+            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -2389,7 +2389,7 @@ namespace Skillbridge.Business.Migrations.Migrations
 
             modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramDeliveryMethod", b =>
                 {
-                    b.HasOne("SkillBridge_System_Prototype.Models.SB_Program", null)
+                    b.HasOne("SkillBridge_System_Prototype.Models.ProgramModel", null)
                         .WithMany("ProgramDeliveryMethods")
                         .HasForeignKey("Program_Id")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2398,7 +2398,7 @@ namespace Skillbridge.Business.Migrations.Migrations
 
             modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramJobFamily", b =>
                 {
-                    b.HasOne("SkillBridge_System_Prototype.Models.SB_Program", null)
+                    b.HasOne("SkillBridge_System_Prototype.Models.ProgramModel", null)
                         .WithMany("ProgramJobFamilies")
                         .HasForeignKey("Program_Id")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2407,7 +2407,7 @@ namespace Skillbridge.Business.Migrations.Migrations
 
             modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramParticipationPopulation", b =>
                 {
-                    b.HasOne("SkillBridge_System_Prototype.Models.SB_Program", null)
+                    b.HasOne("SkillBridge_System_Prototype.Models.ProgramModel", null)
                         .WithMany("ProgramParticipationPopulations")
                         .HasForeignKey("Program_Id")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2416,7 +2416,7 @@ namespace Skillbridge.Business.Migrations.Migrations
 
             modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramService", b =>
                 {
-                    b.HasOne("SkillBridge_System_Prototype.Models.SB_Program", null)
+                    b.HasOne("SkillBridge_System_Prototype.Models.ProgramModel", null)
                         .WithMany("ProgramServices")
                         .HasForeignKey("Program_Id")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2425,7 +2425,7 @@ namespace Skillbridge.Business.Migrations.Migrations
 
             modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramState", b =>
                 {
-                    b.HasOne("SkillBridge_System_Prototype.Models.SB_Program", null)
+                    b.HasOne("SkillBridge_System_Prototype.Models.ProgramModel", null)
                         .WithMany("ProgramStates")
                         .HasForeignKey("Program_Id")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2454,7 +2454,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_Program", b =>
+            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramModel", b =>
                 {
                     b.HasOne("SkillBridge_System_Prototype.Models.SB_Organization", "SB_Organization")
                         .WithMany()

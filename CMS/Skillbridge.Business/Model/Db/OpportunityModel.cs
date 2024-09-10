@@ -27,7 +27,7 @@ namespace Skillbridge.Business.Model.Db
         [JsonIgnore]
         public bool Is_Active { get; set; }
         [ForeignKey("Program_Id")]
-        public ProgramModel SB_Program { get; set; }
+        public ProgramModel ProgramModel { get; set; }
         [Display(Name = "Date Deactivated")]
         [JsonIgnore]
         public DateTime Date_Deactivated { get; set; }

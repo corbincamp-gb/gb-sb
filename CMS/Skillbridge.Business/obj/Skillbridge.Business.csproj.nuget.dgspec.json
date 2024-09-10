@@ -114,7 +114,7 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Audit.EntityFramework.Core": {
+            "Audit.EntityFramework": {
               "target": "Package",
               "version": "[27.0.1, )"
             },
@@ -155,6 +155,18 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[112.0.0, )"
+            },
+            "System.Linq.Dynamic.Core": {
+              "target": "Package",
+              "version": "[1.4.5, )"
+            },
+            "Z.EntityFramework.Plus.EFCore": {
+              "target": "Package",
+              "version": "[3.2.17, )"
             }
           },
           "imports": [

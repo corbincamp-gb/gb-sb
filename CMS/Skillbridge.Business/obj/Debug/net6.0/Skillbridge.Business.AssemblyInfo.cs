@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Skillbridge.Business")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ca3efc57214028db4505e6685bb1cb1ff501dfc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2561aec4f25b69f24480920afe94e8144da52137")]
 [assembly: System.Reflection.AssemblyProductAttribute("Skillbridge.Business")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Skillbridge.Business")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Identity;
 using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Data;
+using Skillbridge.Business.Data;
 
 namespace SkillBridge_System_Prototype.Intake.Controllers
 {

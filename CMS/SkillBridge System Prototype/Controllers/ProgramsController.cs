@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Data;
 using SkillBridge_System_Prototype.Models;
 using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +25,7 @@ using SkillBridge_System_Prototype.Models.TrainingPlans;
 using NuGet.Protocol.Core.Types;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.Extensions.Configuration;
+using Skillbridge.Business.Data;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
