@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Converters;
 
-namespace Skillbridge.Business.Util
+namespace SkillBridge.Business.Util
 {
     public class OpportunityDateTimeConverter : IsoDateTimeConverter
     {

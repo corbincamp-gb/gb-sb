@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
-using Skillbridge.Business.Model.Db;
+using SkillBridge.Business.Model.Db;
 using Taku.Core.Enums;
 using RelationalEntityTypeExtensions = Microsoft.EntityFrameworkCore.RelationalEntityTypeExtensions;
 using RelationalPropertyExtensions = Microsoft.EntityFrameworkCore.RelationalPropertyExtensions;
 
-namespace Skillbridge.Business.Util.Audit
+namespace SkillBridge.Business.Util.Audit
 {
     public class AuditEntry
     {
@@ -36,11 +36,11 @@ namespace Skillbridge.Business.Util.Audit
 
         private void SetChanges()
         {
-            TableName = RelationalEntityTypeExtensions.GetTableName();
+            TableName = Entry.Metadata.GetTableName();
             foreach (PropertyEntry property in Entry.Properties)
             {
                 string propertyName = property.Metadata.Name;
-                string dbColumnName = RelationalPropertyExtensions.GetColumnName();
+                string dbColumnName = property.Metadata.GetColumnName();
 
                 if (property.Metadata.IsPrimaryKey())
                 {

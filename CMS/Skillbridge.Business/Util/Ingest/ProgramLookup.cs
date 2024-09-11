@@ -1,4 +1,4 @@
-﻿namespace Skillbridge.Business.Util.Ingest
+﻿namespace SkillBridge.Business.Util.Ingest
 {
     public class ProgramLookup
     {

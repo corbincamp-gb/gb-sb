@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Skillbridge.Business.Model.Db;
-using Skillbridge.Business.Model.Db.QuestionPro;
-using Skillbridge.Business.Model.Db.TrainingPlans;
-using Skillbridge.Business.Util.Audit;
+using SkillBridge.Business.Model.Db;
+using SkillBridge.Business.Model.Db.QuestionPro;
+using SkillBridge.Business.Model.Db.TrainingPlans;
+using SkillBridge.Business.Util.Audit;
 
-namespace Skillbridge.Business.Data
+namespace SkillBridge.Business.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IAuditDbContext
     {

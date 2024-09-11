@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Skillbridge.Business.Model.Db;
+namespace SkillBridge.Business.Model.Db;
 
 [Table("AspNetUserAuthorities")]
 public class AspNetUserAuthorityModel

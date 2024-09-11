@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace Skillbridge.Business.Model.Db.TrainingPlans
+namespace SkillBridge.Business.Model.Db.TrainingPlans
 {
     [Table("TrainingPlans")]
     public class TrainingPlan

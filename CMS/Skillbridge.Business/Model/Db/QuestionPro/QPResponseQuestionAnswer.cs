@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Skillbridge.Business.Model.Db.QuestionPro
+namespace SkillBridge.Business.Model.Db.QuestionPro
 {
     [Table("QPResponseQuestionAnswers")]
     public class QPResponseQuestionAnswer

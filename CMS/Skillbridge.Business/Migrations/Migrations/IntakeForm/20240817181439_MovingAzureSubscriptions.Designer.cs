@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using SkillBridge_System_Prototype.Intake.Data;
+using SkillBridge.CMS.Intake.Data;
 
-namespace Skillbridge.Business.Migrations.Migrations.IntakeForm
+namespace SkillBridge.Business.Migrations.Migrations.IntakeForm
 {
     [DbContext(typeof(IntakeFormContext))]
     [Migration("20240817181439_MovingAzureSubscriptions")]

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Skillbridge.Business.Migrations.Migrations.IntakeForm
+namespace SkillBridge.Business.Migrations.Migrations.IntakeForm
 {
     public partial class MovingAzureSubscriptions : Migration
     {

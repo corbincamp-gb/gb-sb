@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Skillbridge.Business.Model.Db
+namespace SkillBridge.Business.Model.Db
 {
     public class ApplicationUser : IdentityUser
     {

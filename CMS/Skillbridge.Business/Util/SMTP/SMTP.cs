@@ -1,11 +1,12 @@
 ﻿using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 
-namespace Skillbridge.Business.Util.SMTP
+namespace SkillBridge.Business.Util.SMTP
 {
-    public class SMTP //: IEmailSender
+    public class SMTP : IEmailSender
     {
         public SMTP(IOptions<SMTPOptions> options)
         {

@@ -1,4 +1,6 @@
-﻿namespace Skillbridge.Business.Model.Db
+﻿using Taku.Core.Global;
+
+namespace SkillBridge.Business.Model.Db
 {
     public class PendingProgramModel
     {
@@ -11,7 +13,7 @@
         public string Mou_Link { get; set; }       // URL link to actual MOU packet
         public bool Online { get; set; }
         public string Program_Duration { get; set; }
-        public string Delivery_Method { get; set; }
+        public string? Delivery_Method { get; set; }
         public string Opportunity_Type { get; set; }
         public string? SerializedTrainingPlan { get; set; }
         public bool IsAddition { get; set; }
@@ -28,8 +30,8 @@
             Organization_Id = model.Organization_Id;
             Mou_Link = model.Mou_Link;
             Online = model.Online;
-            Program_Duration = Util.Global.GlobalFunctions.GetProgramDuration(model.Program_Duration);
-            Delivery_Method = Util.Global.GlobalFunctions.GetDeliveryMethod(model.Delivery_Method);
+            Program_Duration = GlobalFunctions.GetProgramDuration(model.Program_Duration);
+            Delivery_Method = GlobalFunctions.GetDeliveryMethod(model.Delivery_Method);
             Opportunity_Type = model.Opportunity_Type;
             SerializedTrainingPlan = model.SerializedTrainingPlan;
             IsAddition = false;
@@ -45,13 +47,13 @@
             Organization_Id = model.Organization_Id;
             Mou_Link = model.Mou_Link;
             Online = model.Online;
-            Program_Duration = Util.Global.GlobalFunctions.GetProgramDuration(model.Program_Duration);
+            Program_Duration = GlobalFunctions.GetProgramDuration(model.Program_Duration);
             if (!string.IsNullOrWhiteSpace(model.Delivery_Method))
             {
                 var deliveryMethod = 0;
                 if (int.TryParse(model.Delivery_Method, out deliveryMethod))
                 {
-                    Delivery_Method = Util.Global.GlobalFunctions.GetDeliveryMethod(deliveryMethod);
+                    Delivery_Method = GlobalFunctions.GetDeliveryMethod(deliveryMethod);
                 }
             }
             Opportunity_Type = model.Opportunity_Type;

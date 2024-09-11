@@ -1,7 +1,7 @@
-﻿using Skillbridge.Business.Repository;
+﻿using SkillBridge.Business.Repository;
 using Taku.Core;
 
-namespace Skillbridge.Business.Query
+namespace SkillBridge.Business.Query
 {
     public class OrganizationCollectionQuery : IQuery
     {

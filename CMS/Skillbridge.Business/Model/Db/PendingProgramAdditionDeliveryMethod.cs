@@ -1,4 +1,4 @@
-﻿namespace Skillbridge.Business.Model.Db
+﻿namespace SkillBridge.Business.Model.Db
 {
     public class PendingProgramAdditionDeliveryMethod
     { 

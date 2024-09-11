@@ -1,4 +1,4 @@
-namespace Skillbridge.Business.Util.Comparer;
+namespace SkillBridge.Business.Util.Comparer;
 
 public class StringComparer : IComparer<string>
 {

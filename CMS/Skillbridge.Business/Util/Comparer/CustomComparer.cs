@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Skillbridge.Business.Util.Comparer;
+namespace SkillBridge.Business.Util.Comparer;
 
 public class CustomComparer : IComparer<string>
 {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Skillbridge.Business.Model.Db;
+using SkillBridge.Business.Model.Db;
 
-namespace Skillbridge.Business.Util.Audit
+namespace SkillBridge.Business.Util.Audit
 {
     public class AuditHelper
     {

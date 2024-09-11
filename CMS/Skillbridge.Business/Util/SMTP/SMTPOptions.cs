@@ -1,6 +1,6 @@
 ﻿using MailKit.Security;
 
-namespace Skillbridge.Business.Util.SMTP
+namespace SkillBridge.Business.Util.SMTP
 
 {
     public class SMTPOptions

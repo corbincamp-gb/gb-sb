@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Skillbridge.Business.Util.Audit
+namespace SkillBridge.Business.Util.Audit
 {
     public class UserResolverService
     {

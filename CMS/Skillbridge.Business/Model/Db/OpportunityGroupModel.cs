@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Skillbridge.Business.Model.Db
+namespace SkillBridge.Business.Model.Db
 {
     public class OpportunityGroupModel
     {

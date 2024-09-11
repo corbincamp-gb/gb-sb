@@ -1,0 +1,178 @@
+﻿@using SkillBridge.Business.Query
+@{
+    ViewData["Title"] = "Application Review";
+
+    var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
+    var formTemplates = (List<IntakeForm.Models.Data.Templates.DeserializedFormTemplate>)ViewBag.FormTemplates;
+    var responses = (List<IntakeForm.Models.Data.Forms.FormResponse>)ViewBag.ProgressBar;
+}
+
+@section Breadcrumb {
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="/intake/admin">Manage</a></li>
+    <li class="breadcrumb-item">@Html.Raw(entry.OrganizationName)</li>
+}
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Admin/_ReviewMenu.cshtml", "Application")
+
+<div class="sticky-top bg-white">
+
+    @if (entry.EntryStatusID == (int)IntakeForm.Models.Enumerations.EntryStatus.Submitted && User.IsInRole("Analyst"))
+    {
+        <div class="card mb-3">
+            <div class="card-header bg-secondary h5">Analyst Review</div>
+            <div class="card-body alert-primary">
+                @using (Html.BeginForm("SaveAnalystReview", "Admin", FormMethod.Post, new { area = "Intake", id = "review-form", @enctype = "multipart/form-data" }))
+                {
+                    <input type="hidden" id="ID" name="ID" value="@entry.ID" />
+                    <div class="row">
+                        <div class="col-2">
+                            <div><label for="EntryStatusID" class="form-label form-label-required">Change Status To:</label></div>
+                            <div>
+                                <select id="EntryStatusID" name="EntryStatusID" class="form-control"
+                                data-val="true"
+                                data-rule-required="true"
+                                data-msg-required="Please select a status.">
+                                    <!option value="">[None]</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.Incomplete)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.Incomplete))</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.UnderReview)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.UnderReview))</!option>
+                                </select>
+                            </div>
+                            <div data-valmsg-for="EntryStatusID" data-valmsg-replace="true"></div>
+                        </div>
+                        <div data-showifvalue="@((int)IntakeForm.Models.Enumerations.EntryStatus.Incomplete)" class="col-10 d-none">
+                            <div><label for="Notes" class="form-label form-label-required">Notes To Client</label></div>
+                            <div>
+                                <textarea id="Notes" name="Notes" class="form-control w-100"
+                                  data-val="true"
+                                  data-rule-required="false"
+                                  data-msg-required="Please provide notes to the client."></textarea>
+                            </div>
+                            <div data-valmsg-for="Notes" data-valmsg-replace="true"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+
+                    @Html.AntiForgeryToken()
+                }
+            </div>
+        </div>
+    }
+
+    @if (entry.EntryStatusID == (int)IntakeForm.Models.Enumerations.EntryStatus.UnderReview && User.IsInRole("OSD Reviewer"))
+    {
+        <div class="card mb-3">
+            <div class="card-header bg-secondary h5">OSD Review</div>
+            <div class="card-body alert-primary">
+                @using (Html.BeginForm("SaveOsdReview", "Admin", FormMethod.Post, new { area = "Intake", id = "review-form", @enctype = "multipart/form-data" }))
+                {
+                    <input type="hidden" id="ID" name="ID" value="@entry.ID" />
+                    <div class="row">
+                        <div class="col-2">
+                            <div><label for="ReviewComplete" class="form-label form-label-required">Review Complete:</label></div>
+                            <div>
+                                <input type="checkbox" id="ReviewComplete" name="ReviewComplete" class="form-check-input"
+                                data-val="true"
+                                data-rule-required="true"
+                                data-msg-required="Please check the box to indicate your review is complete." />
+                            </div>
+                        </div>
+                        <div class="col-10">
+                            <div><label for="Notes" class="form-label">Notes (Optional)</label></div>
+                            <div>
+                                <textarea id="Notes" name="Notes" class="form-control w-100"
+                                  data-val="false"
+                                  data-rule-required="false"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-valmsg-for="ReviewComplete" data-valmsg-replace="true"></div>
+
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+
+                    @Html.AntiForgeryToken()
+                }
+            </div>
+        </div>
+    }
+
+    @if (entry.EntryStatusID == (int)IntakeForm.Models.Enumerations.EntryStatus.PendingDetermination && User.IsInRole("OSD Signatory"))
+    {
+        <div class="alert alert-primary">
+            <div class="h5">Application Determination</div>
+            <div id="application-determination">
+                @using (Html.BeginForm("MakeDetermination", "Admin", FormMethod.Post, new { area = "Intake", id = "part-form", @enctype = "multipart/form-data" }))
+                {
+                    <input type="hidden" id="ID" name="ID" value="@entry.ID" />
+                    <div class="row">
+                        <div class="col-3">
+                            <div><label for="EntryStatusID" class="form-label form-label-required">Determination</label></div>
+                            <div>
+                                <select id="EntryStatusID" name="EntryStatusID" class="form-control"
+                                data-val="true"
+                                data-rule-required="true"
+                                data-msg-required="Please provide a determination.">
+                                    <!option value="">Select a determination</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.Approved)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.Approved))</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.YesIf)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.YesIf))</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.Rejected)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.Rejected))</!option>
+                                </select>
+                            </div>
+                            <div data-valmsg-for="EntryStatusID" data-valmsg-replace="true"></div>
+                        </div>
+                        <div data-showifvalue="@((int)IntakeForm.Models.Enumerations.EntryStatus.YesIf)" class="col-9 d-none">
+                            <div><label for="Notes" class="form-label form-label-required">Action Needed</label></div>
+                            <div>
+                                <textarea id="Notes" name="Notes" class="w-100"
+                                  data-val="true"
+                                  data-rule-required="true"
+                                  data-msg-required="Please provide an action needed."></textarea>
+                            </div>
+                            <div data-valmsg-for="Notes" data-valmsg-replace="true"></div>
+                        </div>
+                        <div data-showifvalue="@((int)IntakeForm.Models.Enumerations.EntryStatus.Rejected)" class="col-9 d-none">
+                            <div><label for="RejectionReason" class="form-label form-label-required">Reason</label></div>
+                            <div>
+                                <textarea id="RejectionReason" name="RejectionReason" class="w-100"
+                                  data-val="true"
+                                  data-rule-required="true"
+                                  data-msg-required="Please provide a reason."></textarea>
+                            </div>
+                            <div data-valmsg-for="RejectionReason" data-valmsg-replace="true"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+
+                    @Html.AntiForgeryToken()
+                }
+            </div>
+        </div>
+    }
+
+</div>
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Shared/_Entry.cshtml")
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Form/_Review.cshtml")
+
+@section Scripts
+{
+<script type="text/javascript">
+    $(function() { 
+        $('[name="EntryStatusID"]').on('change', function() {
+            $('[data-showifvalue]').addClass('d-none');
+            $('[data-showifvalue] [data-rule-required]').attr('data-rule-required', 'false');
+            $('[data-showifvalue="' + $(this).val() + '"]').removeClass('d-none');
+            $('[data-showifvalue="' + $(this).val() + '"] [data-rule-required]').attr('data-rule-required', 'true');
+        });
+    });
+</script>
+}

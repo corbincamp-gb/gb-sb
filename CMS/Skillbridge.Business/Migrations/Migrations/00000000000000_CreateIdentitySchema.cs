@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Skillbridge.Business.Migrations.Migrations
+namespace SkillBridge.Business.Migrations.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

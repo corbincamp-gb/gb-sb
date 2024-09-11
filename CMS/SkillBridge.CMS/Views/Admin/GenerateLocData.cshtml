@@ -1,0 +1,109 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<SkillBridge.Business.Model.Db.OpportunityModel>
+
+@{
+    ViewBag.Title = "Generate Locations Data";
+}
+
+<h1>Generate Locations Data</h1>
+
+@if (Model.Any())
+{
+    <textarea id="json-output-container" style="background:#fff;color:#000;border:1px solid #000;width:100%;height:300px;overflow-y:scroll;display:block;padding:5px;">
+        @ViewBag.GeneratedJSON
+    </textarea>
+    <button id="copy-btn" class="btn btn-primary mt-2">Copy</button>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No Opportunities Created Yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create an opportunity
+            </h5>
+            <a class="btn btn-primary" asp-controller="Opportunities" asp-action="CreateOpportunity">Create Opportunity</a>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($('#example').length > 0) {
+                $("#example").DataTable({
+                    "processing": false, // for show progress bar
+                    "serverSide": false, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    responsive: true,
+                    "autoWidth": false,
+                    "bAutoWidth": false,
+                    "order": [
+                        [3, 'asc']
+                    ],
+                    "columnDefs": [{
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    }]/*,
+                                "columns": [
+                                    { "data": "CustomerID", "name": "CustomerID", "autoWidth": true },
+                                    { "data": "Name", "name": "Name", "autoWidth": true },
+                                    { "data": "Address", "name": "Address", "autoWidth": true },
+                                    { "data": "Country", "name": "Country", "autoWidth": true },
+                                    { "data": "City", "name": "City", "autoWidth": true },
+                                    { "data": "Phoneno", "name": "Phoneno", "autoWidth": true },
+                                    {
+                                        "render": function (data, type, full, meta) { return '<a class="btn btn-info" href="/DemoGrid/Edit/' + full.CustomerID + '">Edit</a>'; }
+                                    },
+                                    {
+                                        data: null,
+                                        render: function (data, type, row) {
+                                            return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.CustomerID + "'); >Delete</a>";
+                                        }
+                                    },
+                                ]*/
+
+                });
+            }
+
+            $('#copy-btn').click(function(){
+                var selectedText = getSelectedText($('#json-output-container')[0]);
+
+                if(getSelectedText($('#json-output-container')[0]) != '') {
+          
+                    copyToClipboard(selectedText);
+                } else {
+                    $('#json-output-container').focus().select();
+                }
+                document.execCommand('copy');
+            });
+        });
+
+        function getSelectedText(e) {
+            var text   = "",
+                start  = e.selectionStart,
+                finish = e.selectionEnd;
+            text   = e.value.substring(start, finish);
+            return text;
+        }
+
+        function copyToClipboard(text){
+
+            var et = $('<textarea/>',{
+               css:{ opacity: '0' }
+            });
+            $('body').append(et);
+            $(et)[0].value = text;
+            $(et).focus().select();
+            document.execCommand('copy');
+            $(et).remove();
+            alert("Data copied to clipboard!");
+        }
+    </script>
+}
+
+

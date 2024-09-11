@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using Skillbridge.Business.Model.Db.TrainingPlans;
+using SkillBridge.Business.Model.Db.TrainingPlans;
 
-namespace Skillbridge.Business.Model.Db
+namespace SkillBridge.Business.Model.Db
 {
     [Table("ProgramTrainingPlans")]
     public class ProgramTrainingPlan

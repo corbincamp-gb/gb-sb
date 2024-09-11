@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Skillbridge.Business.Data;
+using SkillBridge.Business.Data;
 using Taku.Core;
 
-namespace Skillbridge.Business.Repository
+namespace SkillBridge.Business.Repository
 {
     public interface ILocationRepository : IRepository
     {

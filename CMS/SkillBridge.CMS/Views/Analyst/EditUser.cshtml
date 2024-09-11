@@ -1,0 +1,219 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SkillBridge.Business.Model.Db.EditUserModel
+@{
+    ViewData["Title"] = "Edit User";
+    var userAuthorities = (List<SkillBridge.Business.Model.Db.AspNetUserAuthorityModel>)ViewBag.UserAuthorities;
+}
+
+@if (!String.IsNullOrWhiteSpace(ViewBag.Message))
+{
+    <div class="alert alert-success" role="alert">
+        @Html.Raw(ViewBag.Message)
+    </div>
+}
+    <div class="card mt-3">
+        <div class="card-header">
+            <h3>Edit @Model.FirstName @Model.LastName</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <input type="hidden" id="Id" name="Id" value="@(Model.Id)" />
+                <div class="form-group">
+                    <label asp-for="Id"></label>
+                    @Html.Raw(Model.Id)
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="FirstName">First Name</label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="LastName">Last Name</label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="UserName"></label>
+                            <input asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Notes"></label>
+                    <textarea asp-for="Notes" class="form-control"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <a asp-action="ListUsers" class="btn btn-danger">Cancel</a>
+                    </div>
+                    <div class="col-6 text-right">
+                        <a href="/analyst/impersonateuser?id=@Model.Id" class="btn btn-warning">Impersonate</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3>User Roles</h3>
+        </div>
+        <div class="card-body">
+            <p>Note: if the organization this user is assigned to is a parent organization, the user has access to all the child organizations under that organization.</p>
+            @using (Html.BeginForm("AddRole", "Analyst", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+            <input type="hidden" id="UserId" name="UserId" value="@Model.Id" />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Organization</th>
+                        <th>Program/Program Office/Agency</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Roles != null)
+                    {
+                        foreach (var role in Model.Roles)
+                        {
+                            <tr>
+                                <td>@Html.Raw(role)</td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right"><a href="/analyst/removerole?userId=@Model.Id&role=@role" class="btn btn-danger">Remove</a></td>
+                            </tr>
+                            @if (userAuthorities != null)
+                            {
+                                var authorities = userAuthorities.Where(o => o.ProgramId.HasValue == (role.ToLower() == "program")).ToList();
+                                foreach (var auth in authorities)
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td>@Html.Raw(auth.Organization.Name)</td>
+                                        <td>@Html.Raw(auth.Program?.Program_Name ?? "All Programs")</td>
+                                        <td class="text-right"><a href="/analyst/removeauthority/@auth.Id" class="btn btn-danger">Remove</a></td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }
+                    <tr>
+                        <td>
+                            <select class="form-control" id="Role" name="Role"
+                            data-val="true"
+                            data-val-required="Please select a role.">
+                                <!option value="">[Select a role]</!option>
+                            @if (!Model.Roles.Any(o => o == "Admin"))
+                            {
+                                <!option value="Admin">Admin</!option>
+                            }
+                            @if (!Model.Roles.Any(o => o == "Analyst"))
+                            {
+                                <!option value="Analyst">Analyst</!option>
+                            }
+                            @if (!Model.Roles.Any(o => o == "OSD"))
+                            {
+                                <!option value="OSD">OSD</!option>
+                            }
+                            @if (!Model.Roles.Any(o => o == "Service"))
+                            {
+                                <!option value="Service">Service</!option>
+                            }
+                            @if (!Model.Roles.Any() || Model.Roles.Any(o => o == "Organization" || o == "Program"))
+                            {
+                                <!option value="Organization">Organization</!option>
+                                <!option value="Program">Program</!option>
+                            }
+                            </select>
+                            <span class="text-danger" data-valmsg-for="Role" data-valmsg-replace="true" />
+                        </td>
+                        <td>
+                            <div class="d-none">
+                                <select class="form-control" id="OrganizationId" name="OrganizationId"
+                                data-val="true"
+                                data-val-required="Please select an organization.">
+                                <!option value="">[Choose an Organization]</!option>
+                            </select>
+                            <span class="text-danger" data-valmsg-for="OrganizationId" data-valmsg-replace="true" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-none">
+                                <select class="form-control" id="ProgramId" name="ProgramId">
+                                    <!option value="">[All Programs]</!option>
+                                </select>
+                            </div>
+                        </td>
+                        <td class="text-right"><input type="submit" href="" class="btn btn-primary" value="Add" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            @Html.AntiForgeryToken()
+            }
+        </div>
+    </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>   <!--INTERFERES WITH DATATABLES FOR SOME REASON-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#Role').trigger('change');
+            $('#Role').change(function () {
+                $('#OrganizationId').parent().addClass('d-none');
+                $('#ProgramId').parent().addClass('d-none');
+
+                if ($(this).val() == 'Organization' || $(this).val() == 'Program')
+                {
+                    $('#OrganizationId').parent().removeClass('d-none');
+                    $('#ProgramId').parent().removeClass('d-none');
+                }
+            });
+
+            $('#OrganizationId').select2({
+                ajax: {
+                    url: '/analyst/organizations',
+                    dataType: 'json',
+                    data: function (params) {
+                        var query = {
+                            term: params.term,
+                        };
+                        return query;
+                    }
+                }
+            });
+
+            $('#ProgramId').select2({
+                ajax: {
+                    url: '/analyst/programs',
+                    dataType: 'json',
+                    data: function (params) {
+                        var query = {
+                            term: params.term,
+                            organizationId: $('#OrganizationId').val()
+                        };
+                        return query;
+                    }
+                }
+            });
+        });
+    </script>
+}

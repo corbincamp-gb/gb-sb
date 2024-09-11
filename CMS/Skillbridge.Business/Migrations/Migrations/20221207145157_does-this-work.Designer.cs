@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Skillbridge.Business.Data;
+using SkillBridge.Business.Data;
 
-namespace Skillbridge.Business.Migrations.Migrations
+namespace SkillBridge.Business.Migrations.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20221207145157_does-this-work")]
@@ -155,7 +155,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ApplicationUser", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -244,7 +244,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.DeliveryMethod", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.DeliveryMethod", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -259,7 +259,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("DeliveryMethods");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.JobFamily", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.JobFamily", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -274,7 +274,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("JobFamilies");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ParticipationPopulation", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.ParticipationPopulation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -289,7 +289,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("ParticipationPopulations");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.PendingProgramAdditionDeliveryMethod", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.PendingProgramAdditionDeliveryMethod", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -307,7 +307,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramAdditionsDeliveryMethod");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.PendingProgramAdditionJobFamily", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.PendingProgramAdditionJobFamily", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -325,7 +325,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramAdditionsJobFamily");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.PendingProgramAdditionParticipationPopulation", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.PendingProgramAdditionParticipationPopulation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -343,7 +343,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramAdditionsParticipationPopulation");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.PendingProgramAdditionService", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.PendingProgramAdditionService", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -361,7 +361,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramAdditionsService");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.PendingProgramDeliveryMethod", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.PendingProgramDeliveryMethod", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -382,7 +382,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramDeliveryMethod");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.PendingProgramJobFamily", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.PendingProgramJobFamily", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -403,7 +403,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramJobFamily");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.PendingProgramParticipationPopulation", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.PendingProgramParticipationPopulation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -424,7 +424,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramParticipationPopulation");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.PendingProgramService", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.PendingProgramService", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -445,7 +445,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramService");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramDeliveryMethod", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.ProgramDeliveryMethod", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -463,7 +463,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("ProgramDeliveryMethod");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramJobFamily", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.ProgramJobFamily", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -481,7 +481,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("ProgramJobFamily");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramParticipationPopulation", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.ProgramParticipationPopulation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -499,7 +499,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("ProgramParticipationPopulation");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramService", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.ProgramService", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -517,7 +517,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("ProgramService");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramState", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.ProgramState", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -535,7 +535,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("ProgramStates");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_APIState", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_APIState", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -562,7 +562,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("APIState");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_Audit", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_Audit", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -597,7 +597,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("Audits");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_Mou", b =>
+            modelBuilder.Entity("SkillBridge.Model.Db.Mou", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -630,7 +630,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("Mous");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_Opportunity", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_Opportunity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -813,7 +813,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("Opportunities");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_OpportunityGroup", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_OpportunityGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -842,7 +842,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("OpportunityGroups");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_Organization", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_Organization", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -919,7 +919,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("Organizations");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_PendingOpportunityAddition", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_PendingOpportunityAddition", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1094,7 +1094,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingOpportunityAdditions");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_PendingOpportunityChange", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_PendingOpportunityChange", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1269,7 +1269,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingOpportunityChanges");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_PendingOrganizationChange", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_PendingOrganizationChange", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1344,7 +1344,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingOrganizationChanges");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_PendingProgramAddition", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_PendingProgramAddition", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1512,7 +1512,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramAdditions");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_PendingProgramChange", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_PendingProgramChange", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1680,7 +1680,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("PendingProgramChanges");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.ProgramModel", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.ProgramModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1839,7 +1839,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("Programs");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_SiteConfiguration", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_SiteConfiguration", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1857,7 +1857,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("SiteConfiguration");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.Service", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.Service", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1872,7 +1872,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.State", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.State", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1904,7 +1904,7 @@ namespace Skillbridge.Business.Migrations.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SkillBridge_System_Prototype.Models.ApplicationUser", null)
+                    b.HasOne("SkillBridge.CMS.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1913,7 +1913,7 @@ namespace Skillbridge.Business.Migrations.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SkillBridge_System_Prototype.Models.ApplicationUser", null)
+                    b.HasOne("SkillBridge.CMS.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1928,7 +1928,7 @@ namespace Skillbridge.Business.Migrations.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SkillBridge_System_Prototype.Models.ApplicationUser", null)
+                    b.HasOne("SkillBridge.CMS.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1937,16 +1937,16 @@ namespace Skillbridge.Business.Migrations.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SkillBridge_System_Prototype.Models.ApplicationUser", null)
+                    b.HasOne("SkillBridge.CMS.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SkillBridge_System_Prototype.Models.SB_OpportunityGroup", b =>
+            modelBuilder.Entity("SkillBridge.CMS.Models.SB_OpportunityGroup", b =>
                 {
-                    b.HasOne("SkillBridge_System_Prototype.Models.SB_Opportunity", "SB_Opportunity")
+                    b.HasOne("SkillBridge.CMS.Models.SB_Opportunity", "SB_Opportunity")
                         .WithMany()
                         .HasForeignKey("Opportunity_Id")
                         .OnDelete(DeleteBehavior.Restrict)

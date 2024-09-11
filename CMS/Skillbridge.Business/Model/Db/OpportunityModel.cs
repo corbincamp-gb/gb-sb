@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-using Skillbridge.Business.Util;
+using SkillBridge.Business.Util;
 
-namespace Skillbridge.Business.Model.Db
+namespace SkillBridge.Business.Model.Db
 {
     public class OpportunityModel
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace Skillbridge.Business.Model.Db
+namespace SkillBridge.Business.Model.Db
 {
     [Table("Organizations")]
     public class OrganizationModel

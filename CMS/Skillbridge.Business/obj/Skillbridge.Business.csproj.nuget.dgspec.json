@@ -1,78 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\Skillbridge\\CMS\\Skillbridge.Business\\Skillbridge.Business.csproj": {}
+    "C:\\Projects\\Skillbridge\\CMS\\SkillBridge.Business\\SkillBridge.Business.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\Skillbridge\\CMS\\IntakeForm.Models\\IntakeForm.Models.csproj": {
+    "C:\\Projects\\Skillbridge\\CMS\\SkillBridge.Business\\SkillBridge.Business.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Skillbridge\\CMS\\IntakeForm.Models\\IntakeForm.Models.csproj",
-        "projectName": "IntakeForm.Models",
-        "projectPath": "C:\\Projects\\Skillbridge\\CMS\\IntakeForm.Models\\IntakeForm.Models.csproj",
+        "projectUniqueName": "C:\\Projects\\Skillbridge\\CMS\\SkillBridge.Business\\SkillBridge.Business.csproj",
+        "projectName": "SkillBridge.Business",
+        "projectPath": "C:\\Projects\\Skillbridge\\CMS\\SkillBridge.Business\\SkillBridge.Business.csproj",
         "packagesPath": "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Skillbridge\\CMS\\IntakeForm.Models\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\corbin.camp.ctr\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net6.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        }
-      },
-      "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Projects\\Skillbridge\\CMS\\Skillbridge.Business\\Skillbridge.Business.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Projects\\Skillbridge\\CMS\\Skillbridge.Business\\Skillbridge.Business.csproj",
-        "projectName": "Skillbridge.Business",
-        "projectPath": "C:\\Projects\\Skillbridge\\CMS\\Skillbridge.Business\\Skillbridge.Business.csproj",
-        "packagesPath": "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Skillbridge\\CMS\\Skillbridge.Business\\obj\\",
+        "outputPath": "C:\\Projects\\Skillbridge\\CMS\\SkillBridge.Business\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\corbin.camp.ctr\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -90,11 +29,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Projects\\Skillbridge\\CMS\\IntakeForm.Models\\IntakeForm.Models.csproj": {
-                "projectPath": "C:\\Projects\\Skillbridge\\CMS\\IntakeForm.Models\\IntakeForm.Models.csproj"
+              "C:\\Projects\\Skillbridge\\CMS\\SkillBridge.IntakeForm\\SkillBridge.IntakeForm.csproj": {
+                "projectPath": "C:\\Projects\\Skillbridge\\CMS\\SkillBridge.IntakeForm\\SkillBridge.IntakeForm.csproj"
               },
-              "C:\\Projects\\Skillbridge\\CMS\\Taku.Core\\Taku.Core.csproj": {
-                "projectPath": "C:\\Projects\\Skillbridge\\CMS\\Taku.Core\\Taku.Core.csproj"
+              "C:\\Projects\\Skillbridge\\Taku.Core\\Taku.Core.csproj": {
+                "projectPath": "C:\\Projects\\Skillbridge\\Taku.Core\\Taku.Core.csproj"
               }
             }
           }
@@ -120,7 +59,7 @@
             },
             "Azure.Identity": {
               "target": "Package",
-              "version": "[1.6.0, )"
+              "version": "[1.12.0, )"
             },
             "Azure.Security.KeyVault.Secrets": {
               "target": "Package",
@@ -140,7 +79,7 @@
             },
             "MailKit": {
               "target": "Package",
-              "version": "[2.11.1, )"
+              "version": "[2.12.0, )"
             },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
@@ -221,14 +160,75 @@
         }
       }
     },
-    "C:\\Projects\\Skillbridge\\CMS\\Taku.Core\\Taku.Core.csproj": {
+    "C:\\Projects\\Skillbridge\\CMS\\Skillbridge.IntakeForm\\SkillBridge.IntakeForm.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Skillbridge\\CMS\\Taku.Core\\Taku.Core.csproj",
-        "projectName": "Taku.Core",
-        "projectPath": "C:\\Projects\\Skillbridge\\CMS\\Taku.Core\\Taku.Core.csproj",
+        "projectUniqueName": "C:\\Projects\\Skillbridge\\CMS\\Skillbridge.IntakeForm\\SkillBridge.IntakeForm.csproj",
+        "projectName": "SkillBridge.IntakeForm",
+        "projectPath": "C:\\Projects\\Skillbridge\\CMS\\Skillbridge.IntakeForm\\SkillBridge.IntakeForm.csproj",
         "packagesPath": "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Skillbridge\\CMS\\Taku.Core\\obj\\",
+        "outputPath": "C:\\Projects\\Skillbridge\\CMS\\Skillbridge.IntakeForm\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\corbin.camp.ctr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Projects\\Skillbridge\\Taku.Core\\Taku.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\Skillbridge\\Taku.Core\\Taku.Core.csproj",
+        "projectName": "Taku.Core",
+        "projectPath": "C:\\Projects\\Skillbridge\\Taku.Core\\Taku.Core.csproj",
+        "packagesPath": "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\Skillbridge\\Taku.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\corbin.camp.ctr\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Skillbridge.Business.Model.Db.TrainingPlans
+namespace SkillBridge.Business.Model.Db.TrainingPlans
 {
     [Table("TrainingPlanInstructionalMethods")]
     public class TrainingPlanInstructionalMethod

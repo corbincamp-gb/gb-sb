@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Skillbridge.Business.Model.Db.TrainingPlans
+namespace SkillBridge.Business.Model.Db.TrainingPlans
 {
     [Table("InstructionalMethods")]
     public class InstructionalMethod

@@ -3,9 +3,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using SkillBridge_System_Prototype.Intake.Data;
+using SkillBridge.CMS.Intake.Data;
 
-namespace Skillbridge.Business.Migrations.Migrations.IntakeForm
+namespace SkillBridge.Business.Migrations.Migrations.IntakeForm
 {
     [DbContext(typeof(IntakeFormContext))]
     partial class IntakeFormContextModelSnapshot : ModelSnapshot
