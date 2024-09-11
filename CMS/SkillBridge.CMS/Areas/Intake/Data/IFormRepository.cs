@@ -1,12 +1,13 @@
-﻿using IntakeForm.Models.Data.Forms;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using IntakeForm.Models.Data.Forms;
 using IntakeForm.Models.View.Admin;
 using IntakeForm.Models.View.Forms;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Taku.Core;
 
-namespace SkillBridge.CMS.Intake.Data
+namespace SkillBridge.CMS.Areas.Intake.Data
 {
-    public interface IFormRepository
+    public interface IFormRepository : IRepository
     {
         /* Entries */
         Task<List<Entry>> GetEntries(AdminSearchModel searchModel);

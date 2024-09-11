@@ -22,6 +22,7 @@ using SkillBridge.Business.Data;
 using SkillBridge.Business.Model.Db;
 using SkillBridge.Business.Util.Ingest;
 using Taku.Core.Global;
+using SkillBridge.Business.Query.DataDownload;
 
 namespace SkillBridge.CMS.Controllers
 {
@@ -33,14 +34,21 @@ namespace SkillBridge.CMS.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _db;
         private readonly IEmailSender _emailSender;
+        private readonly IDropdownDataQuery _dropdownDataQuery;
 
-        public AdminController(ILogger<AdminController> logger, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ApplicationDbContext db, IEmailSender emailSender)
+        public AdminController(ILogger<AdminController> logger,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager, 
+            ApplicationDbContext db, 
+            IEmailSender emailSender,
+            IDropdownDataQuery dropdownDataQuery)
         {
             _logger = logger;
             _roleManager = roleManager;
             _userManager = userManager;
             _db = db;
             _emailSender = emailSender;
+            _dropdownDataQuery = dropdownDataQuery;
         }
 
         public IActionResult Index()
@@ -262,7 +270,7 @@ namespace SkillBridge.CMS.Controllers
                 newJson += "{";
 
                 newJson += "\"ID\": " + opp.Id + ",";
-                newJson += "\"GROUPID\": " + opp.Group_Id + ",";
+                newJson += "\"GROUPID\": " + opp.GroupId + ",";
                 newJson += "\"SERVICE\": " + opp.Service + ",";
                 newJson += "\"PROGRAM\": " + opp.Program_Name + ",";
                 newJson += "\"INSTALLATION\": " + opp.Installation + ",";
@@ -1112,7 +1120,7 @@ namespace SkillBridge.CMS.Controllers
                                 newJson.Append("\"PROVIDER UNIQUE ID\":" + opp.Organization_Id + ",");
                                 newJson.Append("\"PROGRAM UNIQUE ID\":" + opp.Program_Id + ",");
                                 newJson.Append("\"ID\":" + opp.Id + ",");
-                                newJson.Append("\"GROUPID\":" + opp.Group_Id + ",");
+                                newJson.Append("\"GROUPID\":" + opp.GroupId + ",");
                                 newJson.Append("\"SERVICE\":\"" + opp.Service + "\",");
                                 newJson.Append("\"PROGRAM\":\"" + org.Name + " - " + opp.Program_Name + "\",");
                                 newJson.Append("\"INSTALLATION\":\"" + opp.Installation + "\",");
@@ -1983,7 +1991,7 @@ namespace SkillBridge.CMS.Controllers
                         newJson.Append("{");
 
                         newJson.Append("\"ID\":" + opp.Id + ",");
-                        newJson.Append("\"GROUPID\":" + opp.Group_Id + ",");
+                        newJson.Append("\"GROUPID\":" + opp.GroupId + ",");
                         newJson.Append("\"SERVICE\":\"" + opp.Service + "\",");
                         newJson.Append("\"PROGRAM\":\"" + newName + "\",");
                         newJson.Append("\"INSTALLATION\":\"" + opp.Installation + "\",");
@@ -2134,6 +2142,13 @@ namespace SkillBridge.CMS.Controllers
             Console.WriteLine("newJson: " + newJson);
 
             return File(Encoding.UTF8.GetBytes(newJson.ToString()), "application/json", "locations.json");
+        }
+
+        [HttpGet]
+        public IActionResult DownloadDropDownData2()
+        {
+            return File(Encoding.UTF8.GetBytes(_dropdownDataQuery.Get().ToString()), "application/json", "dropdown-data.js");
+
         }
 
         [HttpGet]        
@@ -2672,7 +2687,7 @@ namespace SkillBridge.CMS.Controllers
             foreach (var s in ps)
             {
                 Console.WriteLine("s: " + s.Service_Id);
-                Service service = _db.Services.FirstOrDefault(x => x.Id == s.Service_Id);
+                MilitaryBranchModel service = _db.MilitaryBranches.FirstOrDefault(x => x.Id == s.Service_Id);
 
                 if (count == 1)
                 {
@@ -2789,7 +2804,7 @@ namespace SkillBridge.CMS.Controllers
                     //var org = _db.Organizations.SingleOrDefault(x => x.Id == prog.Id);
                     //string urlToDisplay = org != null ? org.Organization_Url : "";
 
-                    stringBuilder.AppendLine($"" + $"{ opp.Id}|{ opp.Group_Id}|{ opp.Service}|{ opp.Program_Name}|{ opp.Installation}|{ opp.City}|{ opp.State}|{ opp.Zip}|{ opp.Employer_Poc_Name}|{ opp.Employer_Poc_Email}|{ opp.Date_Program_Initiated}|{ opp.Training_Duration}|{ opp.Summary_Description}|{ opp.Jobs_Description}|{ opp.Locations_Of_Prospective_Jobs_By_State}|{ opp.Target_Mocs}|{ opp.Other}|{ opp.Mous}|{ opp.Lat}|{ opp.Long}|{ opp.Cost}|{ opp.Salary}|{ opp.Nationwide}");
+                    stringBuilder.AppendLine($"" + $"{ opp.Id}|{ opp.GroupId}|{ opp.Service}|{ opp.Program_Name}|{ opp.Installation}|{ opp.City}|{ opp.State}|{ opp.Zip}|{ opp.Employer_Poc_Name}|{ opp.Employer_Poc_Email}|{ opp.Date_Program_Initiated}|{ opp.Training_Duration}|{ opp.Summary_Description}|{ opp.Jobs_Description}|{ opp.Locations_Of_Prospective_Jobs_By_State}|{ opp.Target_Mocs}|{ opp.Other}|{ opp.Mous}|{ opp.Lat}|{ opp.Long}|{ opp.Cost}|{ opp.Salary}|{ opp.Nationwide}");
                 }
 
                 return File(Encoding.UTF8.GetBytes(stringBuilder.ToString()), "text/csv", "locs-" + DateTime.Today.ToString("MM-dd-yy") + ".csv");
@@ -5201,7 +5216,7 @@ namespace SkillBridge.CMS.Controllers
 
                     OpportunityModel newOpp = new OpportunityModel
                     {
-                        Group_Id = newGroupId,
+                        GroupId = newGroupId,
                         Organization_Id = newOrgId,
                         Organization_Name = csv.GetField("ORGANIZATION"),
                         Program_Id = newProgId,
@@ -5315,7 +5330,7 @@ namespace SkillBridge.CMS.Controllers
                     logMessage += "\nCost " + newOpp.Cost;
                     logMessage += "\nOther " + newOpp.Other;
                     logMessage += "\nNotes " + newOpp.Notes;
-                    logMessage += "\nGroup_Id " + newOpp.Group_Id;
+                    logMessage += "\nGroup_Id " + newOpp.GroupId;
                     logMessage += "\nLegacy_Program_Id " + newOpp.Legacy_Program_Id;
                     logMessage += "\nLegacy_Provider_Id " + newOpp.Legacy_Provider_Id;
                     logMessage += "\nLegacy_Opportunity_Id " + newOpp.Legacy_Opportunity_Id;
@@ -5721,7 +5736,7 @@ namespace SkillBridge.CMS.Controllers
         {
             string name = "";
 
-            Service service = _db.Services.FirstOrDefault(e => e.Id == id);
+            MilitaryBranchModel service = _db.MilitaryBranches.FirstOrDefault(e => e.Id == id);
 
             if(service != null)
             {
@@ -5735,7 +5750,7 @@ namespace SkillBridge.CMS.Controllers
         {
             int id = -1;
 
-            Service service = _db.Services.FirstOrDefault(e => e.Name.ToLower().Equals(name.ToLower()));
+            var service = _db.MilitaryBranches.FirstOrDefault(e => e.Name.ToLower().Equals(name.ToLower()));
 
             //Console.WriteLine("pop.Name: " + pop.Name);
             //Console.WriteLine("name: " + name);

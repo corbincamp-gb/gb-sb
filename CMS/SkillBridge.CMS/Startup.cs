@@ -12,10 +12,16 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using SkillBridge.CMS.Services;
 using System.Text.Json;
-using Autofac;
 using SkillBridge.Business.Data;
 using SkillBridge.Business.Model.Db;
+using SkillBridge.Business.Query;
+using SkillBridge.Business.Query.DataDownload;
 using SkillBridge.Business.Util.SMTP;
+using SkillBridge.CMS.Areas.Intake.Data;
+using Taku.Core;
+using SkillBridge.Business.Repository;
+using Taku.Core.Command;
+using SkillBridge.Business.Mapping;
 
 
 namespace SkillBridge.CMS
@@ -49,12 +55,29 @@ namespace SkillBridge.CMS
                 options.UseSqlServer(Configuration.GetValue<string>(connStr)));
 
 
-#region Dependency Injection
+            #region Dependency Injection
+            // commands
+            services.AddScoped<ISerializeObjectCommand, SerializeObjectCommand>();
 
-            services.AddScoped<Intake.Data.ITemplateRepository, Intake.Data.TemplateRepository>();
-            services.AddScoped<Intake.Data.IFormRepository, Intake.Data.FormRepository>();
 
-#endregion
+            // Mappings
+            services.AddScoped<IDropDownDataMapping, DropDownDataMapping>();
+            services.AddScoped<IRelateOrganizationMapping, RelateOrganizationMapping>();
+
+            // Repositories
+            services.AddScoped<ITemplateRepository, Intake.Data.TemplateRepository>();
+            services.AddScoped<IFormRepository, FormRepository>();
+            services.AddScoped<IMilitaryBranchRepository, MilitaryBranchRepository>();
+            services.AddScoped<IOpportunityRepository, OpportunityRepository>();
+
+
+            // Queries
+            services.AddScoped<IMilitaryBranchCollectionQuery, MilitaryBranchCollectionQuery>();
+            services.AddScoped<IOpportunityCollectionQuery, OpportunityCollectionQuery>();
+
+            services.AddScoped<IDropdownDataQuery, DropdownDataQuery>();
+
+            #endregion
 
 
             services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -84,21 +107,7 @@ namespace SkillBridge.CMS
             services.AddRazorPages();
             services.AddHttpContextAccessor();
             //services.AddTransient<IEmailSender, SMTP>();// Add email sending using mailkit
-
-            var builder = new ContainerBuilder();
-
-            var assembly = Assembly.GetExecutingAssembly();
-
-            builder.RegisterAssemblyTypes(assembly)
-                .Where(t => t.Name.EndsWith("Query")
-                            || t.Name.EndsWith("Mapping")
-                            || t.Name.EndsWith("Command")
-                            || t.Name.EndsWith("Repository")
-                            || t.Name.EndsWith("Broker")
-                            || t.Name.EndsWith("Factory"))
-                .AsImplementedInterfaces();
-
-
+            
              var smtp = JsonSerializer.Deserialize<SMTPOptions>(Configuration.GetValue<string>("SMTP"));
            
             services.Configure<SMTPOptions>(options =>

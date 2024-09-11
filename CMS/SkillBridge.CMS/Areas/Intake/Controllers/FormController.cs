@@ -11,6 +11,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using SkillBridge.Business.Data;
 using SkillBridge.Business.Model.Db;
+using SkillBridge.CMS.Areas.Intake.Data;
 
 namespace SkillBridge.CMS.Intake.Controllers
 {

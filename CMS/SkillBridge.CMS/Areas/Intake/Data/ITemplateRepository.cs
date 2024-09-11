@@ -1,10 +1,11 @@
-﻿using IntakeForm.Models;
+﻿using System.Threading.Tasks;
+using IntakeForm.Models;
 using IntakeForm.Models.Data.Templates;
-using System.Threading.Tasks;
+using Taku.Core;
 
-namespace SkillBridge.CMS.Intake.Data
+namespace SkillBridge.CMS.Areas.Intake.Data
 {
-    public interface ITemplateRepository
+    public interface ITemplateRepository :IRepository
     {
         Task<DeserializedFormTemplate> GetCurrentFormTemplate(Enumerations.TemplateType templateType);
         Task<DeserializedFormTemplate> GetFormTemplate(int id);

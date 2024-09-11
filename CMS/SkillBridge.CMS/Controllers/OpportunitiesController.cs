@@ -802,7 +802,7 @@ namespace SkillBridge.CMS.Controllers
             {
                 Id = opp.Id.ToString(),
                 Opportunity_Id = opp.Organization_Id,
-                Group_Id = opp.Group_Id,
+                Group_Id = opp.GroupId,
                 Is_Active = opp.Is_Active,
                 Program_Name = opp.Program_Name,
                 Opportunity_Url = opp.Opportunity_Url,
@@ -1493,7 +1493,7 @@ namespace SkillBridge.CMS.Controllers
                     string url = opp.Opportunity_Url != null ? EscCommas(opp.Opportunity_Url.Replace(System.Environment.NewLine, "")) : "";
                     string Employer_Poc_Email = EscCommas(opp.Employer_Poc_Email.Replace(System.Environment.NewLine, ""));
 
-                    stringBuilder.AppendLine($"{opp.Id},{opp.Group_Id},{programName},{url},{opp.Date_Program_Initiated},{opp.Date_Created},{opp.Date_Updated},{Employer_Poc_Name},{Employer_Poc_Email},{trainingDuration},{service},{deliveryMethod},{opp.Multiple_Locations},{programType},{jobFamilies},{pp},{opp.Support_Cohorts},{enrollmentDates},{opp.Mous},{opp.Num_Locations},{installation},{city},{state},{opp.Zip},{opp.Lat},{opp.Long},{opp.Nationwide},{opp.Online},{summaryDescription},{jobDescription},{linksTo},{states},{salary},{prospective},{targetMOCs},{otherElig},{cost},{other},{notes},{opp.Created_By},{opp.Updated_By},{opp.For_Spouses},{opp.Legacy_Opportunity_Id},{opp.Legacy_Program_Id},{opp.Legacy_Provider_Id}");
+                    stringBuilder.AppendLine($"{opp.Id},{opp.GroupId},{programName},{url},{opp.Date_Program_Initiated},{opp.Date_Created},{opp.Date_Updated},{Employer_Poc_Name},{Employer_Poc_Email},{trainingDuration},{service},{deliveryMethod},{opp.Multiple_Locations},{programType},{jobFamilies},{pp},{opp.Support_Cohorts},{enrollmentDates},{opp.Mous},{opp.Num_Locations},{installation},{city},{state},{opp.Zip},{opp.Lat},{opp.Long},{opp.Nationwide},{opp.Online},{summaryDescription},{jobDescription},{linksTo},{states},{salary},{prospective},{targetMOCs},{otherElig},{cost},{other},{notes},{opp.Created_By},{opp.Updated_By},{opp.For_Spouses},{opp.Legacy_Opportunity_Id},{opp.Legacy_Program_Id},{opp.Legacy_Provider_Id}");
                 }
 
                 //return File(Encoding.UTF8.GetBytes(stringBuilder.ToString()), "text/csv", "Opportunities-FULL-" + DateTime.Today.ToString("MM-dd-yy") + ".csv");

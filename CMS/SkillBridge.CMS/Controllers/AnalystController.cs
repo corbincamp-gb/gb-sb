@@ -262,9 +262,9 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Services Supported dropdown
-            List<Service> ss = new List<Service>();
+            List<MilitaryBranchModel> ss = new List<MilitaryBranchModel>();
 
-            foreach (Service s in _db.Services)
+            foreach (MilitaryBranchModel s in _db.MilitaryBranches)
             {
                 ss.Add(s);
             };
@@ -536,9 +536,9 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Populate Dropdown info for Service Dropdown
-            List<Service> ss = new List<Service>();
+            List<MilitaryBranchModel> ss = new List<MilitaryBranchModel>();
 
-            foreach (Service s in _db.Services)
+            foreach (var s in _db.MilitaryBranches)
             {
                 ss.Add(s);
             };
@@ -718,7 +718,7 @@ namespace SkillBridge.CMS.Controllers
             var model = new EditOpportunityModel
             {
                 Id = oppId,
-                Group_Id = opp.Group_Id,
+                Group_Id = opp.GroupId,
                 Opportunity_Id = opp.Id,
                 Is_Active = opp.Is_Active,
                 Program_Name = opp.Program_Name,
@@ -774,7 +774,7 @@ namespace SkillBridge.CMS.Controllers
             {
                 ViewBag.hasPendingChange = true;
 
-                ViewBag.Original_Group_Id = opp.Group_Id;
+                ViewBag.Original_Group_Id = opp.GroupId;
                 ViewBag.Original_Opportunity_Id = opp.Id;
                 ViewBag.Original_Program_Name = opp.Program_Name;
                 ViewBag.Original_Is_Active = opp.Is_Active;
@@ -2252,7 +2252,7 @@ namespace SkillBridge.CMS.Controllers
             // Update the organization with the data from the reviewed change
             if (opp != null)
             {
-                opp.Group_Id = model.Group_Id;
+                opp.GroupId = model.Group_Id;
                 opp.Program_Name = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Program_Name));
                 opp.Is_Active = model.Is_Active;
                 opp.Opportunity_Url = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Opportunity_Url));
@@ -3108,7 +3108,7 @@ namespace SkillBridge.CMS.Controllers
         {
             string name = "";
 
-            Service service = _db.Services.FirstOrDefault(e => e.Id == id);
+            MilitaryBranchModel service = _db.MilitaryBranches.FirstOrDefault(e => e.Id == id);
 
             if (service != null)
             {
@@ -3132,7 +3132,7 @@ namespace SkillBridge.CMS.Controllers
             foreach (var s in ps)
             {
                 Console.WriteLine("s: " + s.Service_Id);
-                Service service = _db.Services.FirstOrDefault(x => x.Id == s.Service_Id);
+                MilitaryBranchModel service = _db.MilitaryBranches.FirstOrDefault(x => x.Id == s.Service_Id);
 
                 if (count == 1)
                 {

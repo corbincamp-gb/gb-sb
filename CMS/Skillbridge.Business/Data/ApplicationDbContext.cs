@@ -34,7 +34,7 @@ namespace SkillBridge.Business.Data
         public DbSet<PendingProgramJobFamily> PendingProgramJobFamily { get; set; }
         public DbSet<PendingProgramAdditionJobFamily> PendingProgramAdditionsJobFamily { get; set; }
 
-        public DbSet<Service> Services { get; set; }
+        public DbSet<MilitaryBranchModel> MilitaryBranches { get; set; }
         public DbSet<ProgramService> ProgramService { get; set; }
         public DbSet<PendingProgramService> PendingProgramService { get; set; }
         public DbSet<PendingProgramAdditionService> PendingProgramAdditionsService { get; set; }

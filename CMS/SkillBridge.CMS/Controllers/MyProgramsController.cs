@@ -87,10 +87,10 @@ namespace SkillBridge.CMS.Controllers
             ViewBag.Job_Family_List = jfs;
 
             // Services Supported dropdown
-            List<Service> ss = new List<Service>();
+            List<MilitaryBranchModel> ss = new List<MilitaryBranchModel>();
             Console.WriteLine("should be looking at services");
 
-            foreach (Service s in _db.Services)
+            foreach (var s in _db.MilitaryBranches)
             {
                 Console.WriteLine("s: " + s);
                 ss.Add(s);
@@ -358,7 +358,7 @@ namespace SkillBridge.CMS.Controllers
         {
             string name = "";
 
-            Service service = _db.Services.FirstOrDefault(e => e.Id == id);
+            MilitaryBranchModel service = _db.MilitaryBranches.FirstOrDefault(e => e.Id == id);
 
             if (service != null)
             {
@@ -382,7 +382,7 @@ namespace SkillBridge.CMS.Controllers
             foreach (var s in ps)
             {
                 Console.WriteLine("s: " + s.Service_Id);
-                Service service = _db.Services.FirstOrDefault(x => x.Id == s.Service_Id);
+                MilitaryBranchModel service = _db.MilitaryBranches.FirstOrDefault(x => x.Id == s.Service_Id);
 
                 if (count == 1)
                 {
@@ -498,7 +498,7 @@ namespace SkillBridge.CMS.Controllers
             foreach (var s in ps)
             {
                 Console.WriteLine("s: " + s.Service_Id);
-                Service service = _db.Services.FirstOrDefault(x => x.Id == s.Service_Id);
+                MilitaryBranchModel service = _db.MilitaryBranches.FirstOrDefault(x => x.Id == s.Service_Id);
 
                 if (count == 1)
                 {
@@ -1056,9 +1056,9 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Populate Dropdown info for Service Dropdown
-            List<Service> ss = new List<Service>();
+            List<MilitaryBranchModel> ss = new List<MilitaryBranchModel>();
 
-            foreach (Service s in _db.Services)
+            foreach (MilitaryBranchModel s in _db.MilitaryBranches)
             {
                 ss.Add(s);
             };

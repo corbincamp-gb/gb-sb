@@ -297,7 +297,7 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Now, update the individual opportunities
-            List<OpportunityModel> opps = _db.Opportunities.Where(e => e.Group_Id == model.Group_Id).ToList();
+            List<OpportunityModel> opps = _db.Opportunities.Where(e => e.GroupId == model.Group_Id).ToList();
 
             foreach (OpportunityModel opp in opps)
             {
@@ -333,8 +333,8 @@ namespace SkillBridge.CMS.Controllers
         {
             // Find the opportunities with the specified group id
             var query = from p in _db.Opportunities
-                        where p.Group_Id == id
-                        orderby p.Group_Id
+                        where p.GroupId == id
+                        orderby p.GroupId
                         select p;
             var opps = query.ToList<OpportunityModel>();
 

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using SkillBridge.CMS.Intake.Data;
 using SkillBridge.Business.Data;
 using SkillBridge.Business.Model.Db;
+using SkillBridge.CMS.Areas.Intake.Data;
 
 namespace SkillBridge.CMS.Areas.Intake.Controllers
 {

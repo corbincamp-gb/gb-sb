@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SkillBridge.CMS.Areas.Intake.Data;
 
 namespace SkillBridge.CMS.Intake.Data
 {

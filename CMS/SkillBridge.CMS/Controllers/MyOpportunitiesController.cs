@@ -801,7 +801,7 @@ namespace SkillBridge.CMS.Controllers
             var model = new EditOpportunityModel
             {
                 Id = opp.Id.ToString(),
-                Group_Id = opp.Group_Id,
+                Group_Id = opp.GroupId,
                 Is_Active = opp.Is_Active,
                 Program_Name = opp.Program_Name,
                 Opportunity_Url = opp.Opportunity_Url,
@@ -1256,7 +1256,7 @@ namespace SkillBridge.CMS.Controllers
                 model = new EditOpportunityModel
                 {
                     Id = originalOpp.Id.ToString(),
-                    Group_Id = originalOpp.Group_Id,
+                    Group_Id = originalOpp.GroupId,
                     Is_Active = originalOpp.Is_Active,
                     Program_Name = originalOpp.Program_Name,
                     Opportunity_Url = originalOpp.Opportunity_Url,

@@ -5,15 +5,77 @@ using SkillBridge.Business.Util;
 
 namespace SkillBridge.Business.Model.Db
 {
-    public class OpportunityModel
+    public interface IOpportunity
+    {
+        int Id { get; set; }
+        int GroupId { get; set; }
+        int Organization_Id { get; set; }
+        int Program_Id { get; set; }
+        bool Is_Active { get; set; }
+        ProgramModel ProgramModel { get; set; }
+        DateTime Date_Deactivated { get; set; }
+        string Program_Name { get; set; }
+        string Opportunity_Url { get; set; }
+        DateTime Date_Program_Initiated { get; set; }
+        DateTime Date_Created { get; set; } // Date opportunity was created in system
+        DateTime Date_Updated { get; set; } // Date opportunity was last edited/updated in the system
+        string Employer_Poc_Name { get; set; }
+        string Employer_Poc_Email { get; set; }
+        string Training_Duration { get; set; }
+        string Service { get; set; }
+        string Delivery_Method { get; set; }
+        bool Multiple_Locations { get; set; }
+        string Program_Type { get; set; }
+        string Job_Families { get; set; }
+        string Participation_Populations { get; set; }
+        bool Support_Cohorts { get; set; }
+        string Enrollment_Dates { get; set; }
+        bool Mous { get; set; }
+        int Num_Locations { get; set; }
+        string Installation { get; set; }
+        string City { get; set; }
+        string State { get; set; }
+        string Zip { get; set; }
+        double Lat { get; set; }
+        double Long { get; set; }
+        bool Nationwide { get; set; }
+        bool Online { get; set; }
+        string Summary_Description { get; set; }
+        string Jobs_Description { get; set; }
+        string Links_To_Prospective_Jobs { get; set; }
+        string Locations_Of_Prospective_Jobs_By_State { get; set; }
+        string Salary { get; set; }
+        string Prospective_Job_Labor_Demand { get; set; }
+        string Target_Mocs { get; set; }
+        string Other_Eligibility_Factors { get; set; }
+        string Cost { get; set; }
+        string Other { get; set; }
+        string Notes { get; set; }
+        string Created_By { get; set; }
+        string Updated_By { get; set; }
+        bool For_Spouses { get; set; }
+        string Organization_Name { get; set; } // this is here so loading the list
+        string Mou_Link { get; set; } // URL link to actual MOU packet
+        DateTime Mou_Expiration_Date { get; set; }
+        string Admin_Poc_First_Name { get; set; }
+        string Admin_Poc_Last_Name { get; set; }
+        string Admin_Poc_Email { get; set; }
+        int Legacy_Opportunity_Id { get; set; }
+        int Legacy_Program_Id { get; set; }
+        int Legacy_Provider_Id { get; set; }
+    }
+
+    [Table("Opportunities")]
+    public class OpportunityModel :IOpportunity
     {
         [Key]
         [JsonProperty("ID")]
         public int Id { get; set; }
         //[Required]
         [Display(Name = "Group ID")]
+        [Column("Group_Id")]
         [JsonProperty("GROUPID")]
-        public int Group_Id { get; set; }
+        public int GroupId { get; set; }
             
         [ForeignKey("SB_Organization")]
         [JsonIgnore]

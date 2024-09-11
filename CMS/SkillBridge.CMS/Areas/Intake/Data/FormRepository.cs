@@ -1,19 +1,20 @@
-﻿using IntakeForm.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using IntakeForm.Models;
 using IntakeForm.Models.Data.Forms;
 using IntakeForm.Models.View.Admin;
 using IntakeForm.Models.View.Forms;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using SkillBridge.CMS.Intake.Data;
 
-namespace SkillBridge.CMS.Intake.Data
+namespace SkillBridge.CMS.Areas.Intake.Data
 {
     public class FormRepository : IFormRepository
     {
