@@ -1,4 +1,5 @@
-﻿@model IntakeForm.Models.View.Admin.AdminSearchModel
+﻿@using Skillbridge.Business.Query
+@model IntakeForm.Models.View.Admin.AdminSearchModel
 @{
     ViewData["Title"] = "Intake Form Admin";
 
@@ -32,7 +33,7 @@
                     <!option value="">[All]</!option>
                     @foreach (var status in System.Enum.GetValues<IntakeForm.Models.Enumerations.EntryStatus>())
                     {
-                        <!option value="@((int)status)" @(Model.EntryStatusId.GetValueOrDefault() == (int)status ? "selected" : String.Empty)>@Html.Raw(SkillBridge_System_Prototype.Util.Global.GlobalFunctions.GetEntryStatus((int)status))</!option>
+                        <!option value="@((int)status)" @(Model.EntryStatusId.GetValueOrDefault() == (int)status ? "selected" : String.Empty)>@Html.Raw(new EntryStatusQuery().Get(status))</!option>
                     }
                 </select>
             </div>
@@ -95,7 +96,7 @@
                     }
                     <div class="small">EIN: @(result.Ein)</div>
                 </td>
-                <td>@Html.Raw(SkillBridge_System_Prototype.Util.Global.GlobalFunctions.GetEntryStatus(result.EntryStatusID))</td>
+                <td>@Html.Raw(new EntryStatusQuery().Get(result.EntryStatusID))</td>
                 <td class="text-end">@(result.NumberOfPrograms)</td>
                 <td class="text-end">@(result.UpdatedDate.ToString("MM/dd/yyyy hh:mmtt"))</td>
                 <td class="text-end">@(result.SubmissionDate.HasValue ? result.SubmissionDate.Value.ToString("MM/dd/yyyy hh:mmtt") : String.Empty)</td>

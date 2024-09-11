@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Skillbridge.Business.Query
+@{
     ViewData["Title"] = "Application Review";
 
     var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
@@ -31,8 +32,8 @@
             @foreach (var status in entry.EntryStatusTracking.OrderByDescending(o => o.AddedDate))
             {
                 <tr>
-                    <td>@Html.Raw(SkillBridge_System_Prototype.Util.Global.GlobalFunctions.GetEntryStatus(status.OldEntryStatusID))</td>
-                    <td>@Html.Raw(SkillBridge_System_Prototype.Util.Global.GlobalFunctions.GetEntryStatus(status.NewEntryStatusID))</td>
+                    <td>@Html.Raw(new EntryStatusQuery().Get(status.OldEntryStatusID))</td>
+                    <td>@Html.Raw(new EntryStatusQuery().Get(status.NewEntryStatusID))</td>
                     <td>@Html.Raw(status.Notes)</td>
                     <td>@Html.Raw(status.AddedBy)</td>
                     <td>@status.AddedDate.ToString("MM/dd/yyyy hh:mmtt")</td>

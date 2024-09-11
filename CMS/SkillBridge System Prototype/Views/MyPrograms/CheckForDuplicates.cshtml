@@ -1,9 +1,9 @@
-﻿@using Microsoft.AspNetCore.Identity;
-@model CreateProgramViewModel
+﻿@using Skillbridge.Business.Model.Db
+@model SkillBridge_System_Prototype.ViewModel.CreateProgramViewModel
 
 @{
     ViewBag.Title = "My Programs - Potential Program Duplicate";
-    var programs = (List<SB_Program>)ViewBag.Programs;
+    var programs = (List<ProgramModel>)ViewBag.Programs;
     var properties = Model.GetType().GetProperties();
 }
 

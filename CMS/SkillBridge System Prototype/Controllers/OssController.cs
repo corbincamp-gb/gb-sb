@@ -1,27 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using CsvHelper;
-using CsvHelper.Configuration;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Util.Global;
-using Microsoft.AspNetCore.Http;
-using MoreLinq.Extensions;
-using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
-using Z.EntityFramework.Plus;
 using System.Linq.Dynamic.Core;
 using Skillbridge.Business.Data;
 

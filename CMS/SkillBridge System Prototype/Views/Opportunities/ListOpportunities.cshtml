@@ -1,7 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Skillbridge.Business.Model.Db
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@model IEnumerable<ListOpportunityModel>
+@model IEnumerable<Skillbridge.Business.Model.Db.ListOpportunityModel>
 
 @{
     ViewBag.Title = "All Opportunities";

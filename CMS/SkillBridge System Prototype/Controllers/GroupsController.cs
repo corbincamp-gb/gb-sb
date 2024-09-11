@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -49,7 +50,7 @@ namespace SkillBridge_System_Prototype.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGroupAsync(SB_OpportunityGroup model)
+        public async Task<IActionResult> CreateGroupAsync(OpportunityGroupModel model)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +92,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             /*foreach (int id in ids)
             {
-                SB_OpportunityGroup group = _db.OpportunityGroups.FirstOrDefault(x => x.Group_Id == id);
+                OpportunityModelGroup group = _db.OpportunityGroups.FirstOrDefault(x => x.Group_Id == id);
             }*/
 
             //int currentId = -1;
@@ -113,7 +114,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             //List<int> oppList = _db.OpportunityGroups.Select(d => d.Opportunity_Id).Distinct().ToList();
 
-            /*foreach (SB_OpportunityGroup g in _db.OpportunityGroups.OrderBy(x => x.Group_Id))
+            /*foreach (OpportunityModelGroup g in _db.OpportunityGroups.OrderBy(x => x.Group_Id))
             {
                 if(lastId == -1)
                 {
@@ -154,14 +155,14 @@ namespace SkillBridge_System_Prototype.Controllers
                 Console.WriteLine("Should be adding opportunity");
             }*/
 
-            List<SB_OpportunityGroup> groupOpportuntiies = _db.OpportunityGroups.OrderBy(x => x.Group_Id).ToList();
+            var groupOpportuntiies = _db.OpportunityGroups.OrderBy(x => x.Group_Id).ToList();
 
             for (int i=0; i < groupOpportuntiies.Count + 1; i++)    // Go an extra iteration for the last record to show, since we are comparing each item with prev item
             {
                 // If this isnt the last record
                 if (i != groupOpportuntiies.Count)
                 {
-                    SB_OpportunityGroup g = groupOpportuntiies[i];
+                    var g = groupOpportuntiies[i];
                     if (lastId == -1)
                     {
                         oppList.Clear();
@@ -202,7 +203,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 }
                 else// This is the last record
                 {
-                    SB_OpportunityGroup g = groupOpportuntiies[i - 1];  // get last record since we are over
+                    var g = groupOpportuntiies[i - 1];  // get last record since we are over
 
                     // Create the model to add
                     ListGroupsViewModel model = new ListGroupsViewModel
@@ -266,7 +267,7 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpGet]
         public IActionResult EditGroup(int id)
         {
-            SB_OpportunityGroup group = _db.OpportunityGroups.FirstOrDefault(e => e.Group_Id == id);
+            var group = _db.OpportunityGroups.FirstOrDefault(e => e.Group_Id == id);
 
             var model = new EditGroupViewModel
             {
@@ -285,9 +286,9 @@ namespace SkillBridge_System_Prototype.Controllers
         {
             Console.WriteLine("Saving updated coords to groups with group id: " + model.Group_Id);
             // Update the Opportunity Group Table with the change
-            List<SB_OpportunityGroup> groupOpps = _db.OpportunityGroups.Where(e => e.Group_Id == model.Group_Id).ToList();
+            var groupOpps = _db.OpportunityGroups.Where(e => e.Group_Id == model.Group_Id).ToList();
 
-            foreach(SB_OpportunityGroup group in groupOpps)
+            foreach(var group in groupOpps)
             {
                 group.Lat = Math.Round(model.Lat, 8);
                 group.Long = Math.Round(model.Long, 8);
@@ -296,9 +297,9 @@ namespace SkillBridge_System_Prototype.Controllers
             }
 
             // Now, update the individual opportunities
-            List<SB_Opportunity> opps = _db.Opportunities.Where(e => e.Group_Id == model.Group_Id).ToList();
+            List<OpportunityModel> opps = _db.Opportunities.Where(e => e.Group_Id == model.Group_Id).ToList();
 
-            foreach (SB_Opportunity opp in opps)
+            foreach (OpportunityModel opp in opps)
             {
                 opp.Lat = Math.Round(model.Lat, 8);
                 opp.Long = Math.Round(model.Long, 8);
@@ -314,7 +315,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 Console.WriteLine("Saved updated coords");
             }*/
 
-            SB_OpportunityGroup newGroup = _db.OpportunityGroups.FirstOrDefault(e => e.Group_Id == model.Group_Id);
+            var newGroup = _db.OpportunityGroups.FirstOrDefault(e => e.Group_Id == model.Group_Id);
 
             var model2 = new EditGroupViewModel
             {
@@ -335,7 +336,7 @@ namespace SkillBridge_System_Prototype.Controllers
                         where p.Group_Id == id
                         orderby p.Group_Id
                         select p;
-            var opps = query.ToList<SB_Opportunity>();
+            var opps = query.ToList<OpportunityModel>();
 
             ViewBag.GroupId = id;
             if(opps.Count > 0)

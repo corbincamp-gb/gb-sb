@@ -1,8 +1,12 @@
-﻿@using SkillBridge_System_Prototype.Enums;
-@using Microsoft.AspNetCore.Identity;
+﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Skillbridge.Business.Model.Db
+@using Taku.Core.Enums
+@using JobFamily = Skillbridge.Business.Model.Db.JobFamily
+@using ParticipationPopulation = Skillbridge.Business.Model.Db.ParticipationPopulation
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@model EditOpportunityModel
+@model Skillbridge.Business.Model.Db.EditOpportunityModel
 @{
     if (SignInManager.IsSignedIn(User))
     {

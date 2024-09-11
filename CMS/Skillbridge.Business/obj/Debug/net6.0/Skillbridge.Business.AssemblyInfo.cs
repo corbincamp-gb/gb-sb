@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap4")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Skillbridge.Business")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2561aec4f25b69f24480920afe94e8144da52137")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db149131f64e400134047135c3ad0edbbc8dec0e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Skillbridge.Business")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Skillbridge.Business")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

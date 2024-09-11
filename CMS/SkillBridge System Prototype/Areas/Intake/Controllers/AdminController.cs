@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using SkillBridge_System_Prototype.Intake.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using SkillBridge_System_Prototype.Models;
 using System;
 using IntakeForm.Models;
 using Microsoft.AspNetCore.Authorization;
 using IntakeForm.Models.Data.Templates;
 using System.Collections.Generic;
-using DocumentFormat.OpenXml.Office2010.Excel;
+using SkillBridge_System_Prototype.Areas.Intake.Controllers;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
 
 namespace SkillBridge_System_Prototype.Intake.Controllers
 {

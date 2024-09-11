@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity;
-@model IEnumerable<SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlan>
+﻿@model IEnumerable<Skillbridge.Business.Model.Db.TrainingPlans.TrainingPlan>
 
 @{
     ViewBag.Title = "Training Plans";
@@ -42,7 +41,7 @@
                         <td>
                             @if (tp.ProgramTrainingPlans.Any())
                             {
-                                @Html.Raw(tp.ProgramTrainingPlans.First().SB_Program.Organization_Name)
+                                @Html.Raw(tp.ProgramTrainingPlans.First().Program.Organization_Name)
                             }
                         </td>
                         <td>@Html.Raw(tp.JobTitle)</td>

@@ -1,8 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity;
-@using SkillBridge_System_Prototype.Enums;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Skillbridge.Business.Model.Db
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@model EditOrganizationModel
+@model Skillbridge.Business.Model.Db.EditOrganizationModel
 @{
     if (SignInManager.IsSignedIn(User))
     {
@@ -16,7 +17,7 @@
         }
     }
 
-    var mouFile = (SkillBridge_System_Prototype.Models.MouFile)ViewBag.MouFile;
+    var mouFile = (MouFile)ViewBag.MouFile;
 }
 
 <h1>@ViewData["Title"]</h1>

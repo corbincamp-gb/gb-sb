@@ -1,8 +1,9 @@
-﻿@using SkillBridge_System_Prototype.Enums;
-@using Microsoft.AspNetCore.Identity;
+﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Skillbridge.Business.Model.Db
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@model EditProgramModel
+@model Skillbridge.Business.Model.Db.EditProgramModel
 @{
     if (SignInManager.IsSignedIn(User))
     {
@@ -16,8 +17,8 @@
         }
     }
 
-    var opportunities = (List<SB_Opportunity>)ViewBag.Opportunities;
-    var programTrainingPlans = (List<SkillBridge_System_Prototype.Models.ProgramTrainingPlan>)ViewBag.ProgramTrainingPlans;
+    var opportunities = (List<OpportunityModel>)ViewBag.Opportunities;
+    var programTrainingPlans = (List<Skillbridge.Business.Model.Db.ProgramTrainingPlan>)ViewBag.ProgramTrainingPlans;
 }
 
 <div class="card mt-3">

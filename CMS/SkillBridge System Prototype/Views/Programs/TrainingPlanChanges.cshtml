@@ -1,7 +1,7 @@
-﻿@model SkillBridge_System_Prototype.Models.PendingProgramModel
+﻿@model Skillbridge.Business.Model.Db.PendingProgramModel
 @{
     ViewData["Title"] = $"Pending Change Review";
-    var trainingPlans = (List<SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlan>)ViewBag.TrainingPlans;
+    var trainingPlans = (List<Skillbridge.Business.Model.Db.TrainingPlans.TrainingPlan>)ViewBag.TrainingPlans;
 }
 
 <h1>@Html.Raw(ViewData["Title"])</h1>

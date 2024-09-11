@@ -63,8 +63,8 @@ namespace SkillBridgeConsoleApp
 
                 if (orgId > 0) {
                     var bytes = await System.IO.File.ReadAllBytesAsync(file);
-                    var exists = await _db.Database.SqlQueryRaw<int>($"select Id from OrganizationFiles where FileName = '{fileInfo.Name}'").ToListAsync();
-                    if (exists == null || exists.Count == 0)
+                    var exists = await _db.Database.ExecuteSqlRawAsync("select Id from OrganizationFiles where FileName = '{fileInfo.Name}'");
+                    if (exists.Equals(1))
                     {
                         await _db.Database.ExecuteSqlRawAsync("insert into OrganizationFiles(OrganizationId, FileType, FileName, ContentType, ContentLength, Blob, CreateDate, CreateBy, IsActive) values(@OrganizationId, 'Historical Training Plan', @FileName, 'application/pdf', @ContentLength, @Blob, getdate(), 'Import', 1)"
                             , new SqlParameter("OrganizationId", orgId)

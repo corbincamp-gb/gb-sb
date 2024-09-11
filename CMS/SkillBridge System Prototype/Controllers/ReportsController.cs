@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -53,7 +52,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 endDate = DateTime.Today;
             }
 
-            List<SB_Mou> mous = _db.Mous.Where(s => s.Expiration_Date >= startDate.Value && s.Expiration_Date <= endDate.Value.AddDays(1).AddSeconds(-1)).ToList();
+            List<MouModel> mous = _db.Mous.Where(s => s.Expiration_Date >= startDate.Value && s.Expiration_Date <= endDate.Value.AddDays(1).AddSeconds(-1)).ToList();
 
             ViewBag.StartDate = startDate;
             ViewBag.EndDate = endDate;
@@ -106,7 +105,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_Organization> orgs = _db.Organizations.Where(s => s.Date_Updated > pastDate).ToList();
+            List<OrganizationModel> orgs = _db.Organizations.Where(s => s.Date_Updated > pastDate).ToList();
 
             ViewBag.numDays = 30;
 
@@ -119,7 +118,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_Organization> orgs = _db.Organizations.Where(s => s.Date_Updated > pastDate).ToList();
+            List<OrganizationModel> orgs = _db.Organizations.Where(s => s.Date_Updated > pastDate).ToList();
 
             ViewBag.numDays = numDays;
 
@@ -133,8 +132,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
-
-            List<SB_Program> progs = _db.Programs.Where(s => s.Date_Updated > pastDate).ToList();
+            var progs = _db.Programs.Where(s => s.Date_Updated > pastDate).ToList();
 
             ViewBag.numDays = 30;
 
@@ -147,7 +145,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_Program> progs = _db.Programs.Where(s => s.Date_Updated > pastDate).ToList();
+            var progs = _db.Programs.Where(s => s.Date_Updated > pastDate).ToList();
 
             ViewBag.numDays = numDays;
 
@@ -162,7 +160,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_Opportunity> opps = _db.Opportunities.Where(s => s.Date_Updated > pastDate).ToList();
+            var opps = _db.Opportunities.Where(s => s.Date_Updated > pastDate).ToList();
 
             ViewBag.numDays = 30;
 
@@ -175,7 +173,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_Opportunity> opps = _db.Opportunities.Where(s => s.Date_Updated > pastDate).ToList();
+            var opps = _db.Opportunities.Where(s => s.Date_Updated > pastDate).ToList();
 
             ViewBag.numDays = numDays;
 
@@ -190,7 +188,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_PendingOrganizationChange> orgs = _db.PendingOrganizationChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
+            var orgs = _db.PendingOrganizationChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
 
             ViewBag.numDays = 30;
 
@@ -203,7 +201,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_PendingOrganizationChange> orgs = _db.PendingOrganizationChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
+            var orgs = _db.PendingOrganizationChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
 
             ViewBag.numDays = numDays;
 
@@ -218,7 +216,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_PendingProgramChange> progs = _db.PendingProgramChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
+            List<PendingProgramChangeModel> progs = _db.PendingProgramChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
 
             ViewBag.numDays = 30;
 
@@ -231,7 +229,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_PendingProgramChange> progs = _db.PendingProgramChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
+            List<PendingProgramChangeModel> progs = _db.PendingProgramChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
 
             ViewBag.numDays = numDays;
 
@@ -246,7 +244,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_PendingOpportunityChange> opps = _db.PendingOpportunityChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
+            var opps = _db.PendingOpportunityChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
 
             ViewBag.numDays = 30;
 
@@ -259,7 +257,7 @@ namespace SkillBridge_System_Prototype.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            List<SB_PendingOpportunityChange> opps = _db.PendingOpportunityChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
+            var opps = _db.PendingOpportunityChanges.Where(s => s.Requires_OSD_Review == true && s.Last_Admin_Action_Time > pastDate).ToList();
 
             ViewBag.numDays = numDays;
 

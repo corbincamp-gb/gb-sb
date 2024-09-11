@@ -1,8 +1,9 @@
-﻿@model EditOrganizationModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Skillbridge.Business.Model.Db.EditOrganizationModel
 @{
     ViewData["Title"] = "Edit Organization";
 
-    var mouFile = (SkillBridge_System_Prototype.Models.MouFile)ViewBag.MouFile;
+    var mouFile = (Skillbridge.Business.Model.Db.MouFile)ViewBag.MouFile;
 }
 
 <h1>Edit Organization</h1>

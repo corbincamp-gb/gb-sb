@@ -1,8 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity;
-@using SkillBridge_System_Prototype.Enums;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Skillbridge.Business.Model.Db
+@using Taku.Core.Enums
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@model IEnumerable<SB_Organization>
+@model IEnumerable<OrganizationModel>
 
 @{
     ViewBag.Title = "All Organizations";

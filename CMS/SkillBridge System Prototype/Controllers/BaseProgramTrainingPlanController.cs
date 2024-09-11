@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using SkillBridge_System_Prototype.Models.TrainingPlans;
-using Microsoft.Extensions.Configuration;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Model.Db.TrainingPlans;
+using Skillbridge.Business.Repository.Repositories;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -52,7 +48,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 return View("NotFound");
             }
 
-            var repository = new Repositories.TrainingPlanRepository(_db);
+            var repository = new TrainingPlanRepository(_db);
             var trainingPlans = await repository.GetTrainingPlansByOrgIdAsync(pending.Organization_Id);
 
             ViewBag.TrainingPlans = trainingPlans;
@@ -62,7 +58,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
         protected async Task<IActionResult> BaseViewTrainingPlan(int id, string view)
         {
-            var repository = new Repositories.TrainingPlanRepository(_db);
+            var repository = new TrainingPlanRepository(_db);
             var trainingPlan = await repository.GetTrainingPlanAsync(id);
 
             if (trainingPlan == null)

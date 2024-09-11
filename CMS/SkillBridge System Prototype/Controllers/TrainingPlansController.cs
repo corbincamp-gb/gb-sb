@@ -10,22 +10,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Z.EntityFramework.Plus;
-using SkillBridge_System_Prototype.Models.TrainingPlans;
-using NuGet.Protocol.Core.Types;
-using DocumentFormat.OpenXml.Office2013.Excel;
 using Microsoft.Extensions.Configuration;
-using System.Net;
-using System.Security.Policy;
-using Microsoft.AspNetCore.Http.Extensions;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
-using Syncfusion.HtmlConverter;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Model.Db.TrainingPlans;
+using Skillbridge.Business.Repository.Repositories;
 
 namespace SkillBridge_System_Prototype.Controllers
 {

@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Util.Global;
-using Microsoft.EntityFrameworkCore;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
-using Z.EntityFramework.Plus;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Repository.Repositories;
+using Taku.Core.Global;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -82,12 +81,12 @@ namespace SkillBridge_System_Prototype.Controllers
             }
 
             // Look for parent organization
-            SB_Organization org = organizations.FirstOrDefault(o => o.Parent_Organization_Name == o.Name);
+            OrganizationModel org = organizations.FirstOrDefault(o => o.Parent_Organization_Name == o.Name);
             if (org == null) org = organizations.FirstOrDefault(o => o.Id == id);
-            SB_Mou mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
+            var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
 
             // Find any pending changes for this organization
-            SB_PendingOrganizationChange pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == org.Id && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == org.Id && e.Pending_Change_Status == 0);
 
             var model = new EditOrganizationModel
             {
@@ -141,7 +140,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return File(mouFile.FileBlob.Blob, mouFile.ContentType);
         }
 
-        public EditOrganizationModel UpdateOrgModelWithPendingChanges(EditOrganizationModel model, SB_PendingOrganizationChange pendingChange)
+        public EditOrganizationModel UpdateOrgModelWithPendingChanges(EditOrganizationModel model, PendingOrganizationChangeModel pendingChange)
         {
             if (model.Is_Active != pendingChange.Is_Active) { model.Is_Active = pendingChange.Is_Active; model.Pending_Fields.Add("Is_Active"); }
 
@@ -201,10 +200,10 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpPost]
         public async Task<IActionResult> EditOrganization(EditOrganizationModel model)
         {
-            //SB_PendingOrganizationChange org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            //PendingOrganizationModel org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(model.Id));
 
             // Find any pending changes for this organization
-            SB_PendingOrganizationChange pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -237,7 +236,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 else  // If not, create a new one
                 {
                     // Create the pending change object to push to the database table
-                    SB_PendingOrganizationChange org = new SB_PendingOrganizationChange
+                    var org = new PendingOrganizationChangeModel()
                     {
                         Is_Active = model.Is_Active,
                         // Id = this is auto-incremented as its added to the pending change table

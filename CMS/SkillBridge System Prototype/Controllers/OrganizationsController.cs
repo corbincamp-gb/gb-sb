@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
@@ -14,13 +13,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using SkillBridge_System_Prototype.ViewModel;
 using Z.EntityFramework.Plus;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Repository.Repositories;
+using Taku.Core.Global;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -58,7 +58,7 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpGet]
         public IActionResult CreateOrganization()
         {
-            List<SB_Mou> mouList = _db.Mous.ToList();
+            var mouList = _db.Mous.ToList();
 
             CreateOrganizationModelView model = new CreateOrganizationModelView
             {
@@ -86,9 +86,10 @@ namespace SkillBridge_System_Prototype.Controllers
 
                     if(model.Mou_Id > 0)
                     {
-                        //SB_Mou mou = _db.Mous.FirstOrDefault(m => m.Id == model.Mou_Id);
+                        //var mou = _db.Mous.FirstOrDefault(m => m.Id == model.Mou_Id);
 
-                        SB_Organization org = new SB_Organization
+                        //TODO: Convert to Mapping
+                        var org = new OrganizationModel
                         {
                             Is_Active = model.Is_Active,
                             Mou_Id = model.Mou_Id,
@@ -119,7 +120,8 @@ namespace SkillBridge_System_Prototype.Controllers
                     }
                     else
                     {
-                        SB_Mou mou = new SB_Mou
+                        //TODO: Convert to Mapping
+                        var mou = new MouModel()
                         {
                             Creation_Date = model.Creation_Date,
                             Expiration_Date = model.Expiration_Date,
@@ -137,7 +139,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
                         if (result > 0)
                         {
-                            SB_Organization org = new SB_Organization
+                            OrganizationModel org = new OrganizationModel
                             {
                                 Is_Active = model.Is_Active,
                                 Mou_Id = mou.Id,
@@ -198,7 +200,7 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> EditOrganization(string id, bool edit)
         {
             // Find any pending changes for this opportunity
-            SB_PendingOrganizationChange pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(id) && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(id) && e.Pending_Change_Status == 0);
 
             // Check for pending change, if it exists, redirect analyst user to the pending change instead
             if (pendingChange != null)
@@ -208,10 +210,10 @@ namespace SkillBridge_System_Prototype.Controllers
             }
 
             // Find the existing Organization in the current database
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(id));
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(id));
 
             // Find any pending changes for this organization
-            //SB_PendingOrganizationChange pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(id) && e.Pending_Change_Status == 0);
+            //PendingOrganizationModel pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(id) && e.Pending_Change_Status == 0);
 
             if (org == null)
             {
@@ -219,8 +221,9 @@ namespace SkillBridge_System_Prototype.Controllers
                 return View("NotFound");
             }
 
-            SB_Mou mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
+            var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
 
+            // TODO: convert to mapping
             var model = new EditOrganizationModel
             {
                 Id = org.Id.ToString(),
@@ -268,7 +271,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return View("~/Views/Organizations/EditOrganization.cshtml", model);
         }
 
-        public EditOrganizationModel UpdateOrgModelWithPendingChanges(EditOrganizationModel model, SB_PendingOrganizationChange pendingChange)
+        public EditOrganizationModel UpdateOrgModelWithPendingChanges(EditOrganizationModel model, PendingOrganizationChangeModel pendingChange)
         {
             if (model.Is_Active != pendingChange.Is_Active) { model.Is_Active = pendingChange.Is_Active; model.Pending_Fields.Add("Is_Active"); }
 
@@ -329,12 +332,12 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpPost]
         public async Task<IActionResult> EditOrganization(EditOrganizationModel model)
         {
-            //SB_PendingOrganizationChange org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            //PendingOrganizationModel org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(model.Id));
 
             // Find any pending changes for this organization
-            SB_PendingOrganizationChange pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
 
-            SB_Organization origOrg = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            OrganizationModel origOrg = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(model.Id));
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -368,7 +371,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 else  // If not, create a new one
                 {
                     // Create the pending change object to push to the database tabler
-                    SB_PendingOrganizationChange org = new SB_PendingOrganizationChange
+                    var org = new PendingOrganizationChangeModel
                     {
                         // Id = this is auto-incremented as its added to the pending change table
                         Is_Active = model.Is_Active,
@@ -397,7 +400,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 if (result >= 1)    // RESULT IS ACTUALLY THE NUMBER OF RECORDS UPDATED -- MAY NEED TO CHANGE THIS EVERYWHERE
                 {
                     // Find this specific pending change
-                    //SB_PendingOrganizationChange pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(orgId) && e.Pending_Change_Status == 0);
+                    //PendingOrganizationModel pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(orgId) && e.Pending_Change_Status == 0);
 
                     //string userName = HttpContext.User.Identity.Name;
 
@@ -453,10 +456,10 @@ namespace SkillBridge_System_Prototype.Controllers
                                 var progsToUpdate = _db.Programs.Where(p => p.Organization_Id == origOrg.Id);
                                 var oppsToUpdate = _db.Opportunities.Where(p => p.Organization_Id == origOrg.Id);
 
-                                if (progsToUpdate.ToList<SB_Program>().Count > 0)
+                                if (progsToUpdate.ToList<ProgramModel>().Count > 0)
                                 {
                                     Console.WriteLine("There are programs to update on disable");
-                                    foreach (SB_Program p in progsToUpdate)
+                                    foreach (ProgramModel p in progsToUpdate)
                                     {
                                         p.Is_Active = false;
                                         p.Date_Deactivated = DateTime.Now;
@@ -464,10 +467,10 @@ namespace SkillBridge_System_Prototype.Controllers
                                     }
                                 }
 
-                                if (oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                                if (oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                                 {
                                     Console.WriteLine("There are opportunities to update on disable");
-                                    foreach (SB_Opportunity o in oppsToUpdate)
+                                    foreach (OpportunityModel o in oppsToUpdate)
                                     {
                                         o.Is_Active = false;
                                         o.Date_Deactivated = DateTime.Now;
@@ -482,15 +485,15 @@ namespace SkillBridge_System_Prototype.Controllers
                                 var progsToUpdate = _db.Programs.Where(p => p.Organization_Id == origOrg.Id);
                                 var oppsToUpdate = _db.Opportunities.Where(p => p.Organization_Id == origOrg.Id);
 
-                                if (progsToUpdate.ToList<SB_Program>().Count > 0 || oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                                if (progsToUpdate.ToList<ProgramModel>().Count > 0 || oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                                 {
-                                    foreach (SB_Program p in progsToUpdate)
+                                    foreach (ProgramModel p in progsToUpdate)
                                     {
                                         p.Organization_Name = origOrg.Name;
                                         _db.Programs.Update(p);
                                     }
 
-                                    foreach (SB_Opportunity o in oppsToUpdate)
+                                    foreach (OpportunityModel o in oppsToUpdate)
                                     {
                                         o.Organization_Name = origOrg.Name;
                                         _db.Opportunities.Update(o);
@@ -624,7 +627,7 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteOrganization(string id)
         {
-            SB_PendingOrganizationChange org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(id));
+            var org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(id));
 
             if (org == null)
             {
@@ -665,7 +668,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
                 stringBuilder.AppendLine("Id,Mou_Id,Is_MOU_Parent,Name,Poc_First_Name,Poc_Last_Name,Poc_Email,Poc_Phone,Date_Created,Date_Updated,Created_By,Updated_By,Organization_Url,Organization_Type, Notes,Legacy_Provider_Id,Legacy_MOU_Id");
 
-                foreach (SB_Organization org in orgs)
+                foreach (OrganizationModel org in orgs)
                 {
                     string newOrgName = EscCommas(org.Name.Replace(System.Environment.NewLine, ""));
                     string Poc_First_Name = EscCommas(org.Poc_First_Name.Replace(System.Environment.NewLine, ""));
@@ -702,7 +705,7 @@ namespace SkillBridge_System_Prototype.Controllers
         }
 
 
-        public byte[] WriteCsvToMemory(IEnumerable<SB_Organization> records)
+        public byte[] WriteCsvToMemory(IEnumerable<OrganizationModel> records)
         {
             using (var memoryStream = new MemoryStream())
             using (var streamWriter = new StreamWriter(memoryStream))
@@ -742,7 +745,7 @@ namespace SkillBridge_System_Prototype.Controllers
          [HttpGet]
         public IActionResult EditOrganization(string id)
         {
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(id));
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(id));
 
             if (org == null)
             {
@@ -773,7 +776,7 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpPost]
         public async Task<IActionResult> EditOrganization(EditOrganizationModel model)
         {
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(model.Id));
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -817,7 +820,7 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteOrganization(string id)
         {
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(id));
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(id));
 
             if (org == null)
             {
@@ -845,7 +848,7 @@ namespace SkillBridge_System_Prototype.Controllers
     }
 }
 
-public sealed class OrganizationMap : ClassMap<SB_Organization>
+public sealed class OrganizationMap : ClassMap<OrganizationModel>
 {
     public OrganizationMap()
     {

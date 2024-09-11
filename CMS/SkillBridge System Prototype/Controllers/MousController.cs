@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -53,7 +53,7 @@ namespace SkillBridge_System_Prototype.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMouAsync(SB_Mou model)
+        public async Task<IActionResult> CreateMouAsync(MouModel model)
         {
             if (ModelState.IsValid)
             {

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SkillBridgeConsoleApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2561aec4f25b69f24480920afe94e8144da52137")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db149131f64e400134047135c3ad0edbbc8dec0e")]
 [assembly: System.Reflection.AssemblyProductAttribute("SkillBridgeConsoleApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SkillBridgeConsoleApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

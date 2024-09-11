@@ -1,8 +1,7 @@
-﻿@using SkillBridge_System_Prototype.Enums;
-@{
-    var trainingPlan = (SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlan)Model;
-    var trainingPlanLengthsList = (List<SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlanLength>)ViewBag.TrainingPlanLengthsList;
-    var instructionalMethodsList = (List<SkillBridge_System_Prototype.Models.TrainingPlans.InstructionalMethod>)ViewBag.InstructionalMethodsList;
+﻿@{
+    var trainingPlan = (Skillbridge.Business.Model.Db.TrainingPlans.TrainingPlan)Model;
+    var trainingPlanLengthsList = (List<Skillbridge.Business.Model.Db.TrainingPlans.TrainingPlanLength>)ViewBag.TrainingPlanLengthsList;
+    var instructionalMethodsList = (List<Skillbridge.Business.Model.Db.TrainingPlans.InstructionalMethod>)ViewBag.InstructionalMethodsList;
 }
 <div class="card">
     <div class="card-header h5">Training Plan</div>

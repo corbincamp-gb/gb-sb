@@ -6,16 +6,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Models.TrainingPlans;
-using SkillBridge_System_Prototype.Util.Global;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SkillBridge_System_Prototype.ViewModel;
+using Skillbridge.Business.Command;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Model.Db.TrainingPlans;
+using Skillbridge.Business.Query;
+using Skillbridge.Business.Repository.Repositories;
+using Taku.Core.Global;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -63,7 +67,7 @@ namespace SkillBridge_System_Prototype.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditHomepageNotification(SB_SiteConfiguration model)
+        public async Task<IActionResult> EditHomepageNotification(SiteConfigurationModel model)
         {
             // Get the config record (there's only one in the table)
             var config = _db.SiteConfiguration.FirstOrDefault(m => m.Id == 1);
@@ -111,10 +115,10 @@ namespace SkillBridge_System_Prototype.Controllers
         public IActionResult ReviewPendingOrganizationChange(string id, string orgId)
         {
             // Find this specific pending change
-            SB_PendingOrganizationChange pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(id));
+            var pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(id));
 
             // Find the existing Organization in the current database from the Organization_Id
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == pendingChange.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == pendingChange.Organization_Id);
 
             if (org == null)
             {
@@ -190,10 +194,10 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> ReviewPendingProgramChange(string id, string progId)
         {
             // Find this specific pending change
-            SB_PendingProgramChange pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Id == int.Parse(id));
+            PendingProgramChangeModel pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Id == int.Parse(id));
 
             // Find the existing Program in the current database from the Program_Id
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == pendingChange.Program_Id);
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == pendingChange.Program_Id);
 
             // Populate Dropdown info for Participation Population Dropdown
             List<ParticipationPopulation> pops = new List<ParticipationPopulation>();
@@ -583,9 +587,9 @@ namespace SkillBridge_System_Prototype.Controllers
             //Populations_List = selectedPops;
 
             // Find the existing Program in the current database
-            SB_PendingProgramAddition prog = _db.PendingProgramAdditions.FirstOrDefault(e => e.Id == int.Parse(id));
+            PendingProgramAdditionModel prog = _db.PendingProgramAdditions.FirstOrDefault(e => e.Id == int.Parse(id));
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
 
             if (prog == null)
             {
@@ -688,10 +692,10 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> ReviewPendingOpportunityChange(string id, string oppId)
         {
             // Find this specific pending change
-            SB_PendingOpportunityChange pendingChange = await _db.PendingOpportunityChanges.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
+            var pendingChange = await _db.PendingOpportunityChanges.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
 
             // Find the existing Program in the current database from the Program_Id
-            SB_Opportunity opp = await _db.Opportunities.FirstOrDefaultAsync(e => e.Id == pendingChange.Opportunity_Id);
+            OpportunityModel opp = await _db.Opportunities.FirstOrDefaultAsync(e => e.Id == pendingChange.Opportunity_Id);
 
             // Populate Dropdown info for States Dropdown
             List<State> states = new List<State>();
@@ -850,7 +854,7 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> ReviewPendingOpportunityAddition(string id)
         {
             // Find this specific pending change
-            SB_PendingOpportunityAddition pendingChange = await _db.PendingOpportunityAdditions.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
+            var pendingChange = await _db.PendingOpportunityAdditions.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
             //SB_PendingOpportunityAddition opp = _db.PendingOpportunityAdditions.FirstOrDefault(e => e.Id == int.Parse(id));
 
             var model = new EditOpportunityModel
@@ -993,7 +997,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return View(model);
         }
 
-        public EditOrganizationModel UpdateOrgModelWithPendingChanges(EditOrganizationModel model, SB_PendingOrganizationChange pendingChange)
+        public EditOrganizationModel UpdateOrgModelWithPendingChanges(EditOrganizationModel model, PendingOrganizationChangeModel pendingChange)
         {
             if (model.Is_Active != pendingChange.Is_Active) { model.Is_Active = pendingChange.Is_Active; model.Pending_Fields.Add("Is_Active"); }
 
@@ -1066,7 +1070,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return model;
         }
 
-        public EditProgramModel UpdateProgModelWithPendingChanges(EditProgramModel model, SB_PendingProgramChange pendingChange)
+        public EditProgramModel UpdateProgModelWithPendingChanges(EditProgramModel model, PendingProgramChangeModel pendingChange)
         {
             if (model.Program_Name != pendingChange.Program_Name)
             {
@@ -1466,7 +1470,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return model;
         }
 
-        public EditOpportunityModel UpdateOppModelWithPendingChanges(EditOpportunityModel model, SB_PendingOpportunityChange pendingChange)
+        public EditOpportunityModel UpdateOppModelWithPendingChanges(EditOpportunityModel model, PendingOpportunityChangeModel pendingChange)
         {
             if (model.Group_Id != pendingChange.Group_Id) { model.Group_Id = pendingChange.Group_Id; model.Pending_Fields.Add("Group_Id"); }
 
@@ -1638,7 +1642,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return model;
         }
 
-        /*public EditOpportunityModel UpdateOppModelWithPendingChanges(EditOrganizationModel model, SB_PendingOrganizationChange pendingChange)
+        /*public EditOpportunityModel UpdateOppModelWithPendingChanges(EditOrganizationModel model, PendingOrganizationModel pendingChange)
         {
             if (model.Name != pendingChange.Name) { model.Name = pendingChange.Name; model.Pending_Fields.Add("Name"); }
         }*/
@@ -1648,9 +1652,9 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> ReviewPendingOrganizationChange(EditOrganizationModel model, string orgId)
         {
             // Find this specific pending change
-            SB_PendingOrganizationChange pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(orgId) && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(orgId) && e.Pending_Change_Status == 0);
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(orgId));
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(orgId));
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -1747,10 +1751,10 @@ namespace SkillBridge_System_Prototype.Controllers
                         var progsToUpdate = _db.Programs.Where(p => p.Organization_Id == int.Parse(orgId));
                         var oppsToUpdate = _db.Opportunities.Where(p => p.Organization_Id == int.Parse(orgId));
 
-                        if (progsToUpdate.ToList<SB_Program>().Count > 0)
+                        if (progsToUpdate.ToList<ProgramModel>().Count > 0)
                         {
                             Console.WriteLine("There are programs to update on disable");
-                            foreach (SB_Program p in progsToUpdate)
+                            foreach (ProgramModel p in progsToUpdate)
                             {
                                 p.Is_Active = false;
                                 p.Date_Deactivated = DateTime.Now;
@@ -1758,10 +1762,10 @@ namespace SkillBridge_System_Prototype.Controllers
                             }
                         }
 
-                        if(oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                        if(oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                         {
                             Console.WriteLine("There are opportunities to update on disable");
-                            foreach (SB_Opportunity o in oppsToUpdate)
+                            foreach (OpportunityModel o in oppsToUpdate)
                             {
                                 o.Is_Active = false;
                                 o.Date_Deactivated = DateTime.Now;
@@ -1776,15 +1780,15 @@ namespace SkillBridge_System_Prototype.Controllers
                         var progsToUpdate = _db.Programs.Where(p => p.Organization_Id == int.Parse(orgId));
                         var oppsToUpdate = _db.Opportunities.Where(p => p.Organization_Id == int.Parse(orgId));
 
-                        if(progsToUpdate.ToList<SB_Program>().Count > 0 || oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                        if(progsToUpdate.ToList<ProgramModel>().Count > 0 || oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                         {
-                            foreach (SB_Program p in progsToUpdate)
+                            foreach (ProgramModel p in progsToUpdate)
                             {
                                 p.Organization_Name = org.Name;
                                 _db.Programs.Update(p);
                             }
 
-                            foreach (SB_Opportunity o in oppsToUpdate)
+                            foreach (OpportunityModel o in oppsToUpdate)
                             {
                                 o.Organization_Name = org.Name;
                                 _db.Opportunities.Update(o);
@@ -1829,11 +1833,11 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> ReviewPendingProgramChange(EditProgramModel model, TrainingPlan tp, string progId)
         {
             // Find this specific pending change
-            SB_PendingProgramChange pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(progId) && e.Pending_Change_Status == 0);
+            PendingProgramChangeModel pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(progId) && e.Pending_Change_Status == 0);
 
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
 
             bool newForSpouses = false;
 
@@ -1876,7 +1880,10 @@ namespace SkillBridge_System_Prototype.Controllers
             // Update the organization with the data from the reviewed change
             if (prog != null)
             {
-                int numStatesFound = GlobalFunctions.FindNumStatesInProgram(prog, _db);
+
+                //int numStatesFound = GlobalFunctions.FindNumStatesInProgram(prog, _db);
+                //TODO: Inject Query class
+                var numStatesFound = new NumberOfStatesInProgramQuery().Get(prog, _db);
 
                 prog.Is_Active = model.Is_Active;
                 prog.Program_Name = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Program_Name));
@@ -2167,9 +2174,9 @@ namespace SkillBridge_System_Prototype.Controllers
                     {
                         var oppsToUpdate = _db.Opportunities.Where(p => p.Program_Id == int.Parse(progId));
 
-                        if (oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                        if (oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                         {
-                            foreach (SB_Opportunity o in oppsToUpdate)
+                            foreach (OpportunityModel o in oppsToUpdate)
                             {
                                 o.Is_Active = false;
                                 o.Date_Deactivated = DateTime.Now;
@@ -2183,9 +2190,9 @@ namespace SkillBridge_System_Prototype.Controllers
                     {
                         var oppsToUpdate = _db.Opportunities.Where(p => p.Program_Id == int.Parse(progId));
 
-                        if (oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                        if (oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                         {
-                            foreach (SB_Opportunity o in oppsToUpdate)
+                            foreach (OpportunityModel o in oppsToUpdate)
                             {
                                 o.Program_Name = prog.Program_Name;
                                 _db.Opportunities.Update(o);
@@ -2197,9 +2204,9 @@ namespace SkillBridge_System_Prototype.Controllers
                     {
                         var oppsToUpdate = _db.Opportunities.Where(p => p.Program_Id == int.Parse(progId));
 
-                        if (oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                        if (oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                         {
-                            foreach (SB_Opportunity o in oppsToUpdate)
+                            foreach (OpportunityModel o in oppsToUpdate)
                             {
                                 o.Nationwide = prog.Nationwide;
                                 o.Online = prog.Online;
@@ -2212,9 +2219,10 @@ namespace SkillBridge_System_Prototype.Controllers
 
                     if (result7 > 0)
                     {
-                        List<SB_Opportunity> relatedOpps = _db.Opportunities.Where(p => p.Program_Id == int.Parse(progId)).ToList();
-                        GlobalFunctions.UpdateStatesOfProgramDelivery(prog, relatedOpps, _db);
-                        GlobalFunctions.UpdateJobFamilyListForOpps(prog, relatedOpps, _db);
+                        List<OpportunityModel> relatedOpps = _db.Opportunities.Where(p => p.Program_Id == int.Parse(progId)).ToList();
+                        new UpdateStatesOfProgramDeliveryCommand().Execute(prog, relatedOpps, _db);
+                        
+                        new UpdateJobFamilyListForOppsCommand().Execute(prog, relatedOpps, _db);
 
                         return RedirectToAction("ListPendingProgramChanges");
                     }
@@ -2233,11 +2241,11 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> ReviewPendingOpportunityChange(EditOpportunityModel model, TrainingPlan tp, string oppId)
         {
             // Find this specific pending change
-            SB_PendingOpportunityChange pendingChange = _db.PendingOpportunityChanges.FirstOrDefault(e => e.Opportunity_Id == int.Parse(oppId) && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingOpportunityChanges.FirstOrDefault(e => e.Opportunity_Id == int.Parse(oppId) && e.Pending_Change_Status == 0);
 
-            SB_Opportunity opp = _db.Opportunities.FirstOrDefault(e => e.Id == int.Parse(oppId));
+            OpportunityModel opp = _db.Opportunities.FirstOrDefault(e => e.Id == int.Parse(oppId));
 
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == opp.Program_Id);
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == opp.Program_Id);
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -2347,15 +2355,16 @@ namespace SkillBridge_System_Prototype.Controllers
                 if (result2 > 0)
                 {
                     // Save training plan, if it exists
-                    List<SB_Opportunity> opps = _db.Opportunities.Where(e => e.Program_Id == opp.Program_Id).ToList();
-                    SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
+                    List<OpportunityModel> opps = _db.Opportunities.Where(e => e.Program_Id == opp.Program_Id).ToList();
+                    OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
 
 
                     /* COMMENTED FOR STATES_OF_PROGRAM_DELIVERY CHANGE BEFORE DUAL ENTRY*/
                      
-                    GlobalFunctions.UpdateStatesOfProgramDelivery(prog, opps, _db);
+                    // TODO: Inject
+                    new UpdateStatesOfProgramDeliveryCommand().Execute(prog, opps, _db);
 
-                    GlobalFunctions.UpdateOrgStatesOfProgramDelivery(org, _db);
+                    new UpdateOrgStatesOfProgramDeliveryCommand().Execute(org, _db);
 
                     // Identify if we have a valid email to notify
                     if (pendingChange.Updated_By != "Ingest")
@@ -2398,11 +2407,11 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> ReviewPendingProgramAddition(EditProgramModel model, TrainingPlan tp, string pendingId)
         {
             // Find this specific pending change
-            SB_PendingProgramAddition pendingAddition = _db.PendingProgramAdditions.FirstOrDefault(e => e.Id == int.Parse(pendingId) && e.Pending_Change_Status == 0);
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == model.Organization_Id);
-            SB_Mou mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
+            PendingProgramAdditionModel pendingAddition = _db.PendingProgramAdditions.FirstOrDefault(e => e.Id == int.Parse(pendingId) && e.Pending_Change_Status == 0);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == model.Organization_Id);
+            var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
 
-            //SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
+            //ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
 
             bool newForSpouses = false;
 
@@ -2412,7 +2421,7 @@ namespace SkillBridge_System_Prototype.Controllers
             {
                 try
                 {
-                    SB_Program prog = new SB_Program
+                    ProgramModel prog = new ProgramModel
                     {
                         Program_Name = GlobalFunctions.RemoveSpecialCharacters(model.Program_Name),
                         Program_Status = model.Program_Status,
@@ -2713,18 +2722,18 @@ namespace SkillBridge_System_Prototype.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReviewPendingOpportunityAddition(SB_Opportunity model, TrainingPlan tp, string pendingId, string organizationId, string programId)
+        public async Task<IActionResult> ReviewPendingOpportunityAddition(OpportunityModel model, TrainingPlan tp, string pendingId, string organizationId, string programId)
         {
             //Console.WriteLine("Create Opportunity posted");
             //Console.WriteLine("newGroupTitle: " + newGroupTitle);
             string userName = HttpContext.User.Identity.Name;
 
             //Console.WriteLine("model.Program_Id: " + model.Program_Id);
-            SB_PendingOpportunityAddition pendingAddition = _db.PendingOpportunityAdditions.FirstOrDefault(e => e.Id == int.Parse(pendingId) && e.Pending_Change_Status == 0);
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(programId));
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(organizationId));
-            SB_Mou mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
-            //SB_Mou mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
+            var pendingAddition = _db.PendingOpportunityAdditions.FirstOrDefault(e => e.Id == int.Parse(pendingId) && e.Pending_Change_Status == 0);
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(programId));
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(organizationId));
+            var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
+            //var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
 
             //Console.WriteLine("prog: " + prog.Program_Name);
             // Console.WriteLine("org: " + org.Name);
@@ -2794,7 +2803,7 @@ namespace SkillBridge_System_Prototype.Controllers
                         model.Legacy_Provider_Id = 0;
                     }
 
-                    SB_Opportunity opp = new SB_Opportunity
+                    OpportunityModel opp = new OpportunityModel
                     {
                         // Save to DB
                         Created_By = userName,
@@ -2901,14 +2910,14 @@ namespace SkillBridge_System_Prototype.Controllers
                         else
                         {
                             //Console.WriteLine("model.Group_Id: " + model.Group_Id);
-                            SB_OpportunityGroup existingGroup = _db.OpportunityGroups.FirstOrDefault(p => p.Group_Id == model.Group_Id);
+                            OpportunityModelGroup existingGroup = _db.OpportunityGroups.FirstOrDefault(p => p.Group_Id == model.Group_Id);
                             newLat = existingGroup.Lat;
                             newLong = existingGroup.Long;
                             newTitle = existingGroup.Title;
                         }
 
                         //Create the opportunity group or add it to an existing one
-                        SB_OpportunityGroup group = new SB_OpportunityGroup
+                        OpportunityModelGroup group = new OpportunityModelGroup
                         {
                             Group_Id = newGroupId,
                             Opportunity_Id = model.Id,
@@ -2971,13 +2980,15 @@ namespace SkillBridge_System_Prototype.Controllers
                         if (result2 > 0)
                         {
                             //Console.WriteLine("Result2 returned > 0");
-                            List<SB_Opportunity> opps = _db.Opportunities.Where(e => e.Program_Id == int.Parse(programId)).ToList();
-                            SB_Program prog2 = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(programId));
-                            SB_Organization org2 = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(organizationId));
+                            List<OpportunityModel> opps = _db.Opportunities.Where(e => e.Program_Id == int.Parse(programId)).ToList();
+                            ProgramModel prog2 = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(programId));
+                            OrganizationModel org2 = _db.Organizations.FirstOrDefault(e => e.Id == int.Parse(organizationId));
 
-                            GlobalFunctions.UpdateStatesOfProgramDelivery(prog2, opps, _db);
 
-                            GlobalFunctions.UpdateOrgStatesOfProgramDelivery(org2, _db);
+                            // TODO: Inject
+                            new UpdateStatesOfProgramDeliveryCommand().Execute(prog2, opps, _db);
+
+                            new UpdateOrgStatesOfProgramDeliveryCommand().Execute(org2, _db);
 
                             return RedirectToAction("ListPendingOpportunityAdditions", "Analyst");
                         }
@@ -3004,7 +3015,7 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> RejectPendingProgAddition(EditProgramModel model, string pendingId)
         {
             // Find this specific pending addition
-            SB_PendingProgramAddition pendingAddition = _db.PendingProgramAdditions.FirstOrDefault(e => e.Id == int.Parse(pendingId) && e.Pending_Change_Status == 0);
+            PendingProgramAdditionModel pendingAddition = _db.PendingProgramAdditions.FirstOrDefault(e => e.Id == int.Parse(pendingId) && e.Pending_Change_Status == 0);
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -3049,9 +3060,9 @@ namespace SkillBridge_System_Prototype.Controllers
         // Reject the reviewed addition, with a reason
         [HttpPost]
         public async Task<IActionResult> RejectPendingOppAddition(EditOpportunityModel model, string pendingId)
-        { 
+        {
             // Find this specific pending addition
-            SB_PendingOpportunityAddition pendingAddition = _db.PendingOpportunityAdditions.FirstOrDefault(e => e.Id == int.Parse(pendingId) && e.Pending_Change_Status == 0);
+            var pendingAddition = _db.PendingOpportunityAdditions.FirstOrDefault(e => e.Id == int.Parse(pendingId) && e.Pending_Change_Status == 0);
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -3107,7 +3118,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return name;
         }
 
-        private string GetServiceListForProg(SB_Program prog)
+        private string GetServiceListForProg(ProgramModel prog)
         {
             string services = "";
 
@@ -3223,7 +3234,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return services;
         }
 
-        private string GetJobFamiliesListForProg(SB_Program prog)
+        private string GetJobFamiliesListForProg(ProgramModel prog)
         {
             string jfs = "";
 
@@ -3318,7 +3329,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return jfs;
         }
 
-        private string GetParticipationPopulationStringFromProgram(SB_Program prog)
+        private string GetParticipationPopulationStringFromProgram(ProgramModel prog)
         {
             string pps = "";
 
@@ -3416,15 +3427,15 @@ namespace SkillBridge_System_Prototype.Controllers
             return pps;
         }
         /*
-        private void UpdateOrgStatesOfProgramDelivery(SB_Organization org)
+        private void UpdateOrgStatesOfProgramDelivery(OrganizationModel org)
         {
             // Get all programs from org
-            List<SB_Program> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
+            List<ProgramModel> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
 
             List<string> states = new List<string>();
             
 
-            foreach(SB_Program p in progs)
+            foreach(ProgramModel p in progs)
             {
                 string progStates = "";
                 progStates = p.States_Of_Program_Delivery;
@@ -3486,7 +3497,7 @@ namespace SkillBridge_System_Prototype.Controllers
             _db.SaveChanges();
         }
 
-        private void UpdateStatesOfProgramDelivery(SB_Program prog, List<SB_Opportunity> opps)
+        private void UpdateStatesOfProgramDelivery(ProgramModel prog, List<OpportunityModel> opps)
         {
             // Update Program
             string newStateList = "";
@@ -3496,7 +3507,7 @@ namespace SkillBridge_System_Prototype.Controllers
             List<string> states = new List<string>();
 
             // Make sure there aren't duplicate states in list
-            foreach(SB_Opportunity o in opps)
+            foreach(OpportunityModel o in opps)
             {
                 bool found = false;
 
@@ -3569,7 +3580,7 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> RejectPendingOrgChange(EditOrganizationModel model, string orgId)
         {
             // Find this specific pending change
-            SB_PendingOrganizationChange pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(orgId) && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Organization_Id == int.Parse(orgId) && e.Pending_Change_Status == 0);
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -3616,11 +3627,11 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> RejectPendingProgChange(EditProgramModel model, string progId)
         {
             // Find this specific pending change
-            SB_PendingProgramChange pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(progId) && e.Pending_Change_Status == 0);
+            PendingProgramChangeModel pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(progId) && e.Pending_Change_Status == 0);
 
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -3677,7 +3688,7 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> RejectPendingOppChange(EditOpportunityModel model, string oppId)
         {
             // Find this specific pending change
-            SB_PendingOpportunityChange pendingChange = _db.PendingOpportunityChanges.FirstOrDefault(e => e.Opportunity_Id == int.Parse(oppId) && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingOpportunityChanges.FirstOrDefault(e => e.Opportunity_Id == int.Parse(oppId) && e.Pending_Change_Status == 0);
 
             var originalOpportunity = _db.Opportunities.FirstOrDefault(e => e.Id == pendingChange.Opportunity_Id);
 
@@ -3782,8 +3793,8 @@ namespace SkillBridge_System_Prototype.Controllers
             }
 
             ViewBag.UserAuthorities = await _db.AspNetUserAuthorities
-                .Include(o => o.SB_Organization)
-                .Include(o => o.SB_Program)
+                .Include(o => o.Organization)
+                .Include(o => o.Program)
                 .Where(o => o.ApplicationUserId == user.Id)
                 .ToListAsync();
             var userClaims = await _userManager.GetClaimsAsync(user);
@@ -3919,7 +3930,8 @@ namespace SkillBridge_System_Prototype.Controllers
                     // Add authority, if appropriate
                     if (organizationId.HasValue)
                     {
-                        var authority = new AspNetUserAuthority { ApplicationUserId = user.Id, OrganizationId = organizationId.Value, ProgramId = programId, CreatedDate = DateTime.Now, CreatedBy = User.Identity.Name };
+                        //TODO: Convert to Mapping
+                        var authority = new AspNetUserAuthorityModel { ApplicationUserId = user.Id, OrganizationId = organizationId.Value, ProgramId = programId, CreatedDate = DateTime.Now, CreatedBy = User.Identity.Name };
                         _db.AspNetUserAuthorities.Add(authority);
                         await _db.SaveChangesAsync();
                     }

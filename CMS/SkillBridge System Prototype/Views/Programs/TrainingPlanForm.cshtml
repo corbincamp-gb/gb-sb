@@ -1,4 +1,4 @@
-﻿@model SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlan
+﻿@model Skillbridge.Business.Model.Db.TrainingPlans.TrainingPlan
 @{
     if (Model.Id > 0)
     {
@@ -9,7 +9,7 @@
         ViewData["Title"] = $"Add a Training Plan to this Program";
     }
 
-    var pending = (SkillBridge_System_Prototype.Models.PendingProgramModel)ViewBag.Pending;
+    var pending = (Skillbridge.Business.Model.Db.PendingProgramModel)ViewBag.Pending;
 
 }
 

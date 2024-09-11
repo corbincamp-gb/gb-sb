@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using SkillBridge_System_Prototype.Models.QuestionPro;
-using Microsoft.AspNetCore.Authorization;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Model.Db.QuestionPro;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -98,7 +97,7 @@ namespace SkillBridge_System_Prototype.Controllers
             string clientId = "1000.JVOZFSFFFKLNHWSHB65XYYFL1FF8RF";
             string clientSecret = "bedd1eb7922b7e2f6b27721c47aafbd1344326f52a";
 
-            SB_APIState apiState = _db.APIState.FirstOrDefault(e => e.Id == 1);
+            var apiState = _db.APIState.FirstOrDefault(e => e.Id == 1);
             /*Console.WriteLine("apiState.AccessToken: " + apiState.AccessToken);
             Console.WriteLine("apiState.RefreshToken: " + apiState.RefreshToken);
             Console.WriteLine("apiState.ExpiresIn: " + apiState.ExpiresIn);

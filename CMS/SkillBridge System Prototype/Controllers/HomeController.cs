@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
 
 namespace SkillBridge_System_Prototype.Controllers
 {

@@ -1,9 +1,9 @@
-﻿@using SkillBridge_System_Prototype.Enums;
-@model EditProgramModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Skillbridge.Business.Model.Db.EditProgramModel
 @{
     ViewData["Title"] = "Edit Program";
 
-    var programTrainingPlans = (List<SkillBridge_System_Prototype.Models.ProgramTrainingPlan>)ViewBag.ProgramTrainingPlans;
+    var programTrainingPlans = (List<Skillbridge.Business.Model.Db.ProgramTrainingPlan>)ViewBag.ProgramTrainingPlans;
 }
 
 <h1>Edit Program</h1>

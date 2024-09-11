@@ -8,7 +8,7 @@
         "VaultUri": "https://skillbridgecmskeyvault.vault.usgovcloudapi.net/",
         "AZURE_USERNAME": "corbin.camp@takuhealthservices.onmicrosoft.us"
       },
-      "applicationUrl": "https://localhost:65172;http://localhost:65173"
+      "applicationUrl": "http://localhost:65173"
     }
   }
 }

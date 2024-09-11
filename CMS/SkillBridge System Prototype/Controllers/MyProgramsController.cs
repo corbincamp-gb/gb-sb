@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.EntityFrameworkCore;
-using Z.EntityFramework.Plus;
-using SkillBridge_System_Prototype.Models.TrainingPlans;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using DocumentFormat.OpenXml.Spreadsheet;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Model.Db.TrainingPlans;
+using Skillbridge.Business.Repository.Repositories;
+using Taku.Core.Global;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -113,7 +112,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             dm = dm.OrderBy(o => o.Name).ToList();
 
-            SB_Mou mou = _db.Mous.FirstOrDefault(e => orgs.Select(o => o.Mou_Id).Contains(e.Id));
+            var mou = _db.Mous.FirstOrDefault(e => orgs.Select(o => o.Mou_Id).Contains(e.Id));
 
             ViewBag.Delivery_Method_List = dm;
             ViewBag.Date_Authorized = mou.Creation_Date;
@@ -149,8 +148,8 @@ namespace SkillBridge_System_Prototype.Controllers
             var id = _userManager.GetUserId(User); // Get user id:
             var user = await _userManager.FindByIdAsync(id);
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == model.Organization_Id);
-            SB_Mou mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
+            var org = _db.Organizations.FirstOrDefault(e => e.Id == model.Organization_Id);
+            var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
 
             model.Organization_Id = org.Id;
 
@@ -160,7 +159,7 @@ namespace SkillBridge_System_Prototype.Controllers
             {
                 try
                 {
-                    SB_PendingProgramAddition prog = new SB_PendingProgramAddition
+                    PendingProgramAdditionModel prog = new PendingProgramAdditionModel
                     {
                         Program_Name = GlobalFunctions.RemoveSpecialCharacters(model.Program_Name),
                         Program_Status = model.Program_Status,
@@ -369,7 +368,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return name;
         }
 
-        private string GetServiceListForProg(SB_PendingProgramAddition prog)
+        private string GetServiceListForProg(PendingProgramAdditionModel prog)
         {
             string services = "";
 
@@ -485,7 +484,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return services;
         }
 
-        private string GetServiceListForAdditionalProg(SB_PendingProgramAddition prog)
+        private string GetServiceListForAdditionalProg(PendingProgramAdditionModel prog)
         {
             string services = "";
 
@@ -601,7 +600,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return services;
         }
         
-        private string GetJobFamiliesListForProg(SB_PendingProgramAddition prog)
+        private string GetJobFamiliesListForProg(PendingProgramAdditionModel prog)
         {
             string jfs = "";
 
@@ -696,7 +695,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return jfs;
         }
 
-        private string GetJobFamiliesListForAdditionalProg(SB_PendingProgramAddition prog)
+        private string GetJobFamiliesListForAdditionalProg(PendingProgramAdditionModel prog)
         {
             string jfs = "";
 
@@ -791,7 +790,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return jfs;
         }
 
-        private string GetParticipationPopulationStringFromProgram(SB_PendingProgramAddition prog)
+        private string GetParticipationPopulationStringFromProgram(PendingProgramAdditionModel prog)
         {
             string pps = "";
 
@@ -889,7 +888,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return pps;
         }
 
-        private string GetParticipationPopulationStringFromAdditionalProgram(SB_PendingProgramAddition prog)
+        private string GetParticipationPopulationStringFromAdditionalProgram(PendingProgramAdditionModel prog)
         {
             string pps = "";
 
@@ -1004,9 +1003,9 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> EditProgram(string id, bool edit)
         {
             // Find the existing Program in the current database
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(id));
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(id));
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
 
             // Populate Dropdown info for Participation Population Dropdown
             List<ParticipationPopulation> pops = new List<ParticipationPopulation>();
@@ -1114,7 +1113,7 @@ namespace SkillBridge_System_Prototype.Controllers
             }
 
             // Find any pending changes for this Program
-            SB_PendingProgramChange pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(id) && e.Pending_Change_Status == 0);
+            PendingProgramChangeModel pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(id) && e.Pending_Change_Status == 0);
 
             if (prog == null)
             {
@@ -1190,7 +1189,7 @@ namespace SkillBridge_System_Prototype.Controllers
             }
 
             // Gather training plan information for display
-            var repository = new Repositories.TrainingPlanRepository(_db);
+            var repository = new TrainingPlanRepository(_db);
             var programTrainingPlans = await repository.GetProgramTrainingPlansByProgramIdAsync(prog.Id);
 
             ViewBag.ProgramTrainingPlans = programTrainingPlans;
@@ -1200,7 +1199,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return View("~/Views/MyPrograms/EditProgram.cshtml", model);
         }
 
-        public EditProgramModel UpdateProgModelWithPendingChanges(EditProgramModel model, SB_PendingProgramChange pendingChange)
+        public EditProgramModel UpdateProgModelWithPendingChanges(EditProgramModel model, PendingProgramChangeModel pendingChange)
         {
             if (model.Is_Active != pendingChange.Is_Active) { model.Is_Active = pendingChange.Is_Active; model.Pending_Fields.Add("Is_Active"); }
 
@@ -1596,7 +1595,7 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProgram(EditProgramModel model)
         {
-            //SB_PendingOrganizationChange org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            //PendingOrganizationModel org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(model.Id));
 
 
             if (CanPostEdit(model.Id) == false)
@@ -1607,10 +1606,10 @@ namespace SkillBridge_System_Prototype.Controllers
             //Console.WriteLine("model.Qp_Intake_Submission_Id: " + model.Qp_Intake_Submission_Id);
 
             // Find any pending changes for this organization
-            SB_PendingProgramChange pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
+            PendingProgramChangeModel pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
 
             // Get Original Program
-            SB_Program origProg = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            ProgramModel origProg = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(model.Id));
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -1623,7 +1622,7 @@ namespace SkillBridge_System_Prototype.Controllers
             }
             else
             {
-                SB_PendingProgramChange prog = new SB_PendingProgramChange { };
+                PendingProgramChangeModel prog = new PendingProgramChangeModel { };
 
                 // If theres already a unresolved pending change, update it
                 if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
@@ -1688,7 +1687,7 @@ namespace SkillBridge_System_Prototype.Controllers
                     model.Delivery_Method = dms;
 
                     // Create the pending change object to push to the database tabler
-                    prog = new SB_PendingProgramChange
+                    prog = new PendingProgramChangeModel
                     {
                         Is_Active = model.Is_Active,
                         Program_Name = model.Program_Name,
@@ -2090,7 +2089,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return newDeliveryMethod;
         }
 
-        private bool CheckForDeliveryMethodChange(EditProgramModel model, SB_Program origProg)
+        private bool CheckForDeliveryMethodChange(EditProgramModel model, ProgramModel origProg)
         {
             bool changed = false;
 
@@ -2110,7 +2109,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return String.Join(",", oldDmsList.Select(o => o.Delivery_Method_Id).OrderBy(o => o).ToList()) != String.Join(",", model.Delivery_Method_List.OrderBy(o => o).ToList());
         }
 
-        private bool CheckForOSDApprovalNecessary(EditProgramModel model, SB_Program origProg)
+        private bool CheckForOSDApprovalNecessary(EditProgramModel model, ProgramModel origProg)
         {
             bool required = false;
             bool DeliveryMethodChanged = CheckForDeliveryMethodChange(model, origProg);
@@ -2131,9 +2130,9 @@ namespace SkillBridge_System_Prototype.Controllers
 
         public bool CanPostEdit(string progId)
         {
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
 
             if(org.Is_Active)
             {

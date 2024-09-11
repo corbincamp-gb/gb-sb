@@ -8,24 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
-using CsvHelper.Expressions;
-using CsvHelper.TypeConversion;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Util.Global;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
-using SkillBridge_System_Prototype.Models.TrainingPlans;
-using NuGet.Protocol.Core.Types;
-using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.Extensions.Configuration;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Model.Db.TrainingPlans;
+using Skillbridge.Business.Query;
+using Skillbridge.Business.Repository.Repositories;
+using Taku.Core.Global;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -63,10 +61,10 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateProgram()
         {
-            List<SB_Organization> orgs = new List<SB_Organization>();
+            List<OrganizationModel> orgs = new List<OrganizationModel>();
 
             // Populate org and program lists
-            foreach (SB_Organization org in _db.Organizations)
+            foreach (OrganizationModel org in _db.Organizations)
             {
                 orgs.Add(org);
             };
@@ -137,13 +135,13 @@ namespace SkillBridge_System_Prototype.Controllers
         {
             string userName = HttpContext.User.Identity.Name;
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == model.Organization_Id);
-            SB_Mou mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
+            var org = _db.Organizations.FirstOrDefault(e => e.Id == model.Organization_Id);
+            var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
 
-            /*List<SB_Organization> orgs = new List<SB_Organization>();
+            /*List<OrganizationModel> orgs = new List<OrganizationModel>();
 
             // Populate org and program lists
-            foreach (SB_Organization o in _db.Organizations)
+            foreach (OrganizationModel o in _db.Organizations)
             {
                 orgs.Add(o);
             };
@@ -197,7 +195,7 @@ namespace SkillBridge_System_Prototype.Controllers
             {
                 try
                 {
-                    SB_PendingProgramAddition prog = new SB_PendingProgramAddition
+                    PendingProgramAdditionModel prog = new PendingProgramAdditionModel
                     {
                         Program_Name = GlobalFunctions.RemoveSpecialCharacters(model.Program_Name),
                         Program_Status = model.Program_Status,
@@ -406,7 +404,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return name;
         }
 
-        private string GetServiceListForAdditionalProg(SB_PendingProgramAddition prog)
+        private string GetServiceListForAdditionalProg(PendingProgramAdditionModel prog)
         {
             string services = "";
 
@@ -522,7 +520,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return services;
         }
 
-        private string GetServiceListForProg(SB_Program prog)
+        private string GetServiceListForProg(ProgramModel prog)
         {
             string services = "";
 
@@ -638,7 +636,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return services;
         }
 
-        private string GetJobFamiliesListForAdditionalProg(SB_PendingProgramAddition prog)
+        private string GetJobFamiliesListForAdditionalProg(PendingProgramAdditionModel prog)
         {
             string jfs = "";
 
@@ -733,7 +731,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return jfs;
         }
 
-        private string GetJobFamiliesListForProg(SB_Program prog)
+        private string GetJobFamiliesListForProg(ProgramModel prog)
         {
             string jfs = "";
 
@@ -828,7 +826,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return jfs;
         }
 
-        private string GetParticipationPopulationStringFromProgram(SB_Program prog)
+        private string GetParticipationPopulationStringFromProgram(ProgramModel prog)
         {
             string pps = "";
 
@@ -926,7 +924,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return pps;
         }
 
-        private string GetParticipationPopulationStringFromAdditionalProgram(SB_PendingProgramAddition prog)
+        private string GetParticipationPopulationStringFromAdditionalProgram(PendingProgramAdditionModel prog)
         {
             string pps = "";
 
@@ -1044,7 +1042,7 @@ namespace SkillBridge_System_Prototype.Controllers
         public async Task<IActionResult> EditProgram(string id, bool edit)
         {
             // Find any pending changes for this Program
-            SB_PendingProgramChange pendingChange = await _db.PendingProgramChanges.FirstOrDefaultAsync(e => e.Program_Id == int.Parse(id) && e.Pending_Change_Status == 0);
+            PendingProgramChangeModel pendingChange = await _db.PendingProgramChanges.FirstOrDefaultAsync(e => e.Program_Id == int.Parse(id) && e.Pending_Change_Status == 0);
 
             // Check for pending change, if it exists, redirect analyst user to the pending change instead
             if (pendingChange != null)
@@ -1152,9 +1150,9 @@ namespace SkillBridge_System_Prototype.Controllers
             //Populations_List = selectedPops;
 
             // Find the existing Program in the current database
-            SB_Program prog = await _db.Programs.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
+            ProgramModel prog = await _db.Programs.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
 
-            SB_Organization org = await _db.Organizations.FirstOrDefaultAsync(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = await _db.Organizations.FirstOrDefaultAsync(e => e.Id == prog.Organization_Id);
 
             if (org.Is_Active == false)
             {
@@ -1242,7 +1240,7 @@ namespace SkillBridge_System_Prototype.Controllers
             }
 
             // Gather training plan information for display
-            var repository = new Repositories.TrainingPlanRepository(_db);
+            var repository = new TrainingPlanRepository(_db);
             var programTrainingPlans = await repository.GetProgramTrainingPlansByProgramIdAsync(prog.Id);
 
             ViewBag.ProgramTrainingPlans = programTrainingPlans;
@@ -1252,7 +1250,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return View("~/Views/Programs/EditProgram.cshtml", model);
         }
 
-        public EditProgramModel UpdateProgModelWithPendingChanges(EditProgramModel model, SB_PendingProgramChange pendingChange)
+        public EditProgramModel UpdateProgModelWithPendingChanges(EditProgramModel model, PendingProgramChangeModel pendingChange)
         {
             if (model.Is_Active != pendingChange.Is_Active) { model.Is_Active = pendingChange.Is_Active; model.Pending_Fields.Add("Is_Active"); }
 
@@ -1643,7 +1641,7 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProgram(EditProgramModel model)
         {
-            //SB_PendingOrganizationChange org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            //PendingOrganizationModel org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(model.Id));
 
             //Console.WriteLine("bypassApproval: " + bypassApproval);
 
@@ -1655,10 +1653,10 @@ namespace SkillBridge_System_Prototype.Controllers
             }
 
             // Get Original Program
-            SB_Program origProg = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            ProgramModel origProg = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(model.Id));
 
             // Find any pending changes for this organization
-            SB_PendingProgramChange pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
+            PendingProgramChangeModel pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -1679,9 +1677,9 @@ namespace SkillBridge_System_Prototype.Controllers
             }
             else
             {
-                int numStatesFound = GlobalFunctions.FindNumStatesInProgram(origProg, _db);
+                int numStatesFound = new NumberOfStatesInProgramQuery().Get(origProg, _db);
 
-                SB_PendingProgramChange prog = new SB_PendingProgramChange { };
+                PendingProgramChangeModel prog = new PendingProgramChangeModel { };
 
                 // If theres already a unresolved pending change, update it
                 if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
@@ -2313,9 +2311,9 @@ namespace SkillBridge_System_Prototype.Controllers
                         {
                             var oppsToUpdate = _db.Opportunities.Where(p => p.Program_Id == origProg.Id);
 
-                            if (oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                            if (oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                             {
-                                foreach (SB_Opportunity o in oppsToUpdate)
+                                foreach (OpportunityModel o in oppsToUpdate)
                                 {
                                     o.Is_Active = false;
                                     o.Date_Deactivated = DateTime.Now;
@@ -2330,9 +2328,9 @@ namespace SkillBridge_System_Prototype.Controllers
                             Console.WriteLine("updateOptimizationFields for program true, should be updating opps program name val");
                             var oppsToUpdate = _db.Opportunities.Where(p => p.Program_Id == origProg.Id);
 
-                            if (oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                            if (oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                             {
-                                foreach (SB_Opportunity o in oppsToUpdate)
+                                foreach (OpportunityModel o in oppsToUpdate)
                                 {
                                     o.Program_Name = PreventNullString(model.Program_Name);
                                     _db.Opportunities.Update(o);
@@ -2344,9 +2342,9 @@ namespace SkillBridge_System_Prototype.Controllers
                         {
                             var oppsToUpdate = _db.Opportunities.Where(p => p.Program_Id == origProg.Id);
 
-                            if (oppsToUpdate.ToList<SB_Opportunity>().Count > 0)
+                            if (oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                             {
-                                foreach (SB_Opportunity o in oppsToUpdate)
+                                foreach (OpportunityModel o in oppsToUpdate)
                                 {
                                     o.Nationwide = origProg.Nationwide;
                                     o.Online = origProg.Online;
@@ -2359,7 +2357,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
                         if (result7 > 0)
                         {
-                            List<SB_Opportunity> relatedOpps = _db.Opportunities.FromCache().Where(e => e.Program_Id == origProg.Id).ToList();
+                            List<OpportunityModel> relatedOpps = _db.Opportunities.FromCache().Where(e => e.Program_Id == origProg.Id).ToList();
                             GlobalFunctions.UpdateStatesOfProgramDelivery(origProg, relatedOpps, _db);
                             GlobalFunctions.UpdateJobFamilyListForOpps(origProg, relatedOpps, _db);
                             return RedirectToAction("ListPrograms");
@@ -2447,7 +2445,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return newDeliveryMethod;
         }
 
-        private List<int> CheckForDeliveryMethodChange(List<int> dmsList, SB_Program origProg)
+        private List<int> CheckForDeliveryMethodChange(List<int> dmsList, ProgramModel origProg)
         {
             bool changed = false;
 
@@ -2511,7 +2509,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return selectedDms;
         }
 
-        private bool CheckForOSDApprovalNecessary(EditProgramModel model, SB_Program origProg)
+        private bool CheckForOSDApprovalNecessary(EditProgramModel model, ProgramModel origProg)
         {
             bool required = false;
 
@@ -2539,7 +2537,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return required;
         }
 
-        private bool CheckForOSDApprovalNecessary(SB_Program model, SB_Program origProg)
+        private bool CheckForOSDApprovalNecessary(ProgramModel model, ProgramModel origProg)
         {
             bool required = false;
 
@@ -2586,9 +2584,9 @@ namespace SkillBridge_System_Prototype.Controllers
 
         public bool CanPostEdit(int progId)
         {
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == progId);
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == progId);
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
 
             if (org.Is_Active)
             {
@@ -2603,7 +2601,7 @@ namespace SkillBridge_System_Prototype.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteProgram(string id)
         {
-            SB_PendingOrganizationChange org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(id));
+            var org = _db.PendingOrganizationChanges.FirstOrDefault(e => e.Id == int.Parse(id));
 
             if (org == null)
             {
@@ -2644,7 +2642,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
                 stringBuilder.AppendLine("Id,Program_Name,Organization_Id,Lhn_Intake_Ticket_Id,Has_Intake,Intake_Form_Version,Qp_Intake_Submission_Id,Location_Details_Available,Has_Consent,Qp_Location_Submission_Id,Lhn_Location_Ticket_Id,Has_Multiple_Locations,Reporting_Form_2020,Date_Authorized,Mou_Link,Mou_Creation_Date,Mou_Expiration_Date,Nationwide,Online,Participation_Populations,Delivery_Method,States_Of_Program_Delivery,Program_Duration,Support_Cohorts,Opportunity_Type,Job_Family,Services_Supported,Enrollment_Dates,Date_Created,Date_Updated,Created_By,Updated_By,Program_Url,Program_Status,Admin_Poc_First_Name,Admin_Poc_Last_Name,Admin_Poc_Email,Admin_Poc_Phone,Public_Poc_Name,Public_Poc_Email,Notes,For_Spouses,Legacy_Program_Id,Legacy_Provider_Id");
 
-                foreach (SB_Program prog in progs)
+                foreach (ProgramModel prog in progs)
                 {
                     string newProgramName = EscCommas(prog.Program_Name.Replace(System.Environment.NewLine, ""));
                     string Lhn_Intake_Ticket_Id = EscCommas(prog.Lhn_Intake_Ticket_Id.Replace(System.Environment.NewLine, ""));
@@ -2704,7 +2702,7 @@ namespace SkillBridge_System_Prototype.Controllers
         }
 
 
-        public byte[] WriteCsvToMemory(IEnumerable<SB_Program> records)
+        public byte[] WriteCsvToMemory(IEnumerable<ProgramModel> records)
         {
             using (var memoryStream = new MemoryStream())
             using (var streamWriter = new StreamWriter(memoryStream))
@@ -2712,13 +2710,13 @@ namespace SkillBridge_System_Prototype.Controllers
             {
                 csvWriter.Context.RegisterClassMap<ProgramMap>();
                 //csvWriter.WriteRecords(records);
-                csvWriter.WriteHeader<SB_Program>();
+                csvWriter.WriteHeader<ProgramModel>();
                 csvWriter.WriteField("Program_Duration");
                 csvWriter.WriteField("Participation_Population");
                 csvWriter.WriteField("Job_Family");
                 csvWriter.WriteField("Supported_Service");
                 csvWriter.NextRecord();
-                foreach (SB_Program p in records)
+                foreach (ProgramModel p in records)
                 {
                     csvWriter.WriteRecord(p);
                     csvWriter.WriteField($"{GetProgDuration(p.Program_Duration)}");
@@ -3026,7 +3024,7 @@ namespace SkillBridge_System_Prototype.Controllers
         }
     }
 
-    public sealed class ProgramMap : ClassMap<SB_Program>
+    public sealed class ProgramMap : ClassMap<ProgramModel>
     {
         public ProgramMap()
         {

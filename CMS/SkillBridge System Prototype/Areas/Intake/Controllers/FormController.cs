@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using IntakeForm.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
-using SkillBridge_System_Prototype.Models;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
 
 namespace SkillBridge_System_Prototype.Intake.Controllers
 {

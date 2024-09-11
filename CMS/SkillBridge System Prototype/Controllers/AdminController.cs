@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
 using System.IO;
 using CsvHelper;
 using System.Globalization;
@@ -16,11 +15,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using System.Text;
-using SkillBridge_System_Prototype.Util.Ingest;
-using MoreLinq.Extensions;
+using SkillBridge_System_Prototype.ViewModel;
+using Skillbridge.Business.Command;
 using Z.EntityFramework.Plus;
-using SkillBridge_System_Prototype.Util.Global;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Util.Ingest;
+using Taku.Core.Global;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -202,7 +203,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             try
             {
-                foreach (SB_Program prog in progs)
+                foreach (ProgramModel prog in progs)
                 {
                     newJson += "{";
 
@@ -256,7 +257,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             int i = 0;
 
-            foreach(SB_Opportunity opp in opps)
+            foreach(OpportunityModel opp in opps)
             {
                 newJson += "{";
 
@@ -319,7 +320,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             int i = 0;
 
-            foreach (SB_Program prog in progs)
+            foreach (ProgramModel prog in progs)
             {
                 // We need to check this differently than the others since we don't know the state of every programs spouse offerings...
                 // Add comma if this isn't the first object... if we did this in the end like the other generation code, we could end up with commas at the end that shouldnt be there
@@ -376,23 +377,23 @@ namespace SkillBridge_System_Prototype.Controllers
 
         public void UpdateOrganizationStates()
         {
-            List<SB_Organization> orgs = _db.Organizations.ToList();
+            List<OrganizationModel> orgs = _db.Organizations.ToList();
 
-            foreach(SB_Organization org in orgs)
+            foreach(OrganizationModel org in orgs)
             {
                 UpdateOrgStatesOfProgramDeliveryNonAsync(org);
             }
         }
 
-        private void UpdateOrgStatesOfProgramDeliveryNonAsync(SB_Organization org)
+        private void UpdateOrgStatesOfProgramDeliveryNonAsync(OrganizationModel org)
         {
             // Get all programs from org
-            List<SB_Program> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
+            List<ProgramModel> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
 
             List<string> states = new List<string>();
 
 
-            foreach (SB_Program p in progs)
+            foreach (ProgramModel p in progs)
             {
                 string progStates = "";
                 progStates = p.States_Of_Program_Delivery;
@@ -485,14 +486,14 @@ namespace SkillBridge_System_Prototype.Controllers
                     //if (org.Is_Active)
                     //{
                         //var org = _db.Organizations.AsNoTracking().SingleOrDefault(x => x.Id == prog.Organization_Id);
-                        List<SB_Program> relatedProgs = progs.Where(m => m.Organization_Id == org.Id).ToList();
+                        List<ProgramModel> relatedProgs = progs.Where(m => m.Organization_Id == org.Id).ToList();
 
                         string newProgramIds = "";
                         int progInc = 0;
 
                         // checking for prog active status underneath org is how its set up right now, but maybe shouldnt be in the future
 
-                        foreach (SB_Program prog in relatedProgs)
+                        foreach (ProgramModel prog in relatedProgs)
                         {
                             //string add = progInc == 0 ? prog.Legacy_Program_Id.ToString() : " " + prog.Legacy_Program_Id;
                             string add = progInc == 0 ? prog.Id.ToString() : " " + prog.Id;
@@ -516,7 +517,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
 
                             string newCohorts = "No";
-                            foreach (SB_Program p in relatedProgs)
+                            foreach (ProgramModel p in relatedProgs)
                             {
                                 if (p.Nationwide != false)
                                 {
@@ -525,7 +526,7 @@ namespace SkillBridge_System_Prototype.Controllers
                             }
 
                             bool nationwide = false;
-                            foreach (SB_Program p in relatedProgs)
+                            foreach (ProgramModel p in relatedProgs)
                             {
                                 if (p.Nationwide != false)
                                 {
@@ -534,7 +535,7 @@ namespace SkillBridge_System_Prototype.Controllers
                             }
 
                             bool online = false;
-                            foreach (SB_Program p in relatedProgs)
+                            foreach (ProgramModel p in relatedProgs)
                             {
                                 if (p.Online != false)
                                 {
@@ -543,7 +544,7 @@ namespace SkillBridge_System_Prototype.Controllers
                             }
 
                             bool locationDetailsAvailable = false;
-                            foreach (SB_Program p in relatedProgs)
+                            foreach (ProgramModel p in relatedProgs)
                             {
                                 if (p.Location_Details_Available != false)
                                 {
@@ -711,13 +712,13 @@ namespace SkillBridge_System_Prototype.Controllers
             newJson.Append("]");
             //$("#json-output-container").html(newJson);
 
-            /*List<SB_Program> programs = _db.Programs.ToList();
+            /*List<ProgramModel> programs = _db.Programs.ToList();
             string newJson = "var orgs = { data: [" + JsonConvert.SerializeObject(programs, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }) + "]};";*/
 
             return File(Encoding.UTF8.GetBytes(newJson.ToString()), "application/json", "AF-Org-" + DateTime.Today.ToString("MM-dd-yy") + ".json");
         }
 
-        public string GetDeliveryMethodListForOrg(List<SB_Program> relatedProgs)
+        public string GetDeliveryMethodListForOrg(List<ProgramModel> relatedProgs)
         {
             string returnString = "";
             int i = 0;
@@ -728,7 +729,7 @@ namespace SkillBridge_System_Prototype.Controllers
             //bool isScottsdale = false;
 
 
-            foreach (SB_Program p in relatedProgs)
+            foreach (ProgramModel p in relatedProgs)
             {
                 List<ProgramDeliveryMethod> pdm = _db.ProgramDeliveryMethod.AsNoTracking().Where(x => x.Program_Id == p.Id).ToList();
 
@@ -791,7 +792,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return returnString;
         }
 
-        public string GetProgramDurationListForOrg(List<SB_Program> relatedProgs)
+        public string GetProgramDurationListForOrg(List<ProgramModel> relatedProgs)
         {
             string returnString = "";
             int i = 0;
@@ -799,7 +800,7 @@ namespace SkillBridge_System_Prototype.Controllers
             List<string> pds = new List<string>();
 
             // Get a list of items from the programs
-            foreach (SB_Program p in relatedProgs)
+            foreach (ProgramModel p in relatedProgs)
             {
                 pds.Add(p.Program_Duration.ToString());
             }
@@ -875,7 +876,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return returnString;
         }
 
-        /*public string GetCohortsAggregateForOrg(List<SB_Program> relatedProgs)
+        /*public string GetCohortsAggregateForOrg(List<ProgramModel> relatedProgs)
         {
             string returnString = "";
             int i = 0;
@@ -883,7 +884,7 @@ namespace SkillBridge_System_Prototype.Controllers
             List<string> dms = new List<string>();
 
             // Get a list of items from the programs
-            foreach (SB_Program p in relatedProgs)
+            foreach (ProgramModel p in relatedProgs)
             {
                 dms.Add(p.Delivery_Method);
             }
@@ -909,7 +910,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return returnString;
         }
         */
-        public string GetOpportunityTypesListForOrg(List<SB_Program> relatedProgs)
+        public string GetOpportunityTypesListForOrg(List<ProgramModel> relatedProgs)
         {
             string returnString = "";
             int i = 0;
@@ -917,7 +918,7 @@ namespace SkillBridge_System_Prototype.Controllers
             List<string> ots = new List<string>();
 
             // Get a list of items from the programs
-            foreach (SB_Program p in relatedProgs)
+            foreach (ProgramModel p in relatedProgs)
             {
                 ots.Add(p.Opportunity_Type);
             }
@@ -947,14 +948,14 @@ namespace SkillBridge_System_Prototype.Controllers
             return returnString;
         }
 
-        public string GetJobFamiliesListForOrg(List<SB_Program> relatedProgs)
+        public string GetJobFamiliesListForOrg(List<ProgramModel> relatedProgs)
         {
             string returnString = "";
             int i = 0;
 
             List<string> jfs = new List<string>();
 
-            foreach (SB_Program p in relatedProgs)
+            foreach (ProgramModel p in relatedProgs)
             {
                 List<ProgramJobFamily> pjfs = _db.ProgramJobFamily.Where(x => x.Program_Id == p.Id).ToList();
 
@@ -1158,7 +1159,7 @@ namespace SkillBridge_System_Prototype.Controllers
             newJson.Append("]");
             //$("#json-output-container").html(newJson);
 
-            /*List<SB_Program> programs = _db.Programs.ToList();
+            /*List<ProgramModel> programs = _db.Programs.ToList();
             string newJson = "var orgs = { data: [" + JsonConvert.SerializeObject(programs, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }) + "]};";*/
 
             return File(Encoding.UTF8.GetBytes(newJson.ToString()), "application/json", "AF-Locs-" + DateTime.Today.ToString("MM-dd-yy") + ".json"); ;
@@ -1185,7 +1186,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             try
             {
-                foreach (SB_Program prog in progs)
+                foreach (ProgramModel prog in progs)
                 {
                     if (prog.For_Spouses && prog.Is_Active)
                     {
@@ -1303,7 +1304,7 @@ namespace SkillBridge_System_Prototype.Controllers
                         string newName = "";
                         string progName = "";
 
-                        foreach (SB_Program prog in subProgs)
+                        foreach (ProgramModel prog in subProgs)
                         {
                             if (prog.Is_Active)
                             {
@@ -1488,13 +1489,13 @@ namespace SkillBridge_System_Prototype.Controllers
             newJson.Append("]};");
             //$("#json-output-container").html(newJson);
 
-            /*List<SB_Program> programs = _db.Programs.ToList();
+            /*List<ProgramModel> programs = _db.Programs.ToList();
             string newJson = "var orgs = { data: [" + JsonConvert.SerializeObject(programs, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }) + "]};";*/
 
             return File(Encoding.UTF8.GetBytes(newJson.ToString()), "text/plain", "organizationsData.txt");
         }
 
-        private string GetJobFamiliesListForProg(SB_Program prog)
+        private string GetJobFamiliesListForProg(ProgramModel prog)
         {
             string jfs = "";
 
@@ -1538,7 +1539,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return jfs;
         }
 
-        private string GetDeliveryMethodForProg(SB_Program prog)
+        private string GetDeliveryMethodForProg(ProgramModel prog)
         {
             string dm = "";
 
@@ -1577,7 +1578,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return dm;
         }
 
-        private string GetProgramDurationForProg(SB_Program prog)
+        private string GetProgramDurationForProg(ProgramModel prog)
         {
             //if(prog.Delivery_Method == null) { return "Individually Developed – not to exceed 40 hours"; }
 
@@ -1737,7 +1738,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return pd;
         }
 
-        private string GetCohortsForProg(SB_Program prog)
+        private string GetCohortsForProg(ProgramModel prog)
         {
             string c = "";
 
@@ -1763,7 +1764,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine("PROGRAM|URL|OPPORTUNITY_TYPE|DELIVERY_METHOD|PROGRAM_DURATION|STATES|NATIONWIDE|ONLINE|COHORTS|JOB_FAMILY|LOCATION_DETAILS_AVAILABLE");
 
-                foreach (SB_Program prog in progs)
+                foreach (ProgramModel prog in progs)
                 {
                     var org = _db.Organizations.SingleOrDefault(x => x.Id == prog.Id);
                     string urlToDisplay = org != null ? org.Organization_Url : "";
@@ -1898,7 +1899,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             ////////////////////////////////
 
-            /*List<SB_Opportunity> opportunities = _db.Opportunities.Where(x => x.Is_Active == true).ToList<SB_Opportunity>();
+            /*List<OpportunityModel> opportunities = _db.Opportunities.Where(x => x.Is_Active == true).ToList<OpportunityModel>();
             string newJson = "var locations = { data: [" + JsonConvert.SerializeObject(opportunities) + "]};";
 
             newJson = newJson.Replace("\"NATIONWIDE\":true", "\"NATIONWIDE\":1");
@@ -2548,7 +2549,7 @@ namespace SkillBridge_System_Prototype.Controllers
             int numWithServicesAlready = 0;
             int numWithNoService = 0;
 
-            foreach (SB_Program prog in flaggedProgs)
+            foreach (ProgramModel prog in flaggedProgs)
             {
                 // Try to find a value for this program in the programsservice table
                 var progServices = _db.ProgramService.Where(m => m.Program_Id == prog.Id).ToList();
@@ -2607,11 +2608,11 @@ namespace SkillBridge_System_Prototype.Controllers
 
             int changes = 0;
 
-            foreach (SB_Opportunity opp in flaggedOpps)
+            foreach (OpportunityModel opp in flaggedOpps)
             {
                 // Try to find a value for this program in the programsservice table
                 var progServices = _db.ProgramService.Where(m => m.Program_Id == opp.Program_Id).ToList();
-                SB_Program prog = _db.Programs.SingleOrDefault(m => m.Id == opp.Program_Id);
+                ProgramModel prog = _db.Programs.SingleOrDefault(m => m.Id == opp.Program_Id);
 
                 // If we have services defined, pull the optimized string to the program
                 if (progServices.Count > 0)
@@ -2657,7 +2658,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return View("GenerateUpdateData");
         }
 
-        private string GetServiceListForProg(SB_Program prog)
+        private string GetServiceListForProg(ProgramModel prog)
         {
             string services = "";
 
@@ -2783,7 +2784,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine("ID|GROUPID|SERVICE|PROGRAM|INSTALLATION|CITY|STATE|ZIP|EMPLOYERPOC|EMPLOYERPOCEMAIL|DATEPROGRAMINITIATED|DURATIONOFTRAINING|SUMMARYDESCRIPTION|JOBSDESCRIPTION|LOCATIONSOFPROSPECTIVEJOBSBYSTATE|TARGETMOCs|OTHER|MOUs|LAT|LONG|COST|SALARY|NATIONWIDE");
 
-                foreach (SB_Opportunity opp in opps)
+                foreach (OpportunityModel opp in opps)
                 {
                     //var org = _db.Organizations.SingleOrDefault(x => x.Id == prog.Id);
                     //string urlToDisplay = org != null ? org.Organization_Url : "";
@@ -2815,7 +2816,7 @@ namespace SkillBridge_System_Prototype.Controllers
             //int progCount = progs.ToList().Count;   // 690
 
             //Console.WriteLine("About to export spouse data in foreach loop");
-            foreach (SB_Program prog in progs)
+            foreach (ProgramModel prog in progs)
             {
                 //Console.WriteLine("-=-=-=-=checking program: " + prog.Program_Name + " for spouse export, i = " + i);
                 // We need to check this differently than the others since we don't know the state of every programs spouse offerings...
@@ -2865,10 +2866,10 @@ namespace SkillBridge_System_Prototype.Controllers
                 //}
             }*/
 
-            /*foreach(SB_Organization org in orgs)
+            /*foreach(OrganizationModel org in orgs)
             {
                 bool isForSpouses = false;
-                foreach(SB_Program prog in progs)
+                foreach(ProgramModel prog in progs)
                 {
                     if(prog.For_Spouses == true)
                     {
@@ -2931,7 +2932,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
             try
             {
-                foreach (SB_Program prog in progs)
+                foreach (ProgramModel prog in progs)
                 {
                     if(prog.Is_Active)
                     {
@@ -3025,7 +3026,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine("PROGRAM|URL|NATIONWIDE|ONLINE|DELIVERY_METHOD|STATES");
 
-                foreach (SB_Program prog in progs)
+                foreach (ProgramModel prog in progs)
                 {
                     var org = _db.Organizations.SingleOrDefault(x => x.Id == prog.Id);
 
@@ -3082,8 +3083,8 @@ namespace SkillBridge_System_Prototype.Controllers
             // Update Programs
             foreach (var p in progs)
             {
-                SB_Organization org = orgs.FirstOrDefault(m => m.Id == p.Organization_Id);
-                SB_Mou mou = _db.Mous.FirstOrDefault(m => m.Id == org.Mou_Id);
+                var org = orgs.FirstOrDefault(m => m.Id == p.Organization_Id);
+                var mou = _db.Mous.FirstOrDefault(m => m.Id == org.Mou_Id);
 
 
                 Console.WriteLine("Should update program... exp date: " + mou.Expiration_Date + " and create date: " + mou.Creation_Date);
@@ -3096,7 +3097,7 @@ namespace SkillBridge_System_Prototype.Controllers
             // Update Opportunities
             foreach (var o in opps)
             {
-                SB_Program prog = progs.FirstOrDefault(m => m.Id == o.Program_Id);
+                ProgramModel prog = progs.FirstOrDefault(m => m.Id == o.Program_Id);
 
                 Console.WriteLine("Shoud update opportunity... exp date: " + prog.Mou_Expiration_Date);
                 o.Mou_Expiration_Date = prog.Mou_Expiration_Date;
@@ -3117,9 +3118,9 @@ namespace SkillBridge_System_Prototype.Controllers
             // Update Programs
             foreach (var p in progs)
             {
-                List<SB_Opportunity> relatedOpps = opps.FromCache().Where(e => e.Program_Id == p.Id).ToList();
+                var relatedOpps = opps.FromCache().Where(e => e.Program_Id == p.Id).ToList();
 
-                GlobalFunctions.UpdateStatesOfProgramDelivery(p, relatedOpps, _db);
+                new UpdateStatesOfProgramDeliveryCommand().Execute(p, relatedOpps, _db);
             }
 
             _db.SaveChanges();
@@ -3127,7 +3128,7 @@ namespace SkillBridge_System_Prototype.Controllers
             // Update Organizations
             foreach(var o in orgs)
             {
-                GlobalFunctions.UpdateOrgStatesOfProgramDelivery(o, _db);
+                new UpdateOrgStatesOfProgramDeliveryCommand().Execute(o, _db);
             }
 
             _db.SaveChanges();
@@ -3166,7 +3167,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
                 while (csv.Read())
                 {
-                    //var record = csv.GetRecord<SB_Organization>();
+                    //var record = csv.GetRecord<OrganizationModel>();
                     // Do something with the record.
 
                     /*
@@ -3216,7 +3217,8 @@ namespace SkillBridge_System_Prototype.Controllers
                         //Console.WriteLine("-=-=-=-=-=-=newCreatedDate: " + newCreatedDate);
                         //Console.WriteLine("-=-=-=-=-=-=newUpdatedDate: " + newUpdatedDate);
 
-                        SB_Mou newMou = new SB_Mou
+                        //TODO: Convert to mapping
+                        var newMou = new MouModel()
                         {
                             Creation_Date = output1,
                             Expiration_Date = output2,
@@ -3297,7 +3299,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
                 while (csv.Read())
                 {
-                    //var record = csv.GetRecord<SB_Organization>();
+                    //var record = csv.GetRecord<OrganizationModel>();
                     // Do something with the record.
 
                     // Remove (Historical Import) strings from dates
@@ -3395,7 +3397,7 @@ namespace SkillBridge_System_Prototype.Controllers
                     Console.WriteLine("-=-=-=-=-=-=newCreatedDate: " + newCreatedDate);
                     Console.WriteLine("-=-=-=-=-=-=newUpdatedDate: " + newUpdatedDate);
 
-                    SB_Organization newOrg = new SB_Organization
+                    OrganizationModel newOrg = new OrganizationModel
                     {
                         Name = csv.GetField("Organization Name"),
                         Parent_Organization_Name = csv.GetField("Parent Organization Name"),
@@ -3868,7 +3870,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
                 while (csv.Read())
                 {
-                    //var record = csv.GetRecord<SB_Program>();
+                    //var record = csv.GetRecord<ProgramModel>();
                     // Do something with the record.
 
                     // Remove un-parsable strings from dates, replace with current date
@@ -4314,7 +4316,7 @@ namespace SkillBridge_System_Prototype.Controllers
                                 newSS = "All Services";
                             }
 
-                            SB_Program tempProg = new SB_Program
+                            ProgramModel tempProg = new ProgramModel
                             {
                                 Program_Name = newProgramName,
                                 Organization_Name = csv.GetField("Organization Name"),
@@ -4651,7 +4653,7 @@ namespace SkillBridge_System_Prototype.Controllers
                                 }
                         }
 
-                        SB_Program newProg = new SB_Program
+                        ProgramModel newProg = new ProgramModel
                                 {
                                     Program_Name = csv.GetField("Program Name"),
                                     Organization_Name = csv.GetField("Organization Name"),
@@ -5001,7 +5003,7 @@ namespace SkillBridge_System_Prototype.Controllers
 
                 while (csv.Read())
                 {
-                    //var record = csv.GetRecord<SB_Opportunity>();
+                    //var record = csv.GetRecord<OpportunityModel>();
                     // Do something with the record.
 
                     // Remove (Historical Import) strings from dates
@@ -5197,7 +5199,7 @@ namespace SkillBridge_System_Prototype.Controllers
                     //Console.WriteLine("-=-=-=-=-=-=newCreatedDate: " + newCreatedDate);
                     //Console.WriteLine("-=-=-=-=-=-=newUpdatedDate: " + newUpdatedDate);
 
-                    SB_Opportunity newOpp = new SB_Opportunity
+                    OpportunityModel newOpp = new OpportunityModel
                     {
                         Group_Id = newGroupId,
                         Organization_Id = newOrgId,
@@ -5257,8 +5259,8 @@ namespace SkillBridge_System_Prototype.Controllers
                     _db.Opportunities.Add(newOpp);
                     await _db.SaveChangesAsync();
 
-
-                    SB_OpportunityGroup newGroup = new SB_OpportunityGroup
+                    //TODO: convert to mapping
+                    var newGroup = new OpportunityGroupModel
                     {
                         Group_Id = newGroupId,
                         Opportunity_Id = newOpp.Id,
@@ -5368,11 +5370,11 @@ namespace SkillBridge_System_Prototype.Controllers
 
 
             // Update states of program delivery on program and org records
-            foreach (SB_Program prog in _db.Programs)
+            foreach (ProgramModel prog in _db.Programs)
             {
-                //SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == opp.Program_Id);
-                List<SB_Opportunity> opps = _db.Opportunities.Where(e => e.Program_Id == prog.Id).ToList();
-                SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+                //ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == opp.Program_Id);
+                List<OpportunityModel> opps = _db.Opportunities.Where(e => e.Program_Id == prog.Id).ToList();
+                OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
 
                 //await UpdateStatesOfProgramDelivery(prog, opps);
                 // Update Program
@@ -5386,7 +5388,7 @@ namespace SkillBridge_System_Prototype.Controllers
                 if(opps.Count > 0)
                 {
                     // Make sure there aren't duplicate states in list
-                    foreach (SB_Opportunity o in opps)
+                    foreach (OpportunityModel o in opps)
                     {
                         bool found = false;
 
@@ -5443,16 +5445,16 @@ namespace SkillBridge_System_Prototype.Controllers
             /*This is the right save*/
             await _db.SaveChangesAsync();
 
-            foreach (SB_Organization org in _db.Organizations)
+            foreach (OrganizationModel org in _db.Organizations)
             {
                 Console.WriteLine("Org Name: " + org.Name + "=====================");
                 // Get all programs from org
-                List<SB_Program> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
+                List<ProgramModel> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
 
                 List<string> states2 = new List<string>();
 
 
-                foreach (SB_Program p in progs)
+                foreach (ProgramModel p in progs)
                 {
                     string progStates = "";
                     progStates = p.States_Of_Program_Delivery;
@@ -5575,15 +5577,15 @@ namespace SkillBridge_System_Prototype.Controllers
             return View("IngestOpportunities");
         }
 
-        public async void UpdateOrgStatesOfProgramDelivery(SB_Organization org)
+        public async void UpdateOrgStatesOfProgramDelivery(OrganizationModel org)
         {
             // Get all programs from org
-            List<SB_Program> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
+            List<ProgramModel> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
 
             List<string> states = new List<string>();
 
 
-            foreach (SB_Program p in progs)
+            foreach (ProgramModel p in progs)
             {
                 string progStates = "";
                 progStates = p.States_Of_Program_Delivery;
@@ -5645,7 +5647,7 @@ namespace SkillBridge_System_Prototype.Controllers
             await _db.SaveChangesAsync();
         }
 
-        public async void UpdateStatesOfProgramDelivery(SB_Program prog, List<SB_Opportunity> opps)
+        public async void UpdateStatesOfProgramDelivery(ProgramModel prog, List<OpportunityModel> opps)
         {
             // Update Program
             string newStateList = "";
@@ -5654,7 +5656,7 @@ namespace SkillBridge_System_Prototype.Controllers
             List<string> states = new List<string>();
 
             // Make sure there aren't duplicate states in list
-            foreach (SB_Opportunity o in opps)
+            foreach (OpportunityModel o in opps)
             {
                 bool found = false;
 
@@ -5778,9 +5780,9 @@ namespace SkillBridge_System_Prototype.Controllers
         {
             if (_db.Audits.Any())
             {
-                List<SB_Audit> audits = new List<SB_Audit>();
+                var audits = new List<AuditModel>();
 
-                foreach (SB_Audit audit in _db.Audits)
+                foreach (var audit in _db.Audits)
                 {
                     audits.Add(audit);
                 }
@@ -5799,9 +5801,9 @@ namespace SkillBridge_System_Prototype.Controllers
         {
             if (_db.Mous.Any())
             {
-                List<SB_Mou> mous = new List<SB_Mou>();
+                var mous = new List<MouModel>();
 
-                foreach (SB_Mou mou in _db.Mous)
+                foreach (var mou in _db.Mous)
                 {
                     mous.Add(mou);
                 }
@@ -5818,9 +5820,9 @@ namespace SkillBridge_System_Prototype.Controllers
         {
             if(_db.Organizations.Any())
             {
-                List<SB_Organization> orgs = new List<SB_Organization>();
+                List<OrganizationModel> orgs = new List<OrganizationModel>();
 
-                foreach (SB_Organization org in _db.Organizations)
+                foreach (OrganizationModel org in _db.Organizations)
                 {
                     orgs.Add(org);
                 }
@@ -5837,9 +5839,9 @@ namespace SkillBridge_System_Prototype.Controllers
         {
             if (_db.Programs.Any())
             {
-                List<SB_Program> progs = new List<SB_Program>();
+                List<ProgramModel> progs = new List<ProgramModel>();
 
-                foreach (SB_Program prog in _db.Programs)
+                foreach (ProgramModel prog in _db.Programs)
                 {
                     progs.Add(prog);
                 }
@@ -5856,9 +5858,9 @@ namespace SkillBridge_System_Prototype.Controllers
         {
             if (_db.Opportunities.Any())
             {
-                List<SB_Opportunity> opps = new List<SB_Opportunity>();
+                List<OpportunityModel> opps = new List<OpportunityModel>();
 
-                foreach (SB_Opportunity opp in _db.Opportunities)
+                foreach (OpportunityModel opp in _db.Opportunities)
                 {
                     opps.Add(opp);
                 }
@@ -5875,9 +5877,9 @@ namespace SkillBridge_System_Prototype.Controllers
         {
             if (_db.OpportunityGroups.Any())
             {
-                List<SB_OpportunityGroup> groups = new List<SB_OpportunityGroup>();
+                var groups = new List<OpportunityGroupModel>();
 
-                foreach (SB_OpportunityGroup group in _db.OpportunityGroups)
+                foreach (var group in _db.OpportunityGroups)
                 {
                     groups.Add(group);
                 }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Skillbridge.Business.Query
+@{
     ViewData["Title"] = "Application Review";
 
     var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
@@ -33,8 +34,8 @@
                                 data-rule-required="true"
                                 data-msg-required="Please select a status.">
                                     <!option value="">[None]</!option>
-                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.Incomplete)">@Html.Raw(SkillBridge_System_Prototype.Util.Global.GlobalFunctions.GetEntryStatus((int)IntakeForm.Models.Enumerations.EntryStatus.Incomplete))</!option>
-                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.UnderReview)">@Html.Raw(SkillBridge_System_Prototype.Util.Global.GlobalFunctions.GetEntryStatus((int)IntakeForm.Models.Enumerations.EntryStatus.UnderReview))</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.Incomplete)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.Incomplete))</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.UnderReview)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.UnderReview))</!option>
                                 </select>
                             </div>
                             <div data-valmsg-for="EntryStatusID" data-valmsg-replace="true"></div>
@@ -117,9 +118,9 @@
                                 data-rule-required="true"
                                 data-msg-required="Please provide a determination.">
                                     <!option value="">Select a determination</!option>
-                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.Approved)">@Html.Raw(SkillBridge_System_Prototype.Util.Global.GlobalFunctions.GetEntryStatus((int)IntakeForm.Models.Enumerations.EntryStatus.Approved))</!option>
-                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.YesIf)">@Html.Raw(SkillBridge_System_Prototype.Util.Global.GlobalFunctions.GetEntryStatus((int)IntakeForm.Models.Enumerations.EntryStatus.YesIf))</!option>
-                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.Rejected)">@Html.Raw(SkillBridge_System_Prototype.Util.Global.GlobalFunctions.GetEntryStatus((int)IntakeForm.Models.Enumerations.EntryStatus.Rejected))</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.Approved)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.Approved))</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.YesIf)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.YesIf))</!option>
+                                    <!option value="@((int)IntakeForm.Models.Enumerations.EntryStatus.Rejected)">@Html.Raw(new EntryStatusQuery().Get(IntakeForm.Models.Enumerations.EntryStatus.Rejected))</!option>
                                 </select>
                             </div>
                             <div data-valmsg-for="EntryStatusID" data-valmsg-replace="true"></div>

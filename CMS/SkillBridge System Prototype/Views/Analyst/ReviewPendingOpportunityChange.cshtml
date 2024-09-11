@@ -1,12 +1,13 @@
-﻿@using SkillBridge_System_Prototype.Enums;
-@model EditOpportunityModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Taku.Core.Enums
+@model Skillbridge.Business.Model.Db.EditOpportunityModel
 @{
     ViewData["Title"] = "Review Opportunity Change";
 
-    var trainingPlan = (SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlan)ViewBag.TrainingPlan;
-    var originalTrainingPlan = (SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlan)ViewBag.OriginalTrainingPlan;
-    var trainingPlanLengthsList = (List<SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlanLength>)ViewBag.TrainingPlanLengthsList;
-    var instructionalMethodsList = (List<SkillBridge_System_Prototype.Models.TrainingPlans.InstructionalMethod>)ViewBag.InstructionalMethodsList;
+    var trainingPlan = (Skillbridge.Business.Model.Db.TrainingPlans.TrainingPlan)ViewBag.TrainingPlan;
+    var originalTrainingPlan = (Skillbridge.Business.Model.Db.TrainingPlans.TrainingPlan)ViewBag.OriginalTrainingPlan;
+    var trainingPlanLengthsList = (List<Skillbridge.Business.Model.Db.TrainingPlans.TrainingPlanLength>)ViewBag.TrainingPlanLengthsList;
+    var instructionalMethodsList = (List<Skillbridge.Business.Model.Db.TrainingPlans.InstructionalMethod>)ViewBag.InstructionalMethodsList;
 }
 
 <h1>Review Opportunity Change</h1>

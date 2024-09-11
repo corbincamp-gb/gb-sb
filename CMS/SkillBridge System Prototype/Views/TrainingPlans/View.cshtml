@@ -1,13 +1,15 @@
-﻿@model SkillBridge_System_Prototype.Models.TrainingPlans.TrainingPlan
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Skillbridge.Business.Model.Db
+@model Skillbridge.Business.Model.Db.TrainingPlans.TrainingPlan
 @{
     ViewBag.Title = "View Training Plan";
-    var program = Model.ProgramTrainingPlans.FirstOrDefault()?.SB_Program ?? new SB_Program();
+    var program = Model.ProgramTrainingPlans.FirstOrDefault()?.Program ?? new ProgramModel();
 
     var organizationName = String.Empty;
 
-    if (program != null && program.SB_Organization != null)
+    if (program != null && program.Organization != null)
     {
-        organizationName = program.SB_Organization.Name;
+        organizationName = program.Organization.Name;
     }
 }
 
@@ -21,7 +23,7 @@
             <div class="h6">Associated Programs</div>
             @foreach (var prog in Model.ProgramTrainingPlans)
             {
-                <div><a href="/programs/editprogram/@prog.ProgramId?edit=false" target="_blank">@Html.Raw(prog.SB_Program.Program_Name)</a></div>
+                <div><a href="/programs/editprogram/@prog.ProgramId?edit=false" target="_blank">@Html.Raw(prog.Program.Program_Name)</a></div>
             }
         }
     </div>

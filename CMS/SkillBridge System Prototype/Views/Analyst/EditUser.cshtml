@@ -1,8 +1,8 @@
-﻿@using Microsoft.AspNetCore.Identity;
-@model EditUserModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Skillbridge.Business.Model.Db.EditUserModel
 @{
     ViewData["Title"] = "Edit User";
-    var userAuthorities = (List<SkillBridge_System_Prototype.Models.AspNetUserAuthority>)ViewBag.UserAuthorities;
+    var userAuthorities = (List<Skillbridge.Business.Model.Db.AspNetUserAuthorityModel>)ViewBag.UserAuthorities;
 }
 
 @if (!String.IsNullOrWhiteSpace(ViewBag.Message))
@@ -107,8 +107,8 @@
                                 {
                                     <tr>
                                         <td></td>
-                                        <td>@Html.Raw(auth.SB_Organization.Name)</td>
-                                        <td>@Html.Raw(auth.SB_Program?.Program_Name ?? "All Programs")</td>
+                                        <td>@Html.Raw(auth.Organization.Name)</td>
+                                        <td>@Html.Raw(auth.Program?.Program_Name ?? "All Programs")</td>
                                         <td class="text-right"><a href="/analyst/removeauthority/@auth.Id" class="btn btn-danger">Remove</a></td>
                                     </tr>
                                 }

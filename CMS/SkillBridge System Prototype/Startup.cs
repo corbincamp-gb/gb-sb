@@ -7,12 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using SkillBridge_System_Prototype.Models;
 using Microsoft.AspNetCore.HttpOverrides;
 using SkillBridge_System_Prototype.Services;
 using System.Text.Json;
-using SkillBridge_System_Prototype.Util.SMTP;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Util.SMTP;
 
 
 namespace SkillBridge_System_Prototype
@@ -186,7 +186,7 @@ namespace SkillBridge_System_Prototype
                 endpoints.MapAreaControllerRoute(
                     name: "intake",
                     areaName: "intake",
-                    pattern: "intake/{controller=intakehome}/{action=index}/{zohoTicketId?}"
+                    pattern: "intake/{controller=IntakeHome}/{action=index}/{zohoTicketId?}"
                 );
 
                 endpoints.MapControllerRoute(

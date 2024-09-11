@@ -1,29 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using CsvHelper;
-using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using SkillBridge_System_Prototype.Models;
-using SkillBridge_System_Prototype.Util.Global;
-using Microsoft.AspNetCore.Http;
-using MoreLinq.Extensions;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
-using Z.EntityFramework.Plus;
 using Microsoft.Extensions.Configuration;
+using SkillBridge_System_Prototype.ViewModel;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
+using Skillbridge.Business.Repository.Repositories;
+using Taku.Core.Global;
 
 namespace SkillBridge_System_Prototype.Controllers
 {
@@ -126,11 +119,11 @@ namespace SkillBridge_System_Prototype.Controllers
             //SelectList groups = new SelectList(_db.OpportunityGroups.Select(l => l.Group_Id).Distinct(), "Group_Id", "Group_Id");
             //ViewBag.GroupIds = groups;
 
-            return View(new SB_Opportunity {});
+            return View(new OpportunityModel {});
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOpportunity(SB_Opportunity model, string newGroupTitle)
+        public async Task<IActionResult> CreateOpportunity(OpportunityModel model, string newGroupTitle)
         {
             //Console.WriteLine("Create Opportunity posted");
             //Console.WriteLine("newGroupTitle: " + newGroupTitle);
@@ -141,10 +134,10 @@ namespace SkillBridge_System_Prototype.Controllers
 
             //Console.WriteLine("model.Program_Id: " + model.Program_Id);
 
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == model.Program_Id);
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
-            //SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
-            //SB_Mou mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == model.Program_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            //OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            //var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
 
             //Console.WriteLine("prog: " + prog.Program_Name);
             // Console.WriteLine("org: " + org.Name);
@@ -169,7 +162,8 @@ namespace SkillBridge_System_Prototype.Controllers
                 //Console.WriteLine("MODEL STATE VALID, TRYING TO CREATE OPPORTUNITY");
                 try
                 {
-                    SB_PendingOpportunityAddition opp = new SB_PendingOpportunityAddition
+                    //TODO: Convert to mapping
+                    var opp = new PendingOpportunityAdditionModel()
                     {
                         // Save to DB
                         Created_By = userName,
@@ -313,14 +307,14 @@ namespace SkillBridge_System_Prototype.Controllers
                         else
                         {
                             //Console.WriteLine("model.Group_Id: " + model.Group_Id);
-                            SB_OpportunityGroup existingGroup = _db.OpportunityGroups.FirstOrDefault(p => p.Group_Id == model.Group_Id);
+                            OpportunityModelGroup existingGroup = _db.OpportunityGroups.FirstOrDefault(p => p.Group_Id == model.Group_Id);
                             newLat = existingGroup.Lat;
                             newLong = existingGroup.Long;
                             newTitle = existingGroup.Title;
                         }
 
                         //Create the opportunity group or add it to an existing one
-                        SB_OpportunityGroup group = new SB_OpportunityGroup
+                        OpportunityModelGroup group = new OpportunityModelGroup
                         {
                             Group_Id = newGroupId,
                             Opportunity_Id = model.Id,
@@ -339,9 +333,9 @@ namespace SkillBridge_System_Prototype.Controllers
                         //{
                         // THESE NEED TO RUN AFTER APPROVAL
                         Console.WriteLine("Result2 returned > 0");
-                        //List<SB_Opportunity> opps = _db.Opportunities.Where(e => e.Program_Id == opp.Program_Id).ToList();
-                        //SB_Program prog2 = _db.Programs.FirstOrDefault(e => e.Id == model.Program_Id);
-                        //SB_Organization org2 = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
+                        //List<OpportunityModel> opps = _db.Opportunities.Where(e => e.Program_Id == opp.Program_Id).ToList();
+                        //ProgramModel prog2 = _db.Programs.FirstOrDefault(e => e.Id == model.Program_Id);
+                        //OrganizationModel org2 = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
 
 
 
@@ -375,7 +369,7 @@ namespace SkillBridge_System_Prototype.Controllers
             //return RedirectToAction("ListOpportunities", "Opportunities");
         }
 
-        private string GetJobFamiliesListForProg(SB_Program prog)
+        private string GetJobFamiliesListForProg(ProgramModel prog)
         {
             string jfs = "";
 
@@ -470,7 +464,7 @@ namespace SkillBridge_System_Prototype.Controllers
             return jfs;
         }
 
-        private string GetParticipationPopulationStringFromProgram(SB_Program prog)
+        private string GetParticipationPopulationStringFromProgram(ProgramModel prog)
         {
             string pps = "";
 
@@ -570,15 +564,15 @@ namespace SkillBridge_System_Prototype.Controllers
 
 
 
-        private void UpdateOrgStatesOfProgramDelivery(SB_Organization org)
+        private void UpdateOrgStatesOfProgramDelivery(OrganizationModel org)
         {
             // Get all programs from org
-            List<SB_Program> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
+            List<ProgramModel> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
 
             List<string> states = new List<string>();
 
 
-            foreach (SB_Program p in progs)
+            foreach (ProgramModel p in progs)
             {
                 string progStates = "";
                 progStates = p.States_Of_Program_Delivery;
@@ -640,7 +634,7 @@ namespace SkillBridge_System_Prototype.Controllers
             _db.SaveChanges();
         }
 
-        private void UpdateStatesOfProgramDelivery(SB_Program prog, List<SB_Opportunity> opps)
+        private void UpdateStatesOfProgramDelivery(ProgramModel prog, List<OpportunityModel> opps)
         {
             // Update Program
             string newStateList = "";
@@ -649,7 +643,7 @@ namespace SkillBridge_System_Prototype.Controllers
             List<string> states = new List<string>();
 
             // Make sure there aren't duplicate states in list
-            foreach (SB_Opportunity o in opps)
+            foreach (OpportunityModel o in opps)
             {
                 bool found = false;
 
@@ -704,15 +698,15 @@ namespace SkillBridge_System_Prototype.Controllers
             var id = _userManager.GetUserId(User); // Get user id:
             var user = await _userManager.FindByIdAsync(id);
 
-            List<SB_Opportunity> filteredOpps = await _authenticationRepository.GetOpportunitiesByUser(id);
+            List<OpportunityModel> filteredOpps = await _authenticationRepository.GetOpportunitiesByUser(id);
 
             List<ListOpportunityModel> model = new List<ListOpportunityModel>();
 
-            foreach (SB_Opportunity opp in filteredOpps)
+            foreach (OpportunityModel opp in filteredOpps)
             {
-                //SB_Organization org = _db.Organizations.SingleOrDefault(x => x.Id == opp.Organization_Id);
-                //SB_Program prog = _db.Programs.SingleOrDefault(x => x.Id == opp.Program_Id);
-                //SB_Mou mou = _db.Mous.SingleOrDefault(x => x.Id == org.Mou_Id);
+                //OrganizationModel org = _db.Organizations.SingleOrDefault(x => x.Id == opp.Organization_Id);
+                //ProgramModel prog = _db.Programs.SingleOrDefault(x => x.Id == opp.Program_Id);
+                //var mou = _db.Mous.SingleOrDefault(x => x.Id == org.Mou_Id);
 
                 string mouLink = "";
                 DateTime expirationDate = new DateTime();
@@ -769,10 +763,10 @@ namespace SkillBridge_System_Prototype.Controllers
             Console.WriteLine("EditOpportunity GET called");
             Console.WriteLine("id: " + id);
             // Find the existing Opportunity in the current database
-            SB_Opportunity opp = await _db.Opportunities.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
+            OpportunityModel opp = await _db.Opportunities.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
 
             // Find any pending changes for this organization
-            SB_PendingOpportunityChange pendingChange = await _db.PendingOpportunityChanges.FirstOrDefaultAsync(e => e.Opportunity_Id == int.Parse(id) && e.Pending_Change_Status == 0);
+            var pendingChange = await _db.PendingOpportunityChanges.FirstOrDefaultAsync(e => e.Opportunity_Id == int.Parse(id) && e.Pending_Change_Status == 0);
 
             // Populate Dropdown info for States Dropdown
             List<State> states = new List<State>();
@@ -792,8 +786,8 @@ namespace SkillBridge_System_Prototype.Controllers
                 return View("NotFound");
             }
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == opp.Program_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == opp.Program_Id);
 
             if (org.Is_Active == false || prog.Is_Active == false)
             {
@@ -889,7 +883,7 @@ namespace SkillBridge_System_Prototype.Controllers
             }
         }
 
-        public EditOpportunityModel UpdateOppModelWithPendingChanges(EditOpportunityModel model, SB_PendingOpportunityChange pendingChange)
+        public EditOpportunityModel UpdateOppModelWithPendingChanges(EditOpportunityModel model, PendingOpportunityChangeModel pendingChange)
         {
             if (model.Group_Id != pendingChange.Group_Id) { model.Group_Id = pendingChange.Group_Id; model.Pending_Fields.Add("Group_Id"); }
 
@@ -1115,13 +1109,14 @@ namespace SkillBridge_System_Prototype.Controllers
             }
 
             // Find the existing Opportunity in the current database
-            SB_Opportunity originalOpp = _db.Opportunities.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            OpportunityModel originalOpp = _db.Opportunities.FirstOrDefault(e => e.Id == int.Parse(model.Id));
             // Find any pending changes for this organization
-            SB_PendingOpportunityChange pendingChange = _db.PendingOpportunityChanges.FirstOrDefault(e => e.Opportunity_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingOpportunityChanges.FirstOrDefault(e => e.Opportunity_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
 
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == originalOpp.Program_Id);
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == originalOpp.Program_Id);
 
-            SB_PendingOpportunityChange opp = new SB_PendingOpportunityChange { };
+            //TODO: Convert to mapping
+            var opp = new PendingOpportunityChangeModel { };
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -1196,7 +1191,8 @@ namespace SkillBridge_System_Prototype.Controllers
                 {
                     //Console.WriteLine("CREATING A NEW PENDING CHANGE");
                     // Create the pending change object to push to the database tabler
-                    opp = new SB_PendingOpportunityChange
+                    // TODO: Convert to Mapping
+                    opp = new PendingOpportunityChangeModel()
                     {
                         Group_Id = model.Group_Id,
                         Opportunity_Id = int.Parse(model.Id),
@@ -1346,7 +1342,7 @@ namespace SkillBridge_System_Prototype.Controllers
             }
         }
 
-        private bool CheckForOSDApprovalNecessary(EditOpportunityModel model, SB_Opportunity origOpp)
+        private bool CheckForOSDApprovalNecessary(EditOpportunityModel model, OpportunityModel origOpp)
         {
             bool required = false;
 
@@ -1375,11 +1371,11 @@ namespace SkillBridge_System_Prototype.Controllers
 
         public bool CanPostEdit(string oppId)
         {
-            SB_Opportunity opp = _db.Opportunities.FirstOrDefault(e => e.Id == int.Parse(oppId));
+            OpportunityModel opp = _db.Opportunities.FirstOrDefault(e => e.Id == int.Parse(oppId));
 
-            SB_Program prog = _db.Programs.FirstOrDefault(e => e.Id == opp.Program_Id);
+            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == opp.Program_Id);
 
-            SB_Organization org = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
 
             if (org.Is_Active && prog.Is_Active)
             {

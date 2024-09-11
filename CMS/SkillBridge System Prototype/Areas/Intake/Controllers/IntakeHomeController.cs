@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
-using SkillBridge_System_Prototype.Intake.Data;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System;
 using Microsoft.AspNetCore.Identity;
-using SkillBridge_System_Prototype.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using SkillBridge_System_Prototype.Intake.Data;
 using Skillbridge.Business.Data;
+using Skillbridge.Business.Model.Db;
 
-namespace SkillBridge_System_Prototype.Intake.Controllers
+namespace SkillBridge_System_Prototype.Areas.Intake.Controllers
 {
     [Area("Intake")]
     public class IntakeHomeController : SkillBridge_System_Prototype.Controllers.CmsController

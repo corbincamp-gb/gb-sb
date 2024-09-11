@@ -1,9 +1,9 @@
 ﻿@{
     Layout = "_BlankLayout";
     ViewData["Title"] = "QuestionPro PDF";
-    var chainedSurveys = (List<SkillBridge_System_Prototype.Models.QuestionPro.QPResponse>)ViewBag.ChainedSurveys;
-    var questions = (List<SkillBridge_System_Prototype.Models.QuestionPro.QPResponseQuestion>)ViewBag.Questions;
-    var answers = (List<SkillBridge_System_Prototype.Models.QuestionPro.QPResponseQuestionAnswer>)ViewBag.Answers;
+    var chainedSurveys = (List<Skillbridge.Business.Model.Db.QuestionPro.QPResponse>)ViewBag.ChainedSurveys;
+    var questions = (List<Skillbridge.Business.Model.Db.QuestionPro.QPResponseQuestion>)ViewBag.Questions;
+    var answers = (List<Skillbridge.Business.Model.Db.QuestionPro.QPResponseQuestionAnswer>)ViewBag.Answers;
 }
 
 @if (chainedSurveys != null)
