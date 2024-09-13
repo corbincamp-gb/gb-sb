@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SkillBridge.Business.Data;
 using SkillBridge.Business.Model.Db;
-using SkillBridge.Business.Repository;
 using Taku.Core;
 
 namespace SkillBridge.Business.Query
@@ -16,16 +11,16 @@ namespace SkillBridge.Business.Query
 
     public class OpportunityCollectionQuery : IOpportunityCollectionQuery
     {
-        private readonly IOpportunityRepository _repo;
+        private readonly ApplicationDbContext _db;
 
-        public OpportunityCollectionQuery(IOpportunityRepository repo)
+        public OpportunityCollectionQuery(ApplicationDbContext db)
         {
-            _repo = repo;
+            _db = db;
         }
 
         public IEnumerable<IOpportunity> Get()
         {
-            return _repo.Retrieve();
+            return _db.Opportunities;
         }
     }
 }

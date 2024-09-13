@@ -15,14 +15,20 @@ namespace SkillBridge.Business.Query.DataDownload
         private readonly IDropDownDataMapping _mapping;
         private readonly IMilitaryBranchCollectionQuery _militaryBranchCollectionQuery;
         private readonly IOpportunityCollectionQuery _opportunityCollectionQuery;
+        private readonly IProgramOrganizationCollectionQuery _programOrganizationCollectionQuery;
+        private readonly IRelatedOrganizationCollectionQuery _relatedOrganizationCollectionQuery;
 
         public DropdownDataQuery(IDropDownDataMapping mapping, 
             IMilitaryBranchCollectionQuery militaryBranchCollectionQuery,
-            IOpportunityCollectionQuery opportunityCollectionQuery)
+            IOpportunityCollectionQuery opportunityCollectionQuery,
+            IProgramOrganizationCollectionQuery programOrganizationCollectionQuery,
+            IRelatedOrganizationCollectionQuery relatedOrganizationCollectionQuery)
         {
             _mapping = mapping;
             _militaryBranchCollectionQuery = militaryBranchCollectionQuery;
             _opportunityCollectionQuery = opportunityCollectionQuery;
+            _programOrganizationCollectionQuery = programOrganizationCollectionQuery;
+            _relatedOrganizationCollectionQuery = relatedOrganizationCollectionQuery;
         }
         public IDropDownData Get()
         {
@@ -30,7 +36,9 @@ namespace SkillBridge.Business.Query.DataDownload
 
             var ret = _mapping.Map(
                 _militaryBranchCollectionQuery.Get(),
-                _opportunityCollectionQuery.Get());
+                _opportunityCollectionQuery.Get(),
+                _programOrganizationCollectionQuery.Get(),
+                _relatedOrganizationCollectionQuery.Get());
 
             return ret;
 

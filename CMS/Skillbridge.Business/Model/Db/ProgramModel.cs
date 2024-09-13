@@ -5,7 +5,68 @@ using Newtonsoft.Json;
 
 namespace SkillBridge.Business.Model.Db
 {
-    public class ProgramModel
+    public interface IProgram
+    {
+        int Id { get; set; }
+        string Program_Name { get; set; }
+        string Organization_Name { get; set; }
+        int Organization_Id { get; set; }
+        OrganizationModel Organization { get; set; }
+        bool Is_Active { get; set; }
+        DateTime Date_Deactivated { get; set; }
+        string Lhn_Intake_Ticket_Id { get; set; } // LHN Intake Ticket Number
+        bool Has_Intake { get; set; } // Do we have a completed QuestionPro intake form from them
+        string Intake_Form_Version { get; set; } // Which version of the QuestionPro intake form did they fill out
+        string Qp_Intake_Submission_Id { get; set; } // The ID of the QuestionPro intake form submission
+
+        //public bool Has_Locations { get; set; }      // From col N of master spreadsheet
+        bool Location_Details_Available { get; set; } // From col O of master spreadsheet
+
+        bool Has_Consent { get; set; }
+        string Qp_Location_Submission_Id { get; set; }
+        string Lhn_Location_Ticket_Id { get; set; }
+        bool Has_Multiple_Locations { get; set; }
+        bool Reporting_Form_2020 { get; set; }
+        DateTime Date_Authorized { get; set; } // Date the 
+        string Mou_Link { get; set; } // URL link to actual MOU packet
+        DateTime Mou_Creation_Date { get; set; }
+        DateTime Mou_Expiration_Date { get; set; }
+        bool Nationwide { get; set; }
+        bool Online { get; set; }
+        string Participation_Populations { get; set; } // Might want enum for this
+        string Delivery_Method { get; set; }
+        string States_Of_Program_Delivery { get; set; }
+        int Program_Duration { get; set; }
+        bool Support_Cohorts { get; set; }
+        string Opportunity_Type { get; set; }
+        string Job_Family { get; set; }
+        string Services_Supported { get; set; }
+        string Enrollment_Dates { get; set; }
+        DateTime Date_Created { get; set; } // Date program was created in system
+        DateTime Date_Updated { get; set; } // Date program was last edited/updated in the system
+        string Created_By { get; set; }
+        string Updated_By { get; set; }
+        string Program_Url { get; set; }
+        bool Program_Status { get; set; } // false is disabled, true is enabled
+        string Admin_Poc_First_Name { get; set; }
+        string Admin_Poc_Last_Name { get; set; }
+        string Admin_Poc_Email { get; set; }
+        string Admin_Poc_Phone { get; set; }
+        string Public_Poc_Name { get; set; }
+        string Public_Poc_Email { get; set; }
+        string Notes { get; set; }
+        bool For_Spouses { get; set; }
+        int Legacy_Program_Id { get; set; }
+        int Legacy_Provider_Id { get; set; }
+        List<ProgramJobFamily> ProgramJobFamilies { get; set; }
+        List<ProgramParticipationPopulation> ProgramParticipationPopulations { get; set; }
+        List<ProgramService> ProgramServices { get; set; }
+        List<ProgramState> ProgramStates { get; set; }
+        List<ProgramDeliveryMethod> ProgramDeliveryMethods { get; set; }
+        List<ProgramTrainingPlan> ProgramTrainingPlans { get; set; }
+    }
+
+    public class ProgramModel : IProgram
     {
         [Key] public int Id { get; set; }
 

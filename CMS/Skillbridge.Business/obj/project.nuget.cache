@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ShxWKXUJepU=",
+  "dgSpecHash": "vzGuRNusels=",
   "success": true,
   "projectFilePath": "C:\\Projects\\Skillbridge\\CMS\\SkillBridge.Business\\SkillBridge.Business.csproj",
   "expectedPackageFiles": [
@@ -116,7 +116,7 @@
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\nuget.protocol\\6.3.1\\nuget.protocol.6.3.1.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\nuget.versioning\\6.3.1\\nuget.versioning.6.3.1.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\portable.bouncycastle\\1.8.10\\portable.bouncycastle.1.8.10.nupkg.sha512",
-    "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\restsharp\\108.0.3\\restsharp.108.0.3.nupkg.sha512",
+    "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\restsharp\\112.0.0\\restsharp.112.0.0.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
@@ -179,7 +179,7 @@
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\system.io.packaging\\4.0.0\\system.io.packaging.4.0.0.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
-    "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\system.linq.dynamic.core\\1.2.20\\system.linq.dynamic.core.1.2.20.nupkg.sha512",
+    "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\system.linq.dynamic.core\\1.4.5\\system.linq.dynamic.core.1.4.5.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\system.linq.expressions\\4.3.0\\system.linq.expressions.4.3.0.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\system.linq.queryable\\4.3.0\\system.linq.queryable.4.3.0.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
@@ -245,26 +245,5 @@
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\z.entityframework.plus.efcore\\3.2.17\\z.entityframework.plus.efcore.3.2.17.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\z.expressions.eval\\4.0.60\\z.expressions.eval.4.0.60.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'RestSharp' 108.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-4rr6-2v9v-wcpc",
-      "libraryId": "RestSharp",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    },
-    {
-      "code": "NU1904",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.Linq.Dynamic.Core' 1.2.20 has a known critical severity vulnerability, https://github.com/advisories/GHSA-w65q-jcmv-28gj",
-      "libraryId": "System.Linq.Dynamic.Core",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  "logs": []
 }

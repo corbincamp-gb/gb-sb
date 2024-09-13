@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.HttpOverrides;
 using SkillBridge.CMS.Services;
 using System.Text.Json;
+using SkillBridge.Business.Command;
 using SkillBridge.Business.Data;
 using SkillBridge.Business.Model.Db;
 using SkillBridge.Business.Query;
@@ -58,23 +59,25 @@ namespace SkillBridge.CMS
             #region Dependency Injection
             // commands
             services.AddScoped<ISerializeObjectCommand, SerializeObjectCommand>();
+            services.AddScoped<IRenderDropDownJsFileCommand, RenderDropDownJsFileCommand>();
 
 
             // Mappings
             services.AddScoped<IDropDownDataMapping, DropDownDataMapping>();
-            services.AddScoped<IRelateOrganizationMapping, RelateOrganizationMapping>();
+            services.AddScoped<IRelatedOrganizationMapping, RelatedOrganizationMapping>();
+            services.AddScoped<IRelatedOrganizationCollectionMapping, RelatedOrganizationCollectionMapping>();
 
             // Repositories
             services.AddScoped<ITemplateRepository, Intake.Data.TemplateRepository>();
             services.AddScoped<IFormRepository, FormRepository>();
-            services.AddScoped<IMilitaryBranchRepository, MilitaryBranchRepository>();
-            services.AddScoped<IOpportunityRepository, OpportunityRepository>();
-
+          
 
             // Queries
+            services.AddScoped<IDeliveryMethodQuery, DeliveryMethodQuery>();
             services.AddScoped<IMilitaryBranchCollectionQuery, MilitaryBranchCollectionQuery>();
             services.AddScoped<IOpportunityCollectionQuery, OpportunityCollectionQuery>();
-
+            services.AddScoped<IProgramOrganizationCollectionQuery, ProgramOrganizationCollectionQuery>();
+            services.AddScoped<IRelatedOrganizationCollectionQuery, RelatedOrganizationCollectionQuery>();
             services.AddScoped<IDropdownDataQuery, DropdownDataQuery>();
 
             #endregion

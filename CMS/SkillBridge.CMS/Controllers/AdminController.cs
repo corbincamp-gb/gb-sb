@@ -34,6 +34,7 @@ namespace SkillBridge.CMS.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _db;
         private readonly IEmailSender _emailSender;
+        private readonly IRenderDropDownJsFileCommand _renderDropDownJsFileCommand;
         private readonly IDropdownDataQuery _dropdownDataQuery;
 
         public AdminController(ILogger<AdminController> logger,
@@ -41,6 +42,7 @@ namespace SkillBridge.CMS.Controllers
             UserManager<ApplicationUser> userManager, 
             ApplicationDbContext db, 
             IEmailSender emailSender,
+            IRenderDropDownJsFileCommand renderDropDownJsFileCommand,
             IDropdownDataQuery dropdownDataQuery)
         {
             _logger = logger;
@@ -48,6 +50,7 @@ namespace SkillBridge.CMS.Controllers
             _userManager = userManager;
             _db = db;
             _emailSender = emailSender;
+            _renderDropDownJsFileCommand = renderDropDownJsFileCommand;
             _dropdownDataQuery = dropdownDataQuery;
         }
 
@@ -2144,16 +2147,16 @@ namespace SkillBridge.CMS.Controllers
             return File(Encoding.UTF8.GetBytes(newJson.ToString()), "application/json", "locations.json");
         }
 
-        [HttpGet]
-        public IActionResult DownloadDropDownData2()
-        {
-            return File(Encoding.UTF8.GetBytes(_dropdownDataQuery.Get().ToString()), "application/json", "dropdown-data.js");
-
-        }
-
+      
         [HttpGet]        
         public IActionResult DownloadDropdownData()  // Generates the list of JSON data that will be used for the live site locations page
         {
+            // new code
+            _renderDropDownJsFileCommand.Execute(_dropdownDataQuery.Get(), out var ddFile);
+            return File(Encoding.UTF8.GetBytes(ddFile), "application/json", "dropdown-data.js");
+
+            #region Old Code
+
             var orgs = _db.Organizations.AsNoTracking();
             var progs = _db.Programs.AsNoTracking();
             var opps = _db.Opportunities.AsNoTracking();
@@ -2165,9 +2168,10 @@ namespace SkillBridge.CMS.Controllers
 
             try
             {
+                var watch = Stopwatch.StartNew();
                 /* PROGRAMS/PROVIDERS */
                 // Get Unique Programs
-                var uniquePrograms = progs.FromCache().OrderBy(a => a.Program_Name).ToList();
+                var uniquePrograms = progs.OrderBy(a => a.Program_Name).ToList();
                 // Sort Alphebetically
                 //uniquePrograms.Sort();
 
@@ -2177,9 +2181,9 @@ namespace SkillBridge.CMS.Controllers
 
                 for (var i = 0; i < uniquePrograms.Count; i++)
                 {
-                    var progList = progs.FromCache().Where(m => m.Organization_Id == uniquePrograms[i].Organization_Id).ToList();
-                    var oppList = opps.FromCache().Where(m => m.Program_Id == uniquePrograms[i].Id).ToList();
-                    Console.WriteLine("Program '" + uniquePrograms[i].Program_Name + "' has " + oppList.Count + " Opportunities attached to it");
+                    var progList = progs.Where(m => m.Organization_Id == uniquePrograms[i].Organization_Id).ToList();
+                    var oppList = opps.Where(m => m.Program_Id == uniquePrograms[i].Id).ToList();
+                    Debug.WriteLine("Program '" + uniquePrograms[i].Program_Name + "' has " + oppList.Count + " Opportunities attached to it");
 
                     bool soloProgramUnderOrg = true;
 
@@ -2234,7 +2238,8 @@ namespace SkillBridge.CMS.Controllers
                 uniqueProgramsForExport += ");";
 
                 Console.WriteLine("numOutput: " + numOutput);
-
+                watch.Stop();
+                Debug.WriteLine($"Total program time: {watch.Elapsed.Minutes}:{watch.Elapsed.Seconds}");
                 // Add to main body of data to export
                 newJson.Append(uniqueProgramsForExport + "\n");
             }
@@ -2551,6 +2556,7 @@ namespace SkillBridge.CMS.Controllers
 
 
             return File(Encoding.UTF8.GetBytes(newJson.ToString()), "application/json", "dropdown-data.js");
+#endregion
         }
 
         [HttpGet]

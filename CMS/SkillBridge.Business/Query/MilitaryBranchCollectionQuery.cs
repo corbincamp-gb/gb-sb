@@ -1,6 +1,6 @@
-﻿using SkillBridge.Business.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SkillBridge.Business.Data;
 using SkillBridge.Business.Model.Db;
-using SkillBridge.Business.Repository;
 using Taku.Core;
 
 namespace SkillBridge.Business.Query
@@ -12,16 +12,16 @@ namespace SkillBridge.Business.Query
 
     public class MilitaryBranchCollectionQuery : IMilitaryBranchCollectionQuery
     {
-        private readonly IMilitaryBranchRepository _repo;
+        private readonly ApplicationDbContext _db;
 
-        public MilitaryBranchCollectionQuery(IMilitaryBranchRepository repo)
+        public MilitaryBranchCollectionQuery(ApplicationDbContext db)
         {
-            _repo = repo;
+            _db = db;
         }
 
         public IEnumerable<IMilitaryBranch> Get()
         {
-            return _repo.Retrieve();
+            return _db.MilitaryBranches.AsNoTracking();
         }
     }
 }

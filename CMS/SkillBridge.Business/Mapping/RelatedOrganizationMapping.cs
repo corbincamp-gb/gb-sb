@@ -3,12 +3,12 @@ using Taku.Core;
 
 namespace SkillBridge.Business.Mapping
 {
-    public interface IRelateOrganizationMapping : IMapping
+    public interface IRelatedOrganizationMapping : IMapping
     {
         IRelatedOrganization Map(string parent, IEnumerable<string> orgs);
     }
 
-    public class RelateOrganizationMapping : IRelateOrganizationMapping
+    public class RelatedOrganizationMapping : IRelatedOrganizationMapping
     {
         public IRelatedOrganization Map(string parent, IEnumerable<string> orgs)
         {

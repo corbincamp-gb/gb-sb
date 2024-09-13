@@ -7,10 +7,15 @@ namespace SkillBridge.Business.Model
         IEnumerable<string> Durations { get; set; }
         IEnumerable<string> Deliveries { get; set; }
         IEnumerable<string> Locations { get; set; }
+        IEnumerable<string> OccupationAreas { get; set; }
+        IEnumerable<string> Organizations { get; set; }
+        IEnumerable<string> Programs { get; set; }
+        IRelatedOrganizationCollection RelatedOrganizations { get; set; }
     }
 
     public class DropDownDataModel : IDropDownData
     {
+        public IEnumerable<string> Programs { get; set; }
         public IEnumerable<string> MilitaryBranches { get; set; }
         public IEnumerable<string> Durations { get; set; }
         public IEnumerable<string> Deliveries { get; set; }
@@ -23,7 +28,7 @@ namespace SkillBridge.Business.Model
         public IEnumerable<string> Organizations { get; set; }
 
         // relatedOrgs
-        public IEnumerable<IRelatedOrganization> RelatedOrganizations { get; set; }
+        public IRelatedOrganizationCollection RelatedOrganizations { get; set; }
 
 
 

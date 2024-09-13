@@ -49,7 +49,7 @@ namespace Taku.Core.Global
 
         public static string? GetDeliveryMethod(int deliveryMethod)
         {
-            var dms = new Dictionary<int, string?>()
+            var dms = new Dictionary<int, string?>
             {
                 { 0, "In-Person" },
                 { 1, "In-Person" },

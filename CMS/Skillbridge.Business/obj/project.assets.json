@@ -2437,7 +2437,7 @@
           }
         }
       },
-      "RestSharp/108.0.3": {
+      "RestSharp/112.0.0": {
         "type": "package",
         "compile": {
           "lib/net6.0/RestSharp.dll": {
@@ -3499,7 +3499,7 @@
           "lib/netstandard1.6/System.Linq.dll": {}
         }
       },
-      "System.Linq.Dynamic.Core/1.2.20": {
+      "System.Linq.Dynamic.Core/1.4.5": {
         "type": "package",
         "compile": {
           "lib/net6.0/System.Linq.Dynamic.Core.dll": {
@@ -8031,20 +8031,27 @@
         "portable.bouncycastle.nuspec"
       ]
     },
-    "RestSharp/108.0.3": {
-      "sha512": "phq1AkVhqVXHZxvWDV4fJEJKCR5OHNFUGx2Ix8o5EFShS6654oZhth4X2RWvaU/W7UexIswW0T+lTirxfLU2Ow==",
+    "RestSharp/112.0.0": {
+      "sha512": "vezxJ6DLk0eDx+rmXwVHQvJ3elZCJfnLd8neRrkA+IvTs9falf2CEAolsjI1YKkkHTOvG13xWTnHK7gU0zgaaw==",
       "type": "package",
-      "path": "restsharp/108.0.3",
+      "path": "restsharp/112.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net5.0/RestSharp.dll",
-        "lib/net5.0/RestSharp.xml",
+        "README.md",
+        "lib/net471/RestSharp.dll",
+        "lib/net471/RestSharp.xml",
+        "lib/net48/RestSharp.dll",
+        "lib/net48/RestSharp.xml",
         "lib/net6.0/RestSharp.dll",
         "lib/net6.0/RestSharp.xml",
+        "lib/net7.0/RestSharp.dll",
+        "lib/net7.0/RestSharp.xml",
+        "lib/net8.0/RestSharp.dll",
+        "lib/net8.0/RestSharp.xml",
         "lib/netstandard2.0/RestSharp.dll",
         "lib/netstandard2.0/RestSharp.xml",
-        "restsharp.108.0.3.nupkg.sha512",
+        "restsharp.112.0.0.nupkg.sha512",
         "restsharp.nuspec",
         "restsharp.png"
       ]
@@ -10063,13 +10070,14 @@
         "system.linq.nuspec"
       ]
     },
-    "System.Linq.Dynamic.Core/1.2.20": {
-      "sha512": "JyggojPaq2QM603WCwghxxwNmi8ESDLCSTTjfq/TVFvj0J2XjXfvfa0X7pe8NOruF4CbPG2K46AWmgvk0Umoqg==",
+    "System.Linq.Dynamic.Core/1.4.5": {
+      "sha512": "DArhXxeawjiGbMsYdc0oUvZIjDzcLqnwz+Us8A+wJhrOiz3EqCO8aFoYun2GokyaW2hipEJ33oxqnhU6UmaEJQ==",
       "type": "package",
-      "path": "system.linq.dynamic.core/1.2.20",
+      "path": "system.linq.dynamic.core/1.4.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "PackageReadme.md",
         "lib/net35/System.Linq.Dynamic.Core.dll",
         "lib/net35/System.Linq.Dynamic.Core.pdb",
         "lib/net35/System.Linq.Dynamic.Core.xml",
@@ -10091,6 +10099,12 @@
         "lib/net6.0/System.Linq.Dynamic.Core.dll",
         "lib/net6.0/System.Linq.Dynamic.Core.pdb",
         "lib/net6.0/System.Linq.Dynamic.Core.xml",
+        "lib/net7.0/System.Linq.Dynamic.Core.dll",
+        "lib/net7.0/System.Linq.Dynamic.Core.pdb",
+        "lib/net7.0/System.Linq.Dynamic.Core.xml",
+        "lib/net8.0/System.Linq.Dynamic.Core.dll",
+        "lib/net8.0/System.Linq.Dynamic.Core.pdb",
+        "lib/net8.0/System.Linq.Dynamic.Core.xml",
         "lib/netcoreapp2.1/System.Linq.Dynamic.Core.dll",
         "lib/netcoreapp2.1/System.Linq.Dynamic.Core.pdb",
         "lib/netcoreapp2.1/System.Linq.Dynamic.Core.xml",
@@ -10110,7 +10124,8 @@
         "lib/uap10.0.10240/System.Linq.Dynamic.Core.pdb",
         "lib/uap10.0.10240/System.Linq.Dynamic.Core.pri",
         "lib/uap10.0.10240/System.Linq.Dynamic.Core.xml",
-        "system.linq.dynamic.core.1.2.20.nupkg.sha512",
+        "logo.png",
+        "system.linq.dynamic.core.1.4.5.nupkg.sha512",
         "system.linq.dynamic.core.nuspec"
       ]
     },
@@ -13219,10 +13234,10 @@
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.15",
       "Microsoft.Extensions.Configuration.AzureKeyVault >= 3.1.14",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.13",
-      "RestSharp >= 108.0.3",
+      "RestSharp >= 112.0.0",
       "SkillBridge.IntakeForm >= 1.0.0",
       "Syncfusion.HtmlToPdfConverter.Net.Windows >= 21.2.5",
-      "System.Linq.Dynamic.Core >= 1.2.20",
+      "System.Linq.Dynamic.Core >= 1.4.5",
       "Taku.Core >= 1.0.0",
       "Z.EntityFramework.Plus.EFCore >= 3.2.17",
       "morelinq >= 3.3.2"
@@ -13348,7 +13363,7 @@
           },
           "RestSharp": {
             "target": "Package",
-            "version": "[108.0.3, )"
+            "version": "[112.0.0, )"
           },
           "Syncfusion.HtmlToPdfConverter.Net.Windows": {
             "target": "Package",
@@ -13356,7 +13371,7 @@
           },
           "System.Linq.Dynamic.Core": {
             "target": "Package",
-            "version": "[1.2.20, )"
+            "version": "[1.4.5, )"
           },
           "Z.EntityFramework.Plus.EFCore": {
             "target": "Package",
@@ -13386,27 +13401,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'RestSharp' 108.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-4rr6-2v9v-wcpc",
-      "libraryId": "RestSharp",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    },
-    {
-      "code": "NU1904",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.Linq.Dynamic.Core' 1.2.20 has a known critical severity vulnerability, https://github.com/advisories/GHSA-w65q-jcmv-28gj",
-      "libraryId": "System.Linq.Dynamic.Core",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  }
 }

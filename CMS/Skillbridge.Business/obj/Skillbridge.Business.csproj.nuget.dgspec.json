@@ -121,7 +121,7 @@
             },
             "RestSharp": {
               "target": "Package",
-              "version": "[108.0.3, )"
+              "version": "[112.0.0, )"
             },
             "Syncfusion.HtmlToPdfConverter.Net.Windows": {
               "target": "Package",
@@ -129,7 +129,7 @@
             },
             "System.Linq.Dynamic.Core": {
               "target": "Package",
-              "version": "[1.2.20, )"
+              "version": "[1.4.5, )"
             },
             "Z.EntityFramework.Plus.EFCore": {
               "target": "Package",
