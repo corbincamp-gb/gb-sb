@@ -53,6 +53,7 @@
 
   <ItemGroup>
     <Folder Include="Persistence\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

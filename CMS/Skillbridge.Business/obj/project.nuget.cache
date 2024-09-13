@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "vzGuRNusels=",
+  "dgSpecHash": "L4DNF18ufXo=",
   "success": true,
   "projectFilePath": "C:\\Projects\\Skillbridge\\CMS\\SkillBridge.Business\\SkillBridge.Business.csproj",
   "expectedPackageFiles": [
@@ -11,7 +11,6 @@
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\closedxml\\0.95.4\\closedxml.0.95.4.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\csvhelper\\26.1.0\\csvhelper.26.1.0.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\documentformat.openxml\\2.7.2\\documentformat.openxml.2.7.2.nupkg.sha512",
-    "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\evopdf.htmltopdf.netcore\\9.0.0\\evopdf.htmltopdf.netcore.9.0.0.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\excelnumberformat\\1.0.10\\excelnumberformat.1.0.10.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
     "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\mailkit\\2.12.0\\mailkit.2.12.0.nupkg.sha512",

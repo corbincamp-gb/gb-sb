@@ -7,7 +7,7 @@ namespace SkillBridge.Business.Query.DataDownload
 {
     public interface IDropdownDataQuery : IQuery
     {
-        IDropDownData Get();
+        Task<IDropDownData> Get();
     }
 
     public class DropdownDataQuery : IDropdownDataQuery
@@ -30,17 +30,17 @@ namespace SkillBridge.Business.Query.DataDownload
             _programOrganizationCollectionQuery = programOrganizationCollectionQuery;
             _relatedOrganizationCollectionQuery = relatedOrganizationCollectionQuery;
         }
-        public IDropDownData Get()
+        public async Task<IDropDownData> Get()
         {
             // start refactor
 
-            var ret = _mapping.Map(
+            var ret = Task.FromResult( _mapping.Map(
                 _militaryBranchCollectionQuery.Get(),
                 _opportunityCollectionQuery.Get(),
                 _programOrganizationCollectionQuery.Get(),
-                _relatedOrganizationCollectionQuery.Get());
+                _relatedOrganizationCollectionQuery.Get()));
 
-            return ret;
+            return await ret;
 
             #region old code
 

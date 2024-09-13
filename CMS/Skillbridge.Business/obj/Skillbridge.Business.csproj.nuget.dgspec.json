@@ -73,10 +73,6 @@
               "target": "Package",
               "version": "[26.1.0, )"
             },
-            "EvoPdf.HtmlToPdf.NetCore": {
-              "target": "Package",
-              "version": "[9.0.0, )"
-            },
             "MailKit": {
               "target": "Package",
               "version": "[2.12.0, )"

@@ -19,7 +19,6 @@ C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\refint\Skill
 C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\Skillbridge.Business.pdb
 C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\Skillbridge.Business.genruntimeconfig.cache
 C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\ref\Skillbridge.Business.dll
-C:\Projects\Skillbridge\CMS\SkillBridge.Business\bin\Debug\net6.0\evointernal.dat
 C:\Projects\Skillbridge\CMS\SkillBridge.Business\bin\Debug\net6.0\SkillBridge.Business.deps.json
 C:\Projects\Skillbridge\CMS\SkillBridge.Business\bin\Debug\net6.0\SkillBridge.Business.runtimeconfig.json
 C:\Projects\Skillbridge\CMS\SkillBridge.Business\bin\Debug\net6.0\SkillBridge.Business.dll
