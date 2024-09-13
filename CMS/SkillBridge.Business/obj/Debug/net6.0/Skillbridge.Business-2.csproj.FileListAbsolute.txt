@@ -1,0 +1,6 @@
+C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\Skillbridge.Business-2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\Skillbridge.Business-2.AssemblyInfoInputs.cache
+C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\Skillbridge.Business-2.AssemblyInfo.cs
+C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\Skillbridge.Business-2.csproj.CoreCompileInputs.cache
+C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\Skillbridge.Business-2.sourcelink.json
+C:\Projects\Skillbridge\CMS\Skillbridge.Business-2\obj\Debug\net6.0\Skillbridge.Business-2.csproj.AssemblyReference.cache

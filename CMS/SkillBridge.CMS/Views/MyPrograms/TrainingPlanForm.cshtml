@@ -1,0 +1,40 @@
+﻿@model SkillBridge.Business.Model.Db.TrainingPlans.TrainingPlan
+@{
+    if (Model.Id > 0)
+    {
+        ViewData["Title"] = $"Update the Training Plan for this Program";
+    }
+    else
+    {
+        ViewData["Title"] = $"Add a Training Plan to this Program";
+    }
+
+    var pending = (SkillBridge.Business.Model.Db.PendingProgramModel)ViewBag.Pending;
+
+}
+
+<h1>@Html.Raw(ViewData["Title"])</h1>
+
+@await Html.PartialAsync("~/Views/Programs/_PendingProgramHeader.cshtml", pending)
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+@using (Html.BeginForm("TrainingPlanForm", "MyPrograms", FormMethod.Post, new { id = "tp-form", @enctype = "multipart/form-data" }))
+{
+    <input type="hidden" id="PendingId" name="PendingId" value="@(pending.Id)" />
+    <input type="hidden" id="IsAddition" name="IsAddition" value="@(pending.IsAddition.ToString())" />
+
+    @await Html.PartialAsync("~/Views/Shared/_TrainingPlanForm.cshtml", Model)
+
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/MyPrograms/TrainingPlanChanges/@(pending.Id)?isAddition=@(pending.IsAddition)" class="btn btn-danger">Cancel</a>
+    </div>
+
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

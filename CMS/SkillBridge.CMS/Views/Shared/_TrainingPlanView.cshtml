@@ -1,0 +1,134 @@
+﻿@{
+    var trainingPlan = (SkillBridge.Business.Model.Db.TrainingPlans.TrainingPlan)Model;
+    var trainingPlanLengthsList = (List<SkillBridge.Business.Model.Db.TrainingPlans.TrainingPlanLength>)ViewBag.TrainingPlanLengthsList;
+    var instructionalMethodsList = (List<SkillBridge.Business.Model.Db.TrainingPlans.InstructionalMethod>)ViewBag.InstructionalMethodsList;
+}
+<div class="card">
+    <div class="card-header h5">@Html.Raw(trainingPlan.Name)</div>
+    <div class="card-body">
+        <input type="hidden" id="Id" name="Id" value="@(trainingPlan.Id)" />
+
+        <div class="row mb-2">
+            <div class="col">
+                <label for="JobTitle">What is the job title associated with this training plan? <span class="req">&nbsp;*</span></label>
+                <div class="font-italic">e.g., Data Analyst.</div>
+                <div class="form-group font-weight-bold">@Html.Raw(trainingPlan.JobTitle)</div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="Description">Please provide a brief description of the above job. <span class="req">&nbsp;*</span></label>
+                <div class="form-group font-weight-bold">@Html.Raw(trainingPlan.Description)</div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label>How long does it take to complete the <span class="font-weight-bold underline">entire</span> training program? <span class="req">&nbsp;*</span></label>
+                <div class="form-group" id="radio-container">
+                    @for (var i=0; i<trainingPlanLengthsList.Count; i++)
+                    {
+                        <div class="form-check mr-3">
+                            <label class="form-check-label @(trainingPlan.TrainingPlanLengthId == trainingPlanLengthsList[i].Id ? "font-weight-bold" : "font-weight-normal")">
+                                <input type="radio" class="form-check-input" id="TrainingPlanLengthId[@i]" name="TrainingPlanLengthId" value="@(trainingPlanLengthsList[i].Id)" @(trainingPlan.TrainingPlanLengthId == trainingPlanLengthsList[i].Id ? "checked" : String.Empty) data-val="true" data-val-required="The length of the training program is required." /> @Html.Raw(trainingPlanLengthsList[i].DisplayText)
+                            </label>
+                        </div>
+                    }
+                </div>
+                <span class="text-danger" data-valmsg-for="TrainingPlanLengthId" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="BreakdownCount">Please enter the total number of weeks in your training plan: <span class="req">&nbsp;*</span></label>
+                <div class="form-group font-weight-bold">@(trainingPlan.BreakdownCount)</div>
+            </div>
+        </div>
+        <div class="text-danger" data-valmsg-for="BreakdownCount" data-valmsg-replace="true"></div>
+        <div id="BreakdownUi" class="mt-2 mb-2">
+            @if (trainingPlan.BreakdownCount > 0)
+            {
+                <label>Please provide the Title of Training Module, Learning Objective, and Total Hours for each week covered in your SkillBridge program.</label>
+                <div class="font-italic">Note: Learning objectives should clearly express how the organizations SkillBridge training objectives align with job competencies for each block of training(usually derived from a job task analysis for the job opportunity).</div>
+                <table class="table mt-2">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th style="width: 25%;">Title of Training Module <span class="req">&nbsp;*</span></th>
+                            <th style="width: 60%;">Learning Objective <span class="req">&nbsp;*</span></th>
+                            <th>Total Hours <span class="req">&nbsp;*</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < trainingPlan.TrainingPlanBreakdowns.Count; i++)
+                    {
+                            var breakdown = trainingPlan.TrainingPlanBreakdowns.FirstOrDefault(o => o.RowId == i + 1);
+                        <tr>
+                            <td class="font-weight-bold">@(i + 1)</td>
+                            <td class="font-weight-bold">@Html.Raw(breakdown.TrainingModuleTitle)</td>
+                            <td class="font-weight-bold">@Html.Raw(breakdown.LearningObjective)</td>
+                            <td class="font-weight-bold">@breakdown.TotalHours.ToString("#")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="InstructionalModules">Please provide a list of each instructional module and its associated learning objective. <span class="req">&nbsp;*</span></label>
+                <div class="form-group font-weight-bold">@Html.Raw(trainingPlan.InstructionalModules)</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Which instructional methods are used to provide training? <span class="req">&nbsp;*</span></label>
+                <div class="form-group" id="radio-container">
+                    @for (var i=0; i<instructionalMethodsList.Count; i++)
+                    {
+                        <div class="form-check mr-3">
+                            <label class="form-check-label @(trainingPlan.TrainingPlanInstructionalMethods.Any(o => o.InstructionalMethodId == instructionalMethodsList[i].Id) ? "font-weight-bold" : "font-weight-normal")">
+                                <input type="checkbox" class="form-check-input" value="@(instructionalMethodsList[i].Id)" id="TrainingPlanInstructionalMethods__@(i)__InstructionalMethodId" name="TrainingPlanInstructionalMethods[].InstructionalMethodId" data-val="true" requiredgroup="true" data-msg="At least one instruction method is required" @(trainingPlan.TrainingPlanInstructionalMethods.Any(o => o.InstructionalMethodId == instructionalMethodsList[i].Id) ? "checked" : String.Empty) /> @Html.Raw(instructionalMethodsList[i].DisplayText)
+                            </label>
+                        </div>
+                        @if (instructionalMethodsList[i].IsOther)
+                        {
+                            <span class="font-weight-bold">
+                                @(trainingPlan != null && trainingPlan.TrainingPlanInstructionalMethods != null && trainingPlan.TrainingPlanInstructionalMethods.Any(o => o.InstructionalMethodId == instructionalMethodsList[i].Id) ? trainingPlan.TrainingPlanInstructionalMethods.FirstOrDefault(o => o.InstructionalMethodId == instructionalMethodsList[i].Id).OtherText : String.Empty)
+                            </span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="WhoDelivers">Please describe in detail who will be delivering training and their training credentials. <span class="req">&nbsp;*</span></label>
+                <div class="font-italic">
+                    e.g., Dr. Jane Doe -- VP of Analysis with 10 years of experience. Doctorate in Statistics.
+                </div>
+                <div class="form-group font-weight-bold">@Html.Raw(trainingPlan.WhoDelivers)</div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="GradingRubric">Please describe the standardized grading rubric used to evaluate trainees. <span class="req">&nbsp;*</span></label>
+                <div class="font-italic">
+                    e.g., Demonstrates understanding of basic statistical principles - 10%<br />
+                    Correctly identifies reporting errors - 5%
+                </div>
+                <div class="form-group font-weight-bold">@Html.Raw(trainingPlan.GradingRubric)</div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="CredentialsEarned">
+                    Please list any credentials, certificate, or hours gained toward licenses and/or certifications upon completing training. <span class="req">&nbsp;*</span>
+                </label>
+                <div class="font-italic">
+                    e.g., Earns 20 continuing education credits toward Certified Analytics Professional (CAP) certification.
+                </div>
+                <div class="form-group font-weight-bold">@Html.Raw(trainingPlan.CredentialsEarned)</div>
+            </div>
+        </div>
+    </div>
+</div>
