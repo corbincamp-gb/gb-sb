@@ -2149,10 +2149,11 @@ namespace SkillBridge.CMS.Controllers
 
       
         [HttpGet]        
-        public IActionResult DownloadDropdownData()  // Generates the list of JSON data that will be used for the live site locations page
+        public async Task<IActionResult> DownloadDropdownData()  // Generates the list of JSON data that will be used for the live site locations page
         {
             // new code
-            _renderDropDownJsFileCommand.Execute(_dropdownDataQuery.Get(), out var ddFile);
+            var data = await _dropdownDataQuery.Get();
+            _renderDropDownJsFileCommand.Execute(data, out var ddFile);
             return File(Encoding.UTF8.GetBytes(ddFile), "application/json", "dropdown-data.js");
 
             #region Old Code

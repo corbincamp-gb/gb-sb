@@ -132,32 +132,6 @@
           }
         }
       },
-      "EvoPdf.HtmlToPdf.NetCore/9.0.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Drawing.Common": "5.0.2",
-          "System.Security.Principal.Windows": "5.0.0",
-          "System.Text.Encoding.CodePages": "5.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/EvoHtmlToPdf_NetCore.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/EvoHtmlToPdf_NetCore.dll": {
-            "related": ".xml"
-          }
-        },
-        "contentFiles": {
-          "contentFiles/any/any/evointernal.dat": {
-            "buildAction": "None",
-            "codeLanguage": "any",
-            "copyToOutput": true,
-            "outputPath": "evointernal.dat"
-          }
-        }
-      },
       "ExcelNumberFormat/1.0.10": {
         "type": "package",
         "compile": {
@@ -4932,21 +4906,6 @@
         "lib/net46/DocumentFormat.OpenXml.xml",
         "lib/netstandard1.3/DocumentFormat.OpenXml.dll",
         "lib/netstandard1.3/DocumentFormat.OpenXml.xml"
-      ]
-    },
-    "EvoPdf.HtmlToPdf.NetCore/9.0.0": {
-      "sha512": "/jTYVtT03vPoykqSbs3P4b0bRf37e21m7f+7T+udhflBfvv6jdLjjdjWMr2RrkUKg6ZeMUwfw4AHBllY/5bc4g==",
-      "type": "package",
-      "path": "evopdf.htmltopdf.netcore/9.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "contentFiles/any/any/evointernal.dat",
-        "evopdf.htmltopdf.netcore.9.0.0.nupkg.sha512",
-        "evopdf.htmltopdf.netcore.nuspec",
-        "lib/netstandard2.0/EvoHtmlToPdf_NetCore.dll",
-        "lib/netstandard2.0/EvoHtmlToPdf_NetCore.xml",
-        "lib/netstandard2.0/evointernal.dat"
       ]
     },
     "ExcelNumberFormat/1.0.10": {
@@ -13223,7 +13182,6 @@
       "Azure.Security.KeyVault.Secrets >= 4.1.0",
       "ClosedXML >= 0.95.4",
       "CsvHelper >= 26.1.0",
-      "EvoPdf.HtmlToPdf.NetCore >= 9.0.0",
       "MailKit >= 2.12.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 3.1.1",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 3.1.15",
@@ -13314,10 +13272,6 @@
           "CsvHelper": {
             "target": "Package",
             "version": "[26.1.0, )"
-          },
-          "EvoPdf.HtmlToPdf.NetCore": {
-            "target": "Package",
-            "version": "[9.0.0, )"
           },
           "MailKit": {
             "target": "Package",
