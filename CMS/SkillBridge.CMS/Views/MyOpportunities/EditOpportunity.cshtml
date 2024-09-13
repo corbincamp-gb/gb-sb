@@ -1,0 +1,457 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Taku.Core.Enums
+@model SkillBridge.Business.Model.Db.EditOpportunityModel
+@{
+    ViewData["Title"] = "Edit Opportunity";
+}
+
+<h1>Edit Opportunity</h1>
+
+<div class="row">
+    <div class="col-md-10">
+        <ul>
+            <li>Once you're done editing your organization's data, you'll see a <i class="fa fa-exclamation-circle fa-fw changed-field" data-toggle="tooltip" title="Pending change"></i> next to fields that were edited</li>
+            <li>Any edits you make will first be reviewed by a SkillBridge Analyst before being posted on the public SkillBridge website</li>
+            <li>If your edits are not approved, you will receive an email message stating why your change(s) were not approved</li>
+        </ul>
+    </div>
+    <div class="col-md-2">
+        <a class="btn d-inline-block btn-success float-right" id="edit-record-btn" data-toggle="tooltip" title="Edit Opportunity" asp-controller="MyOpportunities" asp-action="EditOpportunity" asp-route-id="@Model.Id.ToString()" asp-route-edit="true"><i class="fa fa-edit fa-fw"></i>&nbsp;Edit</a>
+    </div>
+</div>
+
+<!--<div class="row">
+    <div class="col">
+        <p>The changes you make to your Opportunity(s) will be reviewed by a SkillBridge Analyst before posting to the SkillBridge website.</p>
+    <div class="card rules-container">
+        <div class="card-header">
+            <h2>Please observe the following rules or your updates will not be posted:</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul>
+                        <li>No profanity</li>
+                        <li>No sexual content</li>
+                        <li>No overly graphic, disturbing, or offensive material</li>
+                        <li>No vulgar or abusive language</li>
+                        <li>No hate speech or offensive language targeting any specific demographic</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li>No personal attacks</li>
+                        <li>No spam</li>
+                        <li>No promotions for commercial products or services</li>
+                        <li>No unsolicited proposals or other business ideas or inquiries</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>-->
+
+<div class="row">
+    <div class="col">
+
+        @if (Model != null)
+        {
+            // If we have pending field changes
+            if (Model.Pending_Fields.Count > 0 && Model.Pending_Change_Status == 0)
+            {
+                <div class="change-msg">Fields marked with <i class='fa fa-exclamation-circle fa-fw'></i> have a pending update already waiting for approval from an analyst. Changes to these fields will replace the previous change!</div>
+            }
+        }
+
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <!--Hidden Fields for Fields Not Editable by Users-->
+        <!--MAY WANT TO SHOW ACTUAL DATA FOR ANALYSTS/ADMINS-->
+
+        <input asp-for="@Model.Program_Name" type="hidden" />
+        <input asp-for="@Model.Date_Created" type="hidden" />
+        <input asp-for="@Model.Date_Updated" type="hidden" />
+        <input asp-for="@Model.Created_By" type="hidden" />
+        <input asp-for="@Model.Legacy_Provider_Id" type="hidden" />
+        <input asp-for="@Model.Legacy_Program_Id" type="hidden" />
+        <input asp-for="@Model.Legacy_Opportunity_Id" type="hidden" />
+        <input asp-for="@Model.Id" type="hidden" />
+        <input asp-for="@Model.Group_Id" type="hidden" />
+        <input asp-for="@Model.Pending_Fields" type="hidden" />
+        <!--<input asp-for="@Model.Lat" type="hidden" />
+    <input asp-for="@Model.Long" type="hidden" />-->
+        <input asp-for="@Model.Nationwide" type="hidden" />
+        <input asp-for="@Model.Online" type="hidden" />
+        <input asp-for="@Model.Multiple_Locations" type="hidden" />
+        <input asp-for="@Model.Support_Cohorts" type="hidden" />
+        <input asp-for="@Model.For_Spouses" type="hidden" />
+        <input asp-for="@Model.Num_Locations" type="hidden" />
+        <input asp-for="@Model.Date_Program_Initiated" type="hidden" />
+        <input asp-for="@Model.Training_Duration" type="hidden" />
+        <input asp-for="@Model.Service" type="hidden" />
+        <!--<input asp-for="Model.Delivery_Method" type="hidden" />-->
+        <input asp-for="@Model.Program_Type" type="hidden" />
+        <input asp-for="@Model.Job_Families" type="hidden" />
+        <input asp-for="@Model.Participation_Populations" type="hidden" />
+        <input asp-for="@Model.Notes" type="hidden" />
+
+        <div class="row">
+            <div class="col">
+                <div id="disabled-alert" class="alert alert-danger bold" role="alert" style="display:none;">Opportunities that are a child of a disabled Organization or Program cannot be edited directly. Please re-enable the parent Organization/Program record(s) to enable editing of this Opportunity.</div>
+                <div class="form-group">
+                    <div class="card-header" style="border: 1px solid rgba(0,0,0,.125);">
+                        <label asp-for="Is_Active" style="font-size:20px;">Active Opportunity</label>&nbsp;
+                        <input id="is-active-toggle" type="checkbox" asp-for="Is_Active" data-toggle="toggle" data-onstyle="success outline-dark" data-offstyle="secondary outline-dark" data-on="Active" data-off="Inactive" data-size="sm" data-style="fast" class="is-active-toggle" />
+                        <div class="alert alert-info mt-1" role="alert">
+                            <p class="bold">Switching the Opportunity to:</p>
+                            <ul>
+                                <li><span class="bold" style="color: #28a745;">ACTIVE</span> will display the opportunity on the SkillBridge site</li>
+                                <li><span class="bold" style="color: #6c757d;">INACTIVE</span> will remove the opportunity from the SkillBridge site</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <!--<div class="form-group">
+                <label asp-for="Group_Id"></label>
+                <input disabled asp-for="Group_Id" class="form-control" data-toggle="tooltip" title="The map pin group this opportunity belongs to" />
+                <span asp-validation-for="Group_Id" class="text-danger"></span>
+            </div>-->
+                <div class="form-group">
+                    <label>Program/Program Office/Agency</label>
+                        <input disabled class="form-control" data-toggle="tooltip" title="Name of SkillBridge Program, Program Office, or Agency" aria-label="Name of SkillBridge Program, Program Office, or Agency" value="@Model.Program_Name" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Opportunity_Url"></label>
+                    <input asp-for="Opportunity_Url" class="form-control" data-toggle="tooltip" title="Website address of SkillBridge opportunity" />
+                    <span asp-validation-for="Opportunity_Url" class="text-danger"></span>
+                </div>
+                <!--<div class="form-group">
+                <label asp-for="Date_Program_Initiated"></label>
+                <input asp-for="Date_Program_Initiated" disabled class="form-control" data-toggle="tooltip" title="The date this program started" />
+                <span asp-validation-for="Date_Program_Initiated" class="text-danger"></span>
+            </div>-->
+                <!--<div class="form-group">
+                <label asp-for="Training_Duration"></label>
+                <input asp-for="Training_Duration" class="form-control" data-toggle="tooltip" title="Duration of the training program in weeks" />
+                <span asp-validation-for="Training_Duration" class="text-danger"></span>
+            </div>-->
+                <!--<div class="form-group">
+                <label asp-for="Service"></label>
+                <input asp-for="Service" class="form-control" data-toggle="tooltip" title="Military branch the SkillBridge program serves (select all that apply)" />
+                <span asp-validation-for="Service" class="text-danger"></span>
+            </div>-->
+                <!--<div class="form-group">
+                <label asp-for="Delivery_Method"></label>
+                <input asp-for="Delivery_Method" class="form-control" data-toggle="tooltip" title="The format in which the SkillBridge program is offered (select all that apply)" />
+                <span asp-validation-for="Delivery_Method" class="text-danger"></span>
+            </div>-->
+                <!--<div class="form-group">
+                <label asp-for="Program_Type"></label>
+                <input asp-for="Program_Type" class="form-control" data-toggle="tooltip" title="Type of training program" />
+                <span asp-validation-for="Program_Type" class="text-danger"></span>
+            </div>-->
+                <!--<div class="form-group">
+                <label asp-for="Job_Families"></label>
+                <select asp-for="Job_Families"
+                        class="form-control custom-select"
+                        asp-items="Html.GetEnumSelectList<JobFamily>()" data-toggle="tooltip" title="Which ONET Job Family does this relate to">
+                    <option value="-1">Select One</option>
+                </select>
+                <span asp-validation-for="Job_Families" class="text-danger"></span>
+            </div>-->
+                <!--<div class="form-group">
+                <label asp-for="Job_Families"></label>
+                <input asp-for="Job_Families" class="form-control" data-toggle="tooltip" title="ONET Job Family to which the SkillBridge program relates" />
+                <span asp-validation-for="Job_Families" class="text-danger"></span>
+            </div>-->
+                <!--<div class="form-group">
+                <label asp-for="Participation_Populations"></label>
+                <select asp-for="Participation_Populations"
+                        class="form-control custom-select"
+                        asp-items="Html.GetEnumSelectList<ParticipationPopulation>()" multiple data-toggle="tooltip" title="Who can participate">
+                    <option value="-1">Select One</option>
+                </select>
+                <span asp-validation-for="Participation_Populations" class="text-danger"></span>
+            </div>-->
+                <!--<div class="form-group">
+                <label asp-for="Participation_Populations"></label>
+                <input asp-for="Participation_Populations" class="form-control" data-toggle="tooltip" title="Who is allowed to participate in the SkillBridge program (Service members, veterans, and/or spouses)" />
+                <span asp-validation-for="Participation_Populations" class="text-danger"></span>
+            </div>-->
+                <div class="form-group">
+                    <label asp-for="Enrollment_Dates"></label>
+                    <input asp-for="Enrollment_Dates" class="form-control" data-toggle="tooltip" title="Enrollment dates for the SkillBridge program (Continuous open enrollment  or start/end dates mm/dd/yy - mm/dd/yy)" />
+                    <span asp-validation-for="Enrollment_Dates" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Summary_Description"></label>
+                    <textarea asp-for="Summary_Description" class="form-control" data-toggle="tooltip" title="Description of SkillBridge opportunity"></textarea>
+                    <span asp-validation-for="Summary_Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Jobs_Description"></label>
+                    <textarea asp-for="Jobs_Description" class="form-control" data-toggle="tooltip" title="Description of specific job duties"></textarea>
+                    <span asp-validation-for="Jobs_Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Links_To_Prospective_Jobs"></label>
+                    <input asp-for="Links_To_Prospective_Jobs" class="form-control" data-toggle="tooltip" title="Website address to prospective job openings" />
+                    <span asp-validation-for="Links_To_Prospective_Jobs" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Locations_Of_Prospective_Jobs_By_State"></label>
+                    <input asp-for="Locations_Of_Prospective_Jobs_By_State" class="form-control" data-toggle="tooltip" title="States where prospective jobs are located" />
+                    <span asp-validation-for="Locations_Of_Prospective_Jobs_By_State" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Salary"></label>
+                    <input asp-for="Salary" class="form-control" data-toggle="tooltip" title="Estimated annual salary" />
+                    <span asp-validation-for="Salary" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Prospective_Job_Labor_Demand"></label>
+                    <input asp-for="Prospective_Job_Labor_Demand" class="form-control" data-toggle="tooltip" title="General demand for the opportunity (Growing/Average/etc)" />
+                    <span asp-validation-for="Prospective_Job_Labor_Demand" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Target_Mocs"></label>
+                    <input asp-for="Target_Mocs" class="form-control" data-toggle="tooltip" title="Preferred Military Occupational Code(s) for SkillBridge opportunity" />
+                    <span asp-validation-for="Target_Mocs" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Other_Eligibility_Factors"></label>
+                    <textarea asp-for="Other_Eligibility_Factors" class="form-control" data-toggle="tooltip" title="Additional prerequisites"></textarea>
+                    <span asp-validation-for="Other_Eligibility_Factors" class="text-danger"></span>
+                </div>
+                <div class="form-group" id="delivery-method-select-container">
+                    <label asp-for="Delivery_Method">Delivery Method</label>
+                    <!--<input type="hidden" asp-for="OrganizationId" />-->
+                    <select id="delivery-method-dropdown" class="browser-default custom-select" asp-for="Delivery_Method" size="1" style="width:100%;max-width:100%" data-toggle="tooltip" title="The format in which the SkillBridge program is offered">
+                        <option value="0">In-person</option>
+                        <option value="1">Online</option>
+                        <option value="2">Hybrid</option>
+                    </select>
+                    <span asp-validation-for="Delivery_Method" class="text-danger"></span>
+                </div>
+
+                <!--<div class="form-group">
+                <label asp-for="Num_Locations"></label>
+                <input asp-for="Num_Locations" disabled class="form-control" data-toggle="tooltip" title="How many locations for this opportunity" />
+                <span asp-validation-for="Num_Locations" class="text-danger"></span>
+            </div>-->
+                <!--<div class="form-group">
+                <label asp-for="Notes"></label>
+                <input asp-for="Notes" class="form-control" data-toggle="tooltip" title="Notes for analyst users" />
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>-->
+            </div>
+            <div class="col-md-6">
+                <!--<div class="form-group form-inline">
+                <div class="form-check mr-3">
+                    <label class="form-check-label d-inline-block" asp-for="Nationwide">
+                        <input type="checkbox" class="form-check-input" asp-for="Nationwide" data-toggle="tooltip" title="Check if opportunity is in 3 or more states and 2 or more regions (Cardinal Areas of US)">Nationwide
+                    </label>
+                    <span asp-validation-for="Nationwide" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <div class="form-check mr-3">
+                    <label class="form-check-label d-inline-block" asp-for="Online">
+                        <input type="checkbox" class="form-check-input" asp-for="Online" data-toggle="tooltip" title="Check if opportunity is only available online. If online, then also check Nationwide.">Online
+                    </label>
+                    <span asp-validation-for="Online" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <div class="form-check mr-3">
+                    <label class="form-check-label d-inline-block" asp-for="Multiple_Locations">
+                        <input type="checkbox" class="form-check-input" asp-for="Multiple_Locations" data-toggle="tooltip" title="Check if opportunity is available in more than one location">Multiple Locations
+                    </label>
+                    <span asp-validation-for="Multiple_Locations" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <div class="form-check mr-3">
+                    <label class="form-check-label d-inline-block" asp-for="Support_Cohorts">
+                        <input type="checkbox" class="form-check-input" asp-for="Support_Cohorts" data-toggle="tooltip" title="Check if opportunity is offered to 3 or more participants at once">Support Cohorts
+                    </label>
+                    <span asp-validation-for="Support_Cohorts" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <div class="form-check mr-3">
+                    <label class="form-check-label d-inline-block" asp-for="For_Spouses">
+                        <input type="checkbox" class="form-check-input" asp-for="For_Spouses" data-toggle="tooltip" title="Check if opportunity is available to military spouses">For Spouses
+                    </label>
+                    <span asp-validation-for="For_Spouses" class="text-danger"></span>
+                </div>
+            </div>-->
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Location Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="Installation"></label>
+                            <input asp-for="Installation" class="form-control" data-toggle="tooltip" title="Military installation where the opportunity operates" />
+                            <span asp-validation-for="Installation" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="City"></label>
+                            <input asp-for="City" class="form-control" data-toggle="tooltip" title="City" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                        <!--<div class="form-group">
+                        <label asp-for="State"></label>
+                        <select asp-for="State"
+                                class="form-control custom-select"
+                                asp-items="Html.GetEnumSelectList<States>()">
+                            <option value="-1">Select One</option>
+                        </select>
+                        <span asp-validation-for="State" class="text-danger"></span>
+                    </div>-->
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!--<div class="form-group">
+                                <label asp-for="State"></label>
+                                <input asp-for="State" class="form-control" data-toggle="tooltip" title="State" />
+                                <span asp-validation-for="State" class="text-danger"></span>
+                            </div>-->
+                                <div class="form-group">
+                                    <label asp-for="State"></label>
+                                    <select asp-for="State"
+                                            class="form-control custom-select"
+                                            asp-items="@(new SelectList(ViewBag.States,"Code","Label"))" data-toggle="tooltip" title="State" aria-label="State">
+                                    </select>
+                                    <span asp-validation-for="State" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Zip"></label>
+                                    <input asp-for="Zip" class="form-control" data-toggle="tooltip" title="Zip Code" />
+                                    <span asp-validation-for="Zip" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <button id="find-coords-btn" type="button" class="btn btn-block btn-primary">Find Coordinates</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Lat"></label>
+                                    <input asp-for="Lat" class="form-control" data-toggle="tooltip" title="Latitude" />
+                                    <span asp-validation-for="Lat" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Long"></label>
+                                    <input asp-for="Long" class="form-control" data-toggle="tooltip" title="Longitude" />
+                                    <span asp-validation-for="Long" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Employer POC Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="Employer_Poc_Name"></label>
+                            <input asp-for="Employer_Poc_Name" class="form-control" data-toggle="tooltip" title="Name of SkillBridge employer point of contact" />
+                            <span asp-validation-for="Employer_Poc_Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Employer_Poc_Email"></label>
+                            <input asp-for="Employer_Poc_Email" class="form-control" data-toggle="tooltip" title="Email for the POC" />
+                            <span asp-validation-for="Employer_Poc_Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                        <label asp-for="Cost"></label><span class="req">&nbsp;*</span>
+                    <input asp-for="Cost" class="form-control" data-toggle="tooltip" title="Cost of SkillBridge opportunity" />
+                    <span asp-validation-for="Cost" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                        <label asp-for="Other"></label><span class="req">&nbsp;*</span>
+                    <textarea asp-for="Other" class="form-control" data-toggle="tooltip" title="Misc. Information to be displayed on the locations table"></textarea>
+                    <span asp-validation-for="Other" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <button id="update-btn" type="submit" class="btn btn-primary">Update</button>
+    </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>   <!--INTERFERES WITH DATATABLES FOR SOME -->
+    <!-- On document load, make sure that fields that were previously edited are marked -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            changeDetectionEnabled = true;  // Enable field change detection for submitting updates
+
+            var listOfFields = @Json.Serialize(Model.Pending_Fields);
+            var count = @Model.Pending_Fields.Count;
+            //console.log("listOfFields: " + listOfFields);
+            //var listOfFields = JSON.parse('');
+            for (var i = 0; i < count; i++)
+            {
+                var field = listOfFields[i];
+                $("label[for=" + field + "]").append("<i class='fa fa-exclamation-circle fa-fw changed-field' data-toggle='tooltip' title='This field has a pending change that will be replaced if you edit it.'></i>");
+            }
+
+            $(".custom-select").select2();
+
+            // Bootstrap tooltips for select2
+            $(".select2-container").tooltip({
+                title: function () {
+                    return $(this).prev().attr("data-original-title");
+                },
+                placement: "auto",
+                animation: false
+            });
+
+            var shouldDisableAlert = @ViewBag.Should_Disable_Editing;
+            //console.log("shouldDisableAlert: " + shouldDisableAlert);
+            SetupDisabledAlert(shouldDisableAlert);
+            HandleEditViews();
+
+            $("#find-coords-btn").click(function () {
+                console.log("find coords button clicked");
+                var address = $("#City").val() + ", " + $("#State").val() + " " + $("#Zip").val();
+                geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': address }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        console.log("status: " + status);
+                        $("#Lat").val(results[0].geometry.location.lat().toFixed(5));
+                        $("#Long").val(results[0].geometry.location.lng().toFixed(5));
+
+                    } else {
+                        alert("Geocode was not successful for the following reason: " + status);
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "dgSpecHash": "BBZPWYpI8wE=",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\Skillbridge\\Taku.Core\\Taku.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\corbin.camp.ctr\\.nuget\\packages\\newtonsoft.json\\11.0.1\\newtonsoft.json.11.0.1.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Newtonsoft.Json' 11.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
+      "libraryId": "Newtonsoft.Json",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
+}

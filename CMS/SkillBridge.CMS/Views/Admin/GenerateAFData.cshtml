@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Generate Air Force JSON Data";
+}
+
+<h1>Generate Air Force JSON Data</h1>
+
+
+<a id="download-btn-org" class="btn btn-primary mt-2" asp-action="GenerateOrganizationJSON">Download Organizations JSON</a>
+<a id="download-btn-prog" class="btn btn-primary mt-2" asp-action="GenerateProgramJSON">Download Programs JSON</a>
+<a id="download-btn-opp" class="btn btn-primary mt-2" asp-action="GenerateOpportunityJSON">Download Opportunities JSON</a>
+<a id="download-btn-spouse" class="btn btn-primary mt-2" asp-action="GenerateSpouseJSON">Download Spouses JSON</a>
+<br/>
+<a id="download-btn-org-update" class="btn btn-danger mt-2" asp-action="UpdateOrganizationStates" disabled>Update Organization States</a>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#download-btn').click(function () {
+                //DownloadZip();
+            });
+        });
+    </script>
+}
+
+

@@ -1,0 +1,59 @@
+﻿@using SkillBridge.Business.Query
+@{
+    ViewData["Title"] = "Application Review";
+
+    var entry = (IntakeForm.Models.Data.Forms.Entry)ViewBag.Entry;
+}
+
+@section Breadcrumb {
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="/intake/admin">Manage</a></li>
+    <li class="breadcrumb-item">@Html.Raw(entry.OrganizationName)</li>
+}
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Admin/_ReviewMenu.cshtml", "Status Tracking History")
+
+@await Html.PartialAsync("~/Areas/Intake/Views/Shared/_Entry.cshtml")
+
+<h1 class="h5">Status Tracking History</h1>
+@if (entry.EntryStatusTracking != null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Previous Status</th>
+                <th>New Status</th>
+                <th>Notes</th>
+                <th>Added By</th>
+                <th>Added On</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var status in entry.EntryStatusTracking.OrderByDescending(o => o.AddedDate))
+            {
+                <tr>
+                    <td>@Html.Raw(new EntryStatusQuery().Get(status.OldEntryStatusID))</td>
+                    <td>@Html.Raw(new EntryStatusQuery().Get(status.NewEntryStatusID))</td>
+                    <td>@Html.Raw(status.Notes)</td>
+                    <td>@Html.Raw(status.AddedBy)</td>
+                    <td>@status.AddedDate.ToString("MM/dd/yyyy hh:mmtt")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        No history exists.
+    </div>
+}
+
+
+@section Scripts
+{
+<script type="text/javascript">
+    $(function() { 
+    });
+</script>
+}

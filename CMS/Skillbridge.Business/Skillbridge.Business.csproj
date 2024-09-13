@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>SkillBridge.Business</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.0.2" />
+		<PackageReference Include="Azure.Identity" Version="1.12.0" />
+		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.1.0" />
+		<PackageReference Include="ClosedXML" Version="0.95.4" />
+		<PackageReference Include="CsvHelper" Version="26.1.0" />
+		<PackageReference Include="MailKit" Version="2.12.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.15" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.15" />
+		<PackageReference Include="Microsoft.Azure.KeyVault.Core" Version="3.0.5" />
+		<PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.15" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.15">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.14" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+		<PackageReference Include="morelinq" Version="3.3.2" />
+		<PackageReference Include="RestSharp" Version="112.0.0" />
+		<PackageReference Include="Syncfusion.HtmlToPdfConverter.Net.Windows" Version="21.2.5" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.5" />
+		<PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.2.17" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Taku.Core\Taku.Core.csproj" />
+	  <ProjectReference Include="..\SkillBridge.IntakeForm\SkillBridge.IntakeForm.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Util\Global\" />
+	</ItemGroup>
+
+</Project>

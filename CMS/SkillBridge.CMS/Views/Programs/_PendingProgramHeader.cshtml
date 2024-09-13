@@ -1,0 +1,36 @@
+﻿@model SkillBridge.Business.Model.Db.PendingProgramModel
+
+<div class="card mt-3">
+    <div class="card-header"><h4 class="mb-0">Pending Program</h4></div>
+    <div class="card-body p-3">
+        @if (User.IsInRole("Admin") || User.IsInRole("Analyst"))
+        {
+                <div class="mb-2"><span class="bold">MOU:</span> <a href="@Model.Mou_Link" target="_blank">@Model.Mou_Link</a></div>
+        }
+        <div class="row mb-2">
+            <div class="col-6">
+                <span class="bold">Program:</span> @Html.Raw(Model.Program_Name)
+            </div>
+            <div class="col-6">
+                <span class="bold">Delivery Method:</span> @Model.Delivery_Method
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-6">
+                <span class="bold">Organization:</span> @Html.Raw(Model.Organization_Name)
+            </div>
+            <div class="col-6">
+                <span class="bold">Program Duration:</span> @Model.Program_Duration
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-6">
+                <span class="bold">Opportunity Type:</span> @Model.Opportunity_Type
+            </div>
+            <div class="col-6">
+                <span class="bold">Is Online:</span> @(Model.Online ? "Yes" : "No")
+            </div>
+        </div>
+    </div>
+</div>
+

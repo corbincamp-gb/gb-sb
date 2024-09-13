@@ -1,0 +1,12 @@
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\bin\Debug\net6.0\IntakeForm.Models.deps.json
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\bin\Debug\net6.0\IntakeForm.Models.dll
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\bin\Debug\net6.0\IntakeForm.Models.pdb
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\obj\Debug\net6.0\IntakeForm.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\obj\Debug\net6.0\IntakeForm.Models.AssemblyInfoInputs.cache
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\obj\Debug\net6.0\IntakeForm.Models.AssemblyInfo.cs
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\obj\Debug\net6.0\IntakeForm.Models.csproj.CoreCompileInputs.cache
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\obj\Debug\net6.0\IntakeForm.Models.sourcelink.json
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\obj\Debug\net6.0\IntakeForm.Models.dll
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\obj\Debug\net6.0\refint\IntakeForm.Models.dll
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\obj\Debug\net6.0\IntakeForm.Models.pdb
+C:\Projects\Skillbridge\CMS\IntakeForm.Models\obj\Debug\net6.0\ref\IntakeForm.Models.dll
