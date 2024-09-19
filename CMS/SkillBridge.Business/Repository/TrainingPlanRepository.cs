@@ -22,7 +22,7 @@ namespace SkillBridge.Business.Repository
                 .Include(o => o.TrainingPlanInstructionalMethods)
                 .Include("TrainingPlanInstructionalMethods.InstructionalMethod")
                 .Include(o => o.ProgramTrainingPlans)
-                .Include("ProgramTrainingPlans.ProgramModel")
+                .Include("ProgramTrainingPlans.Program")
                 .ToListAsync();
         }
 
@@ -34,7 +34,7 @@ namespace SkillBridge.Business.Repository
                 .Include(o => o.TrainingPlanInstructionalMethods)
                 .Include("TrainingPlanInstructionalMethods.InstructionalMethod")
                 .Include(o => o.ProgramTrainingPlans)
-                .Include("ProgramTrainingPlans.ProgramModel")
+                .Include("ProgramTrainingPlans.Program")
                 .OrderBy(o => o.JobTitle)
                 .ToListAsync();
         }
@@ -47,7 +47,7 @@ namespace SkillBridge.Business.Repository
                 .Include(o => o.TrainingPlanInstructionalMethods)
                 .Include("TrainingPlanInstructionalMethods.InstructionalMethod")
                 .Include(o => o.ProgramTrainingPlans)
-                .Include("ProgramTrainingPlans.ProgramModel")
+                .Include("ProgramTrainingPlans.Program")
                 .OrderBy(o => o.JobTitle)
                 .ToListAsync();
         }
@@ -86,7 +86,7 @@ namespace SkillBridge.Business.Repository
                 .Include(o => o.TrainingPlanBreakdowns)
                 .Include(o => o.ProgramTrainingPlans)
                 .Include("ProgramTrainingPlans.ProgramModel")
-                .Include("ProgramTrainingPlans.ProgramModel.SB_Organization")
+                .Include("ProgramTrainingPlans.ProgramModel.Organization")
                 .Where(o => o.Id == trainingPlanId)
                 .FirstOrDefaultAsync();
         }
@@ -115,7 +115,7 @@ namespace SkillBridge.Business.Repository
             tp.CredentialsEarned = model.CredentialsEarned;
             tp.IsActive = model.IsActive;
             tp.UpdateDate = now;
-            tp.UpdateBy = model.UpdateBy == null ? tp.CreateBy : model.UpdateBy;
+            tp.UpdateBy = model.UpdateBy ?? tp.CreateBy;
 
             await _db.SaveChangesAsync();
 
@@ -146,7 +146,7 @@ namespace SkillBridge.Business.Repository
             }
 
             // Delete weeks no longer used
-            var breakdowns = Enumerable.ToList<int>(model.TrainingPlanBreakdowns.Select(o => o.RowId));
+            var breakdowns = model.TrainingPlanBreakdowns.Select(o => o.RowId).ToList();
             await _db.TrainingPlanBreakdowns.Where(o => o.TrainingPlanId == tp.Id && !breakdowns.Contains(o.RowId)).DeleteFromQueryAsync();
 
             // Save all changes back to DB

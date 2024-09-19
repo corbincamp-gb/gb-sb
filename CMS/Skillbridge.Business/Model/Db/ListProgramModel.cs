@@ -11,9 +11,9 @@ namespace SkillBridge.Business.Model.Db
         [Display(Name = "Program/Program Office/Agency")]
         public string Program_Name { get; set; }
         public string Organization_Name { get; set; }
-        [ForeignKey("SB_Organization")]
+        [ForeignKey("OrganizationModel")]
         public int Organization_Id { get; set; }
-        public OrganizationModel SB_Organization { get; set; }
+        public OrganizationModel Organization { get; set; }
         [Required]
         [Display(Name = "Is Active")]
         public bool Is_Active { get; set; }
