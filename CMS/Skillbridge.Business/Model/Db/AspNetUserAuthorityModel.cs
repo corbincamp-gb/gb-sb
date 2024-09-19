@@ -7,7 +7,7 @@ public class AspNetUserAuthorityModel
 {
     public int Id { get; set; }
     public string ApplicationUserId { get; set; }
-    [ForeignKey("SB_Organization")]
+    [ForeignKey("OrganizationModel")]
     public int OrganizationId { get; set; }
     public virtual OrganizationModel Organization { get; set; }
     [ForeignKey("ProgramModel")]
