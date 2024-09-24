@@ -1,4 +1,4 @@
-C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\bin\Debug\net6.0\SkillBridge.IntakeForm.deps.json
+C:\Projects\Skillbridge\CMS\SkillBridge.IntakeForm\bin\Debug\net6.0\SkillBridge.IntakeForm.deps.json
 C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\bin\Debug\net6.0\SkillBridge.IntakeForm.dll
 C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\bin\Debug\net6.0\SkillBridge.IntakeForm.pdb
 C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\obj\Debug\net6.0\SkillBridge.IntakeForm.GeneratedMSBuildEditorConfig.editorconfig
@@ -9,4 +9,4 @@ C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\obj\Debug\net6.0\SkillBridge.
 C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\obj\Debug\net6.0\SkillBridge.IntakeForm.dll
 C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\obj\Debug\net6.0\refint\SkillBridge.IntakeForm.dll
 C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\obj\Debug\net6.0\SkillBridge.IntakeForm.pdb
-C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\obj\Debug\net6.0\ref\SkillBridge.IntakeForm.dll
+C:\Projects\Skillbridge\CMS\SkillBridge.IntakeForm\obj\Debug\net6.0\ref\SkillBridge.IntakeForm.dll

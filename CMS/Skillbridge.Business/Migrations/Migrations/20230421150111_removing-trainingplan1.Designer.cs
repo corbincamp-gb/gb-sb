@@ -593,14 +593,14 @@ namespace SkillBridge.Business.Migrations.Migrations
                     b.Property<int>("TrainingPlanId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TrainingPlanId1")
-                        .HasColumnType("int");
+                    //b.Property<int?>("TrainingPlanId1")
+                    //    .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TrainingPlanId");
 
-                    b.HasIndex("TrainingPlanId1");
+                    //b.HasIndex("TrainingPlanId1");
 
                     b.ToTable("ProgramTrainingPlans");
                 });
@@ -2440,9 +2440,9 @@ namespace SkillBridge.Business.Migrations.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SkillBridge.CMS.Models.TrainingPlans.TrainingPlan", "TrainingPlan")
-                        .WithMany()
-                        .HasForeignKey("TrainingPlanId1");
+                    //b.HasOne("SkillBridge.CMS.Models.TrainingPlans.TrainingPlan", "TrainingPlan")
+                    //    .WithMany()
+                    //    .HasForeignKey("TrainingPlanId1");
                 });
 
             modelBuilder.Entity("SkillBridge.CMS.Models.SB_OpportunityGroup", b =>

@@ -43,8 +43,9 @@ namespace SkillBridge.CMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connStr = $"SBConnectionString{(_dev ? "Test" : "Production")}";
-          
+            //var connStr = $"SBConnectionString{(_dev ? "Test" : "Production")}";
+            var connStr = $"SBConnectionStringProduction";
+
             /* BEFORE PUBLISHING ANYTHING, MAKE SURE THE APPROPRIATE DB CONNECTION IS UNCOMMENTED HERE, 
              * IF PUBLISHING TO PRODUCTION SITE, MAKE SURE HEADER REWRITE CODE ON LINE 168 IS UNCOMMENTED AS WELL */
 
