@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SkillBridge.IntakeForm")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+61cfbe8be5592c0880eda21e1f0495ebba4b9088")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+afc1427760ae86c6f392e47e19c1cda7cb2feed4")]
 [assembly: System.Reflection.AssemblyProductAttribute("SkillBridge.IntakeForm")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SkillBridge.IntakeForm")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

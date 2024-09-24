@@ -371,23 +371,23 @@ namespace SkillBridge.Business.Migrations.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_ProgramTrainingPlans_TrainingPlanId1",
-                table: "ProgramTrainingPlans",
-                column: "TrainingPlanId1");
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_ProgramTrainingPlans_TrainingPlanId1",
+            //    table: "ProgramTrainingPlans",
+            //    column: "TrainingPlanId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpportunityTrainingPlans_TrainingPlanId",
                 table: "OpportunityTrainingPlans",
                 column: "TrainingPlanId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_ProgramTrainingPlans_TrainingPlans_TrainingPlanId1",
-                table: "ProgramTrainingPlans",
-                column: "TrainingPlanId1",
-                principalTable: "TrainingPlans",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_ProgramTrainingPlans_TrainingPlans_TrainingPlanId1",
+            //    table: "ProgramTrainingPlans",
+            //    column: "TrainingPlanId1",
+            //    principalTable: "TrainingPlans",
+            //    principalColumn: "Id",
+            //    onDelete: ReferentialAction.Restrict);
         }
     }
 }
