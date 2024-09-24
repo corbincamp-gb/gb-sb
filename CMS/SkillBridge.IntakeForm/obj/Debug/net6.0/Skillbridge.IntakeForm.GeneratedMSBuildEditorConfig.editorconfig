@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SkillBridge.IntakeForm
-build_property.ProjectDir = C:\Projects\Skillbridge\CMS\Skillbridge.IntakeForm\
+build_property.ProjectDir = C:\Projects\Skillbridge\CMS\SkillBridge.IntakeForm\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
