@@ -73,7 +73,7 @@ namespace SkillBridge.Business.Repository
                 .Include(o => o.TrainingPlanLength)
                 .Include(o => o.TrainingPlanBreakdowns)
                 .Include(o => o.ProgramTrainingPlans)
-                .Include("ProgramTrainingPlans.ProgramModel")
+                .Include("ProgramTrainingPlans.Program")
                 .ToListAsync();
         }
 
@@ -85,8 +85,8 @@ namespace SkillBridge.Business.Repository
                 .Include("TrainingPlanInstructionalMethods.InstructionalMethod")
                 .Include(o => o.TrainingPlanBreakdowns)
                 .Include(o => o.ProgramTrainingPlans)
-                .Include("ProgramTrainingPlans.ProgramModel")
-                .Include("ProgramTrainingPlans.ProgramModel.Organization")
+                .Include("ProgramTrainingPlans.Program")
+                .Include("ProgramTrainingPlans.Program.Organization")
                 .Where(o => o.Id == trainingPlanId)
                 .FirstOrDefaultAsync();
         }
