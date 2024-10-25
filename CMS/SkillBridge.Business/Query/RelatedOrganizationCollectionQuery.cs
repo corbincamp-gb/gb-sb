@@ -11,29 +11,21 @@ namespace SkillBridge.Business.Query
         IRelatedOrganizationCollection Get();
     }
 
-    public class RelatedOrganizationCollectionQuery : IRelatedOrganizationCollectionQuery
+    public class RelatedOrganizationCollectionQuery(
+        ApplicationDbContext db,
+        IRelatedOrganizationMapping relatedOrganizationMapping,
+        IRelatedOrganizationCollectionMapping relatedOrganizationCollectionMapping)
+        : IRelatedOrganizationCollectionQuery
     {
-        private readonly ApplicationDbContext _db;
-        private readonly IRelatedOrganizationMapping _relatedOrganizationMapping;
-        private readonly IRelatedOrganizationCollectionMapping _relatedOrganizationCollectionMapping;
-
-        public RelatedOrganizationCollectionQuery(ApplicationDbContext db, 
-            IRelatedOrganizationMapping relatedOrganizationMapping, 
-            IRelatedOrganizationCollectionMapping relatedOrganizationCollectionMapping)
-        {
-            _db = db;
-            _relatedOrganizationMapping = relatedOrganizationMapping;
-            _relatedOrganizationCollectionMapping = relatedOrganizationCollectionMapping;
-        }
         public IRelatedOrganizationCollection Get()
         {
             //// Get Unique Companies
-            var uniqueParentOrgItems = _db.Opportunities.FromCache()
+            var uniqueParentOrgItems = db.Opportunities.FromCache()
                                             .OrderBy(o => o.Organization_Name)
                                             .Select(m => m.Organization_Name)
                                             .Distinct().ToList();
          
-            var orgs = _db.Organizations.ToList();
+            var orgs = db.Organizations.ToList();
        
             // Find all Orgs under each parent org
             var orgData = (from parentOrg in uniqueParentOrgItems
@@ -42,8 +34,8 @@ namespace SkillBridge.Business.Query
                     .Distinct()
                     .Select(m => m.Name)
                     .ToList()
-                select _relatedOrganizationMapping.Map(parentOrg, uniqueOrgItems)).ToList();
-            return _relatedOrganizationCollectionMapping.Map(orgData);
+                select relatedOrganizationMapping.Map(parentOrg, uniqueOrgItems)).ToList();
+            return relatedOrganizationCollectionMapping.Map(orgData);
 
         }
     }

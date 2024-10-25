@@ -605,7 +605,7 @@ namespace SkillBridge.Business.Migrations.Migrations
                     b.Property<int>("Program_Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("Program_Name")
+                    b.Property<string>("ProgramName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -863,7 +863,7 @@ namespace SkillBridge.Business.Migrations.Migrations
                     b.Property<int>("Program_Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("Program_Name")
+                    b.Property<string>("ProgramName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Program_Type")
@@ -1071,7 +1071,7 @@ namespace SkillBridge.Business.Migrations.Migrations
                     b.Property<int>("Program_Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("Program_Name")
+                    b.Property<string>("ProgramName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Program_Status")
@@ -1221,7 +1221,7 @@ namespace SkillBridge.Business.Migrations.Migrations
                     b.Property<int>("Program_Duration")
                         .HasColumnType("int");
 
-                    b.Property<string>("Program_Name")
+                    b.Property<string>("ProgramName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

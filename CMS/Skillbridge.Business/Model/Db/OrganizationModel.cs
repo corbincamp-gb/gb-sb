@@ -4,8 +4,34 @@ using Newtonsoft.Json;
 
 namespace SkillBridge.Business.Model.Db
 {
+    public interface IOrganization
+    {
+        int Id { get; set; } // auto-increment
+        int Mou_Id { get; set; } // This is the OSD level MOU that this organization operates under
+        bool Is_MOU_Parent { get; set; }
+        bool Is_Active { get; set; }
+        DateTime Date_Deactivated { get; set; }
+        string Parent_Organization_Name { get; set; }
+        string Name { get; set; }
+        string Poc_First_Name { get; set; }
+        string Poc_Last_Name { get; set; }
+        string Poc_Email { get; set; }
+        string Poc_Phone { get; set; }
+        DateTime Date_Created { get; set; } // Date org was created in system
+        DateTime Date_Updated { get; set; } // Date org was last edited/updated in the system.
+        string Created_By { get; set; }
+        string Updated_By { get; set; }
+        string Organization_Url { get; set; }
+        int Organization_Type { get; set; }
+        string States_Of_Program_Delivery { get; set; }
+        string Notes { get; set; }
+        int Legacy_Provider_Id { get; set; }
+        int Legacy_MOU_Id { get; set; } // This legacy ID will reference the unique provider ID of the ORg responsible for an MOU, derived from the Provider Unique ID
+        List<ProgramModel> Programs { get; set; }
+    }
+
     [Table("Organizations")]
-    public class OrganizationModel
+    public class OrganizationModel : IOrganization
     {
         [Key]
         public int Id { get; set; }  // auto-increment

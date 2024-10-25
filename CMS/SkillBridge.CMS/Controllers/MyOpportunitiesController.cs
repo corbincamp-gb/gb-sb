@@ -103,8 +103,8 @@ namespace SkillBridge.CMS.Controllers
                 programLookupList.Add(new ProgramDropdownItem()
                 {
                     Id = programList[i].Id,
-                    Program_Name = programList[i].Program_Name.Replace("'", "&apos;"),
-                    Service = programList[i].Services_Supported
+                    Program_Name = programList[i].ProgramName.Replace("'", "&apos;"),
+                    Service = programList[i].ServicesSupported
                 });
             }
 
@@ -112,7 +112,7 @@ namespace SkillBridge.CMS.Controllers
             ViewBag.GroupLookup = JsonConvert.SerializeObject(lookupList);
             ViewBag.ProgramLookup = JsonConvert.SerializeObject(programLookupList);
 
-            ViewBag.Programs = programList.OrderBy(o => o.Program_Name).ToList();
+            ViewBag.Programs = programList.OrderBy(o => o.ProgramName).ToList();
 
 
 
@@ -135,7 +135,7 @@ namespace SkillBridge.CMS.Controllers
             //Console.WriteLine("model.Program_Id: " + model.Program_Id);
 
             ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == model.Program_Id);
-            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.OrganizationId);
             //OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
             //var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
 
@@ -173,8 +173,8 @@ namespace SkillBridge.CMS.Controllers
                         Organization_Id = org.Id,
                         Opportunity_Url = GlobalFunctions.RemoveSpecialCharacters(model.Opportunity_Url),
                         //Organization_Name = org.Name,
-                        Date_Program_Initiated = prog.Date_Created,
-                        Program_Name = prog.Program_Name,
+                        Date_Program_Initiated = prog.DateCreated,
+                        Program_Name = prog.ProgramName,
                         Program_Id = prog.Id,
                         Job_Families = newJobFamilies,    // This is just an optimized field
                         Participation_Populations = newPartPop,   // This is just an optimized field
@@ -258,18 +258,18 @@ namespace SkillBridge.CMS.Controllers
                     opp.Program_Type = newProgType;
                     //opp.Mou_Link = prog.Mou_Link;
 
-                    if (prog.Legacy_Program_Id != 0 && prog.Legacy_Program_Id != -1)
+                    if (prog.LegacyProgramId != 0 && prog.LegacyProgramId != -1)
                     {
-                    opp.Legacy_Program_Id = prog.Legacy_Program_Id;
+                    opp.Legacy_Program_Id = prog.LegacyProgramId;
                     }
                     else
                     {
                     opp.Legacy_Program_Id = 0;
                     }
 
-                    if (prog.Legacy_Provider_Id != 0 && prog.Legacy_Provider_Id != -1)
+                    if (prog.LegacyProviderId != 0 && prog.LegacyProviderId != -1)
                     {
-                    opp.Legacy_Provider_Id = prog.Legacy_Provider_Id;
+                    opp.Legacy_Provider_Id = prog.LegacyProviderId;
                     }
                     else
                     {
@@ -567,7 +567,7 @@ namespace SkillBridge.CMS.Controllers
         private void UpdateOrgStatesOfProgramDelivery(OrganizationModel org)
         {
             // Get all programs from org
-            List<ProgramModel> progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
+            List<ProgramModel> progs = _db.Programs.Where(e => e.OrganizationId == org.Id).ToList();
 
             List<string> states = new List<string>();
 
@@ -575,7 +575,7 @@ namespace SkillBridge.CMS.Controllers
             foreach (ProgramModel p in progs)
             {
                 string progStates = "";
-                progStates = p.States_Of_Program_Delivery;
+                progStates = p.StatesOfProgramDelivery;
                 Console.WriteLine("progStates: " + progStates);
 
                 // Split out each programs states of program delivery, and add them to the states array
@@ -682,7 +682,7 @@ namespace SkillBridge.CMS.Controllers
                 num++;
             }
 
-            prog.States_Of_Program_Delivery = newStateList;
+            prog.StatesOfProgramDelivery = newStateList;
 
             _db.SaveChanges();
         }
@@ -789,7 +789,7 @@ namespace SkillBridge.CMS.Controllers
             OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
             ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == opp.Program_Id);
 
-            if (org.Is_Active == false || prog.Is_Active == false)
+            if (org.Is_Active == false || prog.IsActive == false)
             {
                 ViewBag.Should_Disable_Editing = 1;
             }
@@ -1377,7 +1377,7 @@ namespace SkillBridge.CMS.Controllers
 
             OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == opp.Organization_Id);
 
-            if (org.Is_Active && prog.Is_Active)
+            if (org.Is_Active && prog.IsActive)
             {
                 return true;
             }

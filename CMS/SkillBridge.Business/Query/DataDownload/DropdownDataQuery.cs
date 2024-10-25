@@ -50,7 +50,7 @@ namespace SkillBridge.Business.Query.DataDownload
 
 
             //// Generate the string of JSON
-            ////string newJson = "var locations = { data: [";
+            ////string newJson = "var locations = { data: ";
             //StringBuilder newJson = new StringBuilder("");
 
             //try
@@ -67,9 +67,9 @@ namespace SkillBridge.Business.Query.DataDownload
 
             //    for (var i = 0; i < uniquePrograms.Count; i++)
             //    {
-            //        var progList = progs.FromCache().Where(m => m.Organization_Id == uniquePrograms[i].Organization_Id).ToList();
-            //        var oppList = opps.FromCache().Where(m => m.Program_Id == uniquePrograms[i].Id).ToList();
-            //        Console.WriteLine("Program '" + uniquePrograms[i].Program_Name + "' has " + oppList.Count + " Opportunities attached to it");
+            //        var progList = progs.FromCache().Where(m => m.Organization_Id == uniqueProgramsi].Organization_Id).ToList();
+            //        var oppList = opps.FromCache().Where(m => m.Program_Id == uniqueProgramsi].Id).ToList();
+            //        Console.WriteLine("Program '" + uniqueProgramsi].Program_Name + "' has " + oppList.Count + " Opportunities attached to it");
 
             //        bool soloProgramUnderOrg = true;
 
@@ -82,7 +82,7 @@ namespace SkillBridge.Business.Query.DataDownload
 
             //        for (var j = 0; j < oppList.Count; j++)
             //        {
-            //            if (oppList[j].Is_Active == true)
+            //            if (oppListj].Is_Active == true)
             //            {
             //                hasActiveOpp = true;
             //            }
@@ -90,14 +90,14 @@ namespace SkillBridge.Business.Query.DataDownload
 
             //        //check to see how many programs in each org, if only one then dont output the org name with hyphen
 
-            //        if (oppList.Count > 0 && hasActiveOpp == true && uniquePrograms[i].Is_Active == true)
+            //        if (oppList.Count > 0 && hasActiveOpp == true && uniqueProgramsi].Is_Active == true)
             //        {
-            //            var orgName = uniquePrograms[i].Organization_Name;//.Replace("'", @"\'");
-            //            var progName = uniquePrograms[i].Program_Name;//.Replace("'", @"\'");
+            //            var orgName = uniqueProgramsi].Organization_Name;//.Replace("'", @"\'");
+            //            var progName = uniqueProgramsi].Program_Name;//.Replace("'", @"\'");
 
             //            if (numOutput == 0)
             //            {
-            //                if (soloProgramUnderOrg == false || uniquePrograms[i].Program_Name != uniquePrograms[i].Organization_Name)
+            //                if (soloProgramUnderOrg == false || uniqueProgramsi].Program_Name != uniqueProgramsi].Organization_Name)
             //                {
             //                    uniqueProgramsForExport += "\"" + orgName + " - " + progName + "\"";
             //                }
@@ -108,7 +108,7 @@ namespace SkillBridge.Business.Query.DataDownload
             //            }
             //            else
             //            {
-            //                if (soloProgramUnderOrg == false || uniquePrograms[i].Program_Name != uniquePrograms[i].Organization_Name)
+            //                if (soloProgramUnderOrg == false || uniqueProgramsi].Program_Name != uniqueProgramsi].Organization_Name)
             //                {
             //                    uniqueProgramsForExport += ", \"" + orgName + " - " + progName + "\"";
             //                }
@@ -144,11 +144,11 @@ namespace SkillBridge.Business.Query.DataDownload
 
             //for (var i = 0; i < uniqueDurations.Count; i++)
             //{
-            //    var splits = uniqueDurations[i].Split(",");
+            //    var splits = uniqueDurationsi].Split(",");
 
             //    for (var x = 0; x < splits.Length; x++)
             //    {
-            //        var item = splits[x].Trim();
+            //        var item = splitsx].Trim();
             //        if (item != "" && item != " ")
             //        {
             //            durationsList.Add(item);
@@ -175,11 +175,11 @@ namespace SkillBridge.Business.Query.DataDownload
             //{
             //    if (i==0)
             //    {
-            //        uniqueDurationsForExport += "'" + uniqueDurationsList[i].Replace("'", @"\'") + "'";
+            //        uniqueDurationsForExport += "'" + uniqueDurationsListi].Replace("'", @"\'") + "'";
             //    }
             //    else
             //    {
-            //        uniqueDurationsForExport += ", '" + uniqueDurationsList[i].Replace("'", @"\'") + "'";
+            //        uniqueDurationsForExport += ", '" + uniqueDurationsListi].Replace("'", @"\'") + "'";
             //    }
             //}
 
@@ -199,15 +199,15 @@ namespace SkillBridge.Business.Query.DataDownload
             //{
             //    string newDM = "";
 
-            //    if (uniqueDeliveryMethods[i] == "0")
+            //    if (uniqueDeliveryMethodsi] == "0")
             //    {
             //        newDM = "In-person";
             //    }
-            //    else if (uniqueDeliveryMethods[i] == "1")
+            //    else if (uniqueDeliveryMethodsi] == "1")
             //    {
             //        newDM = "Online";
             //    }
-            //    else if (uniqueDeliveryMethods[i] == "2")
+            //    else if (uniqueDeliveryMethodsi] == "2")
             //    {
             //        newDM = "Hybrid (In-Person and Online)";
             //    }
@@ -240,14 +240,14 @@ namespace SkillBridge.Business.Query.DataDownload
 
             //for (var i = 0; i < uniqueLocationItems.Count; i++)
             //{
-            //    if (uniqueLocationItems[i] != null)
+            //    if (uniqueLocationItemsi] != null)
             //    {
-            //        //Console.WriteLine("uniqueLocationItems[i]: " + uniqueLocationItems[i]);
-            //        var splits = uniqueLocationItems[i].Split(",");
+            //        //Console.WriteLine("uniqueLocationItemsi]: " + uniqueLocationItemsi]);
+            //        var splits = uniqueLocationItemsi].Split(",");
 
             //        for (var x = 0; x < splits.Length; x++)
             //        {
-            //            var item = splits[x].Trim();
+            //            var item = splitsx].Trim();
             //            if (item != "" && item != " " && item != "All Services")
             //            {
             //                locationsList.Add(item);
@@ -269,11 +269,11 @@ namespace SkillBridge.Business.Query.DataDownload
             //{
             //    if (i == 0)
             //    {
-            //        uniqueLocationsForExport += "'" + uniqueLocations[i] + "'";
+            //        uniqueLocationsForExport += "'" + uniqueLocationsi] + "'";
             //    }
             //    else
             //    {
-            //        uniqueLocationsForExport += ", '" + uniqueLocations[i] + "'";
+            //        uniqueLocationsForExport += ", '" + uniqueLocationsi] + "'";
             //    }
 
             //}
@@ -293,11 +293,11 @@ namespace SkillBridge.Business.Query.DataDownload
 
             //for (var i = 0; i < uniqueJobFamilyItems.Count; i++)
             //{
-            //    var splits = uniqueJobFamilyItems[i].Split(";");
+            //    var splits = uniqueJobFamilyItemsi].Split(";");
 
             //    for (var x = 0; x < splits.Length; x++)
             //    {
-            //        var item = splits[x].Trim();
+            //        var item = splitsx].Trim();
             //        if (item != "" && item != " " && item != "All Services")
             //        {
             //            jobFamilyList.Add(item);
@@ -318,11 +318,11 @@ namespace SkillBridge.Business.Query.DataDownload
             //{
             //    if (i == 0)
             //    {
-            //        uniqueJobFamiliesForExport += "'" + uniqueJobFamilies[i] + "'";
+            //        uniqueJobFamiliesForExport += "'" + uniqueJobFamiliesi] + "'";
             //    }
             //    else
             //    {
-            //        uniqueJobFamiliesForExport += ", '" + uniqueJobFamilies[i] + "'";
+            //        uniqueJobFamiliesForExport += ", '" + uniqueJobFamiliesi] + "'";
             //    }
 
             //}
@@ -352,8 +352,8 @@ namespace SkillBridge.Business.Query.DataDownload
 
             //for (var i = 0; i < uniqueParentOrgItems.Count; i++)
             //{
-            //    //console.log("uniqueParentOrgItems[i].ORGANIZATION: " + uniqueParentOrgItems[i].PARENTORGANIZATION);
-            //    parentOrgList.Add(uniqueParentOrgItems[i]);
+            //    //console.log("uniqueParentOrgItemsi].ORGANIZATION: " + uniqueParentOrgItemsi].PARENTORGANIZATION);
+            //    parentOrgList.Add(uniqueParentOrgItemsi]);
             //}
 
             //// Get Unique Values from extracted values
@@ -368,11 +368,11 @@ namespace SkillBridge.Business.Query.DataDownload
             //{
             //    if (i == 0)
             //    {
-            //        uniqueParentOrgsForExport += "'" + uniqueParentOrgs[i].Replace("'", @"\'") + "'";
+            //        uniqueParentOrgsForExport += "'" + uniqueParentOrgsi].Replace("'", @"\'") + "'";
             //    }
             //    else
             //    {
-            //        uniqueParentOrgsForExport += ", '" + uniqueParentOrgs[i].Replace("'", @"\'") + "'";
+            //        uniqueParentOrgsForExport += ", '" + uniqueParentOrgsi].Replace("'", @"\'") + "'";
             //    }
 
             //}
@@ -382,13 +382,13 @@ namespace SkillBridge.Business.Query.DataDownload
             //newJson.Append(uniqueParentOrgsForExport + "\n");
 
 
-            //var relatedOrgsForExport = "var relatedOrgs = { data: [";
+            //var relatedOrgsForExport = "var relatedOrgs = { data: ";
 
             //// Find all Orgs under each parent org
             //for (var i = 0; i < uniqueParentOrgs.Count; i++)
             //{
-            //    //var orgItems = _.where(data, { PARENTORGANIZATION: uniqueParentOrgs[i]});
-            //    List<string> orgItems = _db.Organizations.Where(m => m.Parent_Organization_Name == uniqueParentOrgs[i]).Select(m => m.Name).ToList();
+            //    //var orgItems = _.where(data, { PARENTORGANIZATION: uniqueParentOrgsi]});
+            //    List<string> orgItems = _db.Organizations.Where(m => m.Parent_Organization_Name == uniqueParentOrgsi]).Select(m => m.Name).ToList();
 
             //    // Get Unique Values from extracted values
             //    List<string> uniqueOrgItems = new List<string>();
@@ -403,7 +403,7 @@ namespace SkillBridge.Business.Query.DataDownload
             //        {
             //            relatedOrgsForExport += ",";
             //        }
-            //        relatedOrgsForExport += "{ 'parentOrg': '" + uniqueParentOrgs[i].Replace("'", @"\'") + "','orgs':[";
+            //        relatedOrgsForExport += "{ 'parentOrg': '" + uniqueParentOrgsi].Replace("'", @"\'") + "','orgs':";
 
             //        for (var j = 0; j < uniqueOrgItems.Count; j++)
             //        {
@@ -411,7 +411,7 @@ namespace SkillBridge.Business.Query.DataDownload
             //            {
             //                relatedOrgsForExport += ",";
             //            }
-            //            relatedOrgsForExport += "'" + uniqueOrgItems[j].Replace("'", @"\'") + "'";
+            //            relatedOrgsForExport += "'" + uniqueOrgItemsj].Replace("'", @"\'") + "'";
             //        }
 
             //        relatedOrgsForExport += "]}";
@@ -422,14 +422,14 @@ namespace SkillBridge.Business.Query.DataDownload
             //        {
             //            relatedOrgsForExport += ",";
             //        }
-            //        relatedOrgsForExport += "{ 'parentOrg': '" + uniqueParentOrgs[i].Replace("'", @"\'") + "','orgs':[";
+            //        relatedOrgsForExport += "{ 'parentOrg': '" + uniqueParentOrgsi].Replace("'", @"\'") + "','orgs':";
             //        for (var j = 0; j < uniqueOrgItems.Count; j++)
             //        {
             //            if (j > 0)
             //            {
             //                relatedOrgsForExport += ",";
             //            }
-            //            relatedOrgsForExport += "'" + uniqueOrgItems[j].Replace("'", @"\'") + "'";
+            //            relatedOrgsForExport += "'" + uniqueOrgItemsj].Replace("'", @"\'") + "'";
             //        }
             //        relatedOrgsForExport += "]}";
             //    }

@@ -31,7 +31,7 @@ namespace SkillBridge.Business.Query
 
             stats.TryGetValue(status, out var ret);
 
-            return ret ?? "[unknown]";
+            return ret ?? "unknown]";
 
 
             //switch (status)
@@ -53,7 +53,7 @@ namespace SkillBridge.Business.Query
             //    case (int)IntakeForm.Models.Enumerations.EntryStatus.Rejected:
             //        return "Not Considered";
             //    default:
-            //        return "[Unknown]";
+            //        return "Unknown]";
             //}
         }
     }

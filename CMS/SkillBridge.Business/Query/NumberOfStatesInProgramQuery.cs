@@ -1,9 +1,15 @@
 ﻿using SkillBridge.Business.Model.Db;
 using SkillBridge.Business.Data;
+using Taku.Core;
 
 namespace SkillBridge.Business.Query
 {
-    public class NumberOfStatesInProgramQuery
+    public interface INumberOfStatesInProgramQuery : IQuery
+    {
+        int Get(ProgramModel prog, ApplicationDbContext _db);
+    }
+
+    public class NumberOfStatesInProgramQuery : INumberOfStatesInProgramQuery
     {
         public int Get(ProgramModel prog, ApplicationDbContext _db)
         {

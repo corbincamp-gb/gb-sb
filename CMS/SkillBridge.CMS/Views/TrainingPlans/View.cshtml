@@ -23,7 +23,7 @@
             <div class="h6">Associated Programs</div>
             @foreach (var prog in Model.ProgramTrainingPlans)
             {
-                <div><a href="/programs/editprogram/@prog.ProgramId?edit=false" target="_blank">@Html.Raw(prog.Program.Program_Name)</a></div>
+                <div><a href="/programs/editprogram/@prog.ProgramId?edit=false" target="_blank">@Html.Raw(prog.Program.ProgramName)</a></div>
             }
         }
     </div>

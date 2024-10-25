@@ -329,61 +329,61 @@ namespace SkillBridge.CMS.Controllers
                 return View("NotFound");
             }
 
-            Console.WriteLine("===== ORIG PROGRAM ID: " + prog.Program_Duration);
+            Console.WriteLine("===== ORIG PROGRAM ID: " + prog.ProgramDuration);
             Console.WriteLine("===== NEW PROGRAM ID: " + pendingChange.Program_Duration);
 
-            Console.WriteLine("==== prog.Program_Duration: " + prog.Program_Duration);
+            Console.WriteLine("==== prog.ProgramDuration: " + prog.ProgramDuration);
             Console.WriteLine("==== pendingChange.Program_Duration: " + pendingChange.Program_Duration);
 
             var model = new EditProgramModel
             {
-                Is_Active = prog.Is_Active,
+                Is_Active = prog.IsActive,
                 Id = progId,
-                Program_Name = prog.Program_Name,
+                Program_Name = prog.ProgramName,
                 Program_Id = prog.Id,
-                Organization_Name = prog.Organization_Name,
-                Organization_Id = prog.Organization_Id,
-                Lhn_Intake_Ticket_Id = prog.Lhn_Intake_Ticket_Id,
-                Has_Intake = prog.Has_Intake,
-                Intake_Form_Version = prog.Intake_Form_Version,
-                Qp_Intake_Submission_Id = prog.Qp_Intake_Submission_Id,
-                Location_Details_Available = prog.Location_Details_Available,
-                Has_Consent = prog.Has_Consent,
-                Qp_Location_Submission_Id = prog.Qp_Location_Submission_Id,
-                Lhn_Location_Ticket_Id = prog.Lhn_Location_Ticket_Id,
-                Has_Multiple_Locations = prog.Has_Multiple_Locations,
-                Reporting_Form_2020 = prog.Reporting_Form_2020,
-                Date_Authorized = prog.Date_Authorized,
-                Mou_Link = prog.Mou_Link,
-                Mou_Creation_Date = prog.Mou_Creation_Date,
-                Mou_Expiration_Date = prog.Mou_Expiration_Date,
+                Organization_Name = prog.OrganizationName,
+                Organization_Id = prog.OrganizationId,
+                Lhn_Intake_Ticket_Id = prog.LhnIntakeTicketId,
+                Has_Intake = prog.HasIntake,
+                Intake_Form_Version = prog.IntakeFormVersion,
+                Qp_Intake_Submission_Id = prog.QpIntakeSubmissionId,
+                Location_Details_Available = prog.LocationDetailsAvailable,
+                Has_Consent = prog.HasConsent,
+                Qp_Location_Submission_Id = prog.QpLocationSubmissionId,
+                Lhn_Location_Ticket_Id = prog.LhnLocationTicketId,
+                Has_Multiple_Locations = prog.HasMultipleLocations,
+                Reporting_Form_2020 = prog.ReportingForm2020,
+                Date_Authorized = prog.DateAuthorized,
+                Mou_Link = prog.MouLink,
+                Mou_Creation_Date = prog.MouCreationDate,
+                Mou_Expiration_Date = prog.MouExpirationDate,
                 Nationwide = prog.Nationwide,
                 Online = prog.Online,
-                Participation_Populations = prog.Participation_Populations,
+                Participation_Populations = prog.ParticipationPopulations,
                 //Delivery_Method = prog.Delivery_Method,
-                States_Of_Program_Delivery = prog.States_Of_Program_Delivery,
-                Program_Duration = prog.Program_Duration,
-                Support_Cohorts = prog.Support_Cohorts,
-                Opportunity_Type = prog.Opportunity_Type,
-                Job_Family = prog.Job_Family,
-                Services_Supported = prog.Services_Supported,
-                Enrollment_Dates = prog.Enrollment_Dates,
-                Date_Created = prog.Date_Created,
-                Date_Updated = prog.Date_Updated,
-                Created_By = prog.Created_By,
-                Updated_By = prog.Updated_By,
-                Program_Url = prog.Program_Url,
-                Program_Status = prog.Program_Status,
-                Admin_Poc_First_Name = prog.Admin_Poc_First_Name,
-                Admin_Poc_Last_Name = prog.Admin_Poc_Last_Name,
-                Admin_Poc_Email = prog.Admin_Poc_Email,
-                Admin_Poc_Phone = prog.Admin_Poc_Phone,
-                Public_Poc_Name = prog.Public_Poc_Name,
-                Public_Poc_Email = prog.Public_Poc_Email,
+                States_Of_Program_Delivery = prog.StatesOfProgramDelivery,
+                Program_Duration = prog.ProgramDuration,
+                Support_Cohorts = prog.SupportCohorts,
+                Opportunity_Type = prog.OpportunityType,
+                Job_Family = prog.JobFamily,
+                Services_Supported = prog.ServicesSupported,
+                Enrollment_Dates = prog.EnrollmentDates,
+                Date_Created = prog.DateCreated,
+                Date_Updated = prog.DateUpdated,
+                Created_By = prog.CreatedBy,
+                Updated_By = prog.UpdatedBy,
+                Program_Url = prog.ProgramUrl,
+                Program_Status = prog.ProgramStatus,
+                Admin_Poc_First_Name = prog.AdminPocFirstName,
+                Admin_Poc_Last_Name = prog.AdminPocLastName,
+                Admin_Poc_Email = prog.AdminPocEmail,
+                Admin_Poc_Phone = prog.AdminPocPhone,
+                Public_Poc_Name = prog.PublicPocName,
+                Public_Poc_Email = prog.PublicPocEmail,
                 Notes = prog.Notes,
-                For_Spouses = prog.For_Spouses,
-                Legacy_Program_Id = prog.Legacy_Program_Id,
-                Legacy_Provider_Id = prog.Legacy_Provider_Id,
+                For_Spouses = prog.ForSpouses,
+                Legacy_Program_Id = prog.LegacyProgramId,
+                Legacy_Provider_Id = prog.LegacyProviderId,
                 Pending_Change_Status = pendingChange.Pending_Change_Status,
                 Pending_Fields = new List<string>(),
                 Populations_List = newSelectedPops,
@@ -405,52 +405,52 @@ namespace SkillBridge.CMS.Controllers
             {
                 ViewBag.hasPendingChange = true;
 
-                ViewBag.Original_Is_Active = prog.Is_Active;
-                ViewBag.Original_Program_Name = prog.Program_Name;
-                ViewBag.Original_Organization_Name = prog.Organization_Name;
+                ViewBag.Original_Is_Active = prog.IsActive;
+                ViewBag.Original_Program_Name = prog.ProgramName;
+                ViewBag.Original_Organization_Name = prog.OrganizationName;
                 ViewBag.Original_Program_Id = prog.Id;
-                ViewBag.Original_Organization_Id = prog.Organization_Id;
-                ViewBag.Original_Lhn_Intake_Ticket_Id = prog.Lhn_Intake_Ticket_Id;
-                ViewBag.Original_Has_Intake = prog.Has_Intake;
-                ViewBag.Original_Intake_Form_Version = prog.Intake_Form_Version;
-                ViewBag.Original_Qp_Intake_Submission_Id = prog.Qp_Intake_Submission_Id;
-                ViewBag.Original_Location_Details_Available = prog.Location_Details_Available;
-                ViewBag.Original_Has_Consent = prog.Has_Consent;
-                ViewBag.Original_Qp_Location_Submission_Id = prog.Qp_Location_Submission_Id;
-                ViewBag.Original_Lhn_Location_Ticket_Id = prog.Lhn_Location_Ticket_Id;
-                ViewBag.Original_Has_Multiple_Locations = prog.Has_Multiple_Locations;
-                ViewBag.Original_Reporting_Form_2020 = prog.Reporting_Form_2020;
-                ViewBag.Original_Date_Authorized = prog.Date_Authorized;
-                ViewBag.Original_Mou_Link = prog.Mou_Link;
-                ViewBag.Original_Mou_Creation_Date = prog.Mou_Creation_Date;
-                ViewBag.Original_Mou_Expiration_Date = prog.Mou_Expiration_Date;
+                ViewBag.Original_Organization_Id = prog.OrganizationId;
+                ViewBag.Original_Lhn_Intake_Ticket_Id = prog.LhnIntakeTicketId;
+                ViewBag.Original_Has_Intake = prog.HasIntake;
+                ViewBag.Original_Intake_Form_Version = prog.IntakeFormVersion;
+                ViewBag.Original_Qp_Intake_Submission_Id = prog.QpIntakeSubmissionId;
+                ViewBag.Original_Location_Details_Available = prog.LocationDetailsAvailable;
+                ViewBag.Original_Has_Consent = prog.HasConsent;
+                ViewBag.Original_Qp_Location_Submission_Id = prog.QpLocationSubmissionId;
+                ViewBag.Original_Lhn_Location_Ticket_Id = prog.LhnLocationTicketId;
+                ViewBag.Original_Has_Multiple_Locations = prog.HasMultipleLocations;
+                ViewBag.Original_Reporting_Form_2020 = prog.ReportingForm2020;
+                ViewBag.Original_Date_Authorized = prog.DateAuthorized;
+                ViewBag.Original_Mou_Link = prog.MouLink;
+                ViewBag.Original_Mou_Creation_Date = prog.MouCreationDate;
+                ViewBag.Original_Mou_Expiration_Date = prog.MouExpirationDate;
                 ViewBag.Original_Nationwide = prog.Nationwide;
                 ViewBag.Original_Online = prog.Online;
                 ViewBag.Original_Participation_Populations = originalSelectedPops;
                 ViewBag.Original_Delivery_Method = originalSelectedDms;
-                ViewBag.Original_States_Of_Program_Delivery = prog.States_Of_Program_Delivery;
-                ViewBag.Original_Program_Duration = prog.Program_Duration;
-                ViewBag.Original_Support_Cohorts = prog.Support_Cohorts;
-                ViewBag.Original_Opportunity_Type = prog.Opportunity_Type;
+                ViewBag.Original_States_Of_Program_Delivery = prog.StatesOfProgramDelivery;
+                ViewBag.Original_Program_Duration = prog.ProgramDuration;
+                ViewBag.Original_Support_Cohorts = prog.SupportCohorts;
+                ViewBag.Original_Opportunity_Type = prog.OpportunityType;
                 ViewBag.Original_Job_Family = originalSelectedJfs;
-                ViewBag.Original_Services_Supported = prog.Services_Supported;
-                ViewBag.Original_Enrollment_Dates = prog.Enrollment_Dates;
-                ViewBag.Original_Date_Created = prog.Date_Created;
-                ViewBag.Original_Date_Updated = prog.Date_Updated;
-                ViewBag.Original_Created_By = prog.Created_By;
-                ViewBag.Original_Updated_By = prog.Updated_By;
-                ViewBag.Original_Program_Url = prog.Program_Url;
-                ViewBag.Original_Program_Status = prog.Program_Status;
-                ViewBag.Original_Admin_Poc_First_Name = prog.Admin_Poc_First_Name;
-                ViewBag.Original_Admin_Poc_Last_Name = prog.Admin_Poc_Last_Name;
-                ViewBag.Original_Admin_Poc_Email = prog.Admin_Poc_Email;
-                ViewBag.Original_Admin_Poc_Phone = prog.Admin_Poc_Phone;
-                ViewBag.Original_Public_Poc_Name = prog.Public_Poc_Name;
-                ViewBag.Original_Public_Poc_Email = prog.Public_Poc_Email;
+                ViewBag.Original_Services_Supported = prog.ServicesSupported;
+                ViewBag.Original_Enrollment_Dates = prog.EnrollmentDates;
+                ViewBag.Original_Date_Created = prog.DateCreated;
+                ViewBag.Original_Date_Updated = prog.DateUpdated;
+                ViewBag.Original_Created_By = prog.CreatedBy;
+                ViewBag.Original_Updated_By = prog.UpdatedBy;
+                ViewBag.Original_Program_Url = prog.ProgramUrl;
+                ViewBag.Original_Program_Status = prog.ProgramStatus;
+                ViewBag.Original_Admin_Poc_First_Name = prog.AdminPocFirstName;
+                ViewBag.Original_Admin_Poc_Last_Name = prog.AdminPocLastName;
+                ViewBag.Original_Admin_Poc_Email = prog.AdminPocEmail;
+                ViewBag.Original_Admin_Poc_Phone = prog.AdminPocPhone;
+                ViewBag.Original_Public_Poc_Name = prog.PublicPocName;
+                ViewBag.Original_Public_Poc_Email = prog.PublicPocEmail;
                 ViewBag.Original_Notes = prog.Notes;
-                ViewBag.Original_For_Spouses = prog.For_Spouses;
-                ViewBag.Original_Legacy_Program_Id = prog.Legacy_Program_Id;
-                ViewBag.Original_Legacy_Provider_Id = prog.Legacy_Provider_Id;
+                ViewBag.Original_For_Spouses = prog.ForSpouses;
+                ViewBag.Original_Legacy_Program_Id = prog.LegacyProgramId;
+                ViewBag.Original_Legacy_Provider_Id = prog.LegacyProviderId;
 
                 ViewBag.ShowOSDNotice = pendingChange.Requires_OSD_Review;
 
@@ -1748,7 +1748,7 @@ namespace SkillBridge.CMS.Controllers
 
                     if (updateEnabledFields)
                     {
-                        var progsToUpdate = _db.Programs.Where(p => p.Organization_Id == int.Parse(orgId));
+                        var progsToUpdate = _db.Programs.Where(p => p.OrganizationId == int.Parse(orgId));
                         var oppsToUpdate = _db.Opportunities.Where(p => p.Organization_Id == int.Parse(orgId));
 
                         if (progsToUpdate.ToList<ProgramModel>().Count > 0)
@@ -1756,8 +1756,8 @@ namespace SkillBridge.CMS.Controllers
                             Console.WriteLine("There are programs to update on disable");
                             foreach (ProgramModel p in progsToUpdate)
                             {
-                                p.Is_Active = false;
-                                p.Date_Deactivated = DateTime.Now;
+                                p.IsActive = false;
+                                p.DateDeactivated = DateTime.Now;
                                 _db.Programs.Update(p);
                             }
                         }
@@ -1777,14 +1777,14 @@ namespace SkillBridge.CMS.Controllers
                     // We need to update the optimization fields for programs and opportunities now if the name changed
                     if(updateOptimizationFields)
                     { 
-                        var progsToUpdate = _db.Programs.Where(p => p.Organization_Id == int.Parse(orgId));
+                        var progsToUpdate = _db.Programs.Where(p => p.OrganizationId == int.Parse(orgId));
                         var oppsToUpdate = _db.Opportunities.Where(p => p.Organization_Id == int.Parse(orgId));
 
                         if(progsToUpdate.ToList<ProgramModel>().Count > 0 || oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                         {
                             foreach (ProgramModel p in progsToUpdate)
                             {
-                                p.Organization_Name = org.Name;
+                                p.OrganizationName = org.Name;
                                 _db.Programs.Update(p);
                             }
 
@@ -1837,7 +1837,7 @@ namespace SkillBridge.CMS.Controllers
 
             ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
 
-            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.OrganizationId);
 
             bool newForSpouses = false;
 
@@ -1860,13 +1860,13 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Set is_active fields to update on child records if we have is_active set to false
-            if (prog.Is_Active == false)
+            if (prog.IsActive == false)
             {
                 updateEnabledFields = true;
             }
 
             // Set optimization fields to update on child program/oppotunity records if we have a name change
-            if (!String.Equals(prog.Program_Name, model.Program_Name, StringComparison.Ordinal))
+            if (!String.Equals(prog.ProgramName, model.Program_Name, StringComparison.Ordinal))
             {
                 updateOptimizationFields = true;
             }
@@ -1885,58 +1885,58 @@ namespace SkillBridge.CMS.Controllers
                 //TODO: Inject Query class
                 var numStatesFound = new NumberOfStatesInProgramQuery().Get(prog, _db);
 
-                prog.Is_Active = model.Is_Active;
-                prog.Program_Name = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Program_Name));
-                prog.Organization_Name = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Organization_Name));
-                prog.Organization_Id = model.Organization_Id;
-                prog.Lhn_Intake_Ticket_Id = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Lhn_Intake_Ticket_Id));
-                prog.Has_Intake = model.Has_Intake;
-                prog.Intake_Form_Version = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Intake_Form_Version));
-                prog.Qp_Intake_Submission_Id = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Qp_Intake_Submission_Id));
-                prog.Location_Details_Available = model.Location_Details_Available;
-                prog.Has_Consent = model.Has_Consent;
-                prog.Qp_Location_Submission_Id = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Qp_Location_Submission_Id));
-                prog.Lhn_Location_Ticket_Id = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Lhn_Location_Ticket_Id));
-                prog.Has_Multiple_Locations = numStatesFound > 1 ? true : false;
-                prog.Reporting_Form_2020 = model.Reporting_Form_2020;
-                prog.Date_Authorized = model.Date_Authorized;
-                prog.Mou_Link = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Mou_Link));
-                prog.Mou_Creation_Date = model.Mou_Creation_Date;
-                prog.Mou_Expiration_Date = model.Mou_Expiration_Date;
+                prog.IsActive = model.Is_Active;
+                prog.ProgramName = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Program_Name));
+                prog.OrganizationName = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Organization_Name));
+                prog.OrganizationId = model.Organization_Id;
+                prog.LhnIntakeTicketId = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Lhn_Intake_Ticket_Id));
+                prog.HasIntake = model.Has_Intake;
+                prog.IntakeFormVersion = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Intake_Form_Version));
+                prog.QpIntakeSubmissionId = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Qp_Intake_Submission_Id));
+                prog.LocationDetailsAvailable = model.Location_Details_Available;
+                prog.HasConsent = model.Has_Consent;
+                prog.QpLocationSubmissionId = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Qp_Location_Submission_Id));
+                prog.LhnLocationTicketId = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Lhn_Location_Ticket_Id));
+                prog.HasMultipleLocations = numStatesFound > 1 ? true : false;
+                prog.ReportingForm2020 = model.Reporting_Form_2020;
+                prog.DateAuthorized = model.Date_Authorized;
+                prog.MouLink = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Mou_Link));
+                prog.MouCreationDate = model.Mou_Creation_Date;
+                prog.MouExpirationDate = model.Mou_Expiration_Date;
                 prog.Nationwide = model.Online == true || numStatesFound >= GlobalFunctions.MIN_STATES_FOR_NATIONWIDE ? true : false; // Nationwide should be calculated on if it's an online program or if sum of child opportunities are offered 3 or more collective states;
                 prog.Online = model.Online;
-                prog.Participation_Populations = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Participation_Populations));
+                prog.ParticipationPopulations = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Participation_Populations));
                 //prog.Delivery_Method = model.Delivery_Method;//PreventNullString(model.Delivery_Method);
-                prog.States_Of_Program_Delivery = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.States_Of_Program_Delivery));
-                prog.Program_Duration = model.Program_Duration;
-                prog.Support_Cohorts = model.Support_Cohorts;
-                prog.Opportunity_Type = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Opportunity_Type));
-                prog.Job_Family = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Job_Family));
-                prog.Services_Supported = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Services_Supported));
-                prog.Enrollment_Dates = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Enrollment_Dates));
-                prog.Date_Created = model.Date_Created;
-                prog.Date_Updated = DateTime.Now;
-                prog.Created_By = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Created_By));
-                prog.Updated_By = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Updated_By));
-                prog.Program_Url = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Program_Url));
-                prog.Program_Status = model.Program_Status;
-                prog.Admin_Poc_First_Name = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Admin_Poc_First_Name));
-                prog.Admin_Poc_Last_Name = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Admin_Poc_Last_Name));
-                prog.Admin_Poc_Email = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Admin_Poc_Email));
-                prog.Admin_Poc_Phone = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Admin_Poc_Phone));
-                prog.Public_Poc_Name = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Public_Poc_Name));
-                prog.Public_Poc_Email = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Public_Poc_Email));
+                prog.StatesOfProgramDelivery = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.States_Of_Program_Delivery));
+                prog.ProgramDuration = model.Program_Duration;
+                prog.SupportCohorts = model.Support_Cohorts;
+                prog.OpportunityType = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Opportunity_Type));
+                prog.JobFamily = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Job_Family));
+                prog.ServicesSupported = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Services_Supported));
+                prog.EnrollmentDates = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Enrollment_Dates));
+                prog.DateCreated = model.Date_Created;
+                prog.DateUpdated = DateTime.Now;
+                prog.CreatedBy = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Created_By));
+                prog.UpdatedBy = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Updated_By));
+                prog.ProgramUrl = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Program_Url));
+                prog.ProgramStatus = model.Program_Status;
+                prog.AdminPocFirstName = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Admin_Poc_First_Name));
+                prog.AdminPocLastName = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Admin_Poc_Last_Name));
+                prog.AdminPocEmail = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Admin_Poc_Email));
+                prog.AdminPocPhone = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Admin_Poc_Phone));
+                prog.PublicPocName = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Public_Poc_Name));
+                prog.PublicPocEmail = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Public_Poc_Email));
                 prog.Notes = GlobalFunctions.RemoveSpecialCharacters(PreventNullString(model.Notes));
                 //prog.For_Spouses = model.For_Spouses;
                 //Console.WriteLine("program for spouses being set to: " + newForSpouses);
-                prog.For_Spouses = newForSpouses;
-                prog.Legacy_Program_Id = model.Legacy_Program_Id;
-                prog.Legacy_Provider_Id = model.Legacy_Provider_Id;
+                prog.ForSpouses = newForSpouses;
+                prog.LegacyProgramId = model.Legacy_Program_Id;
+                prog.LegacyProviderId = model.Legacy_Provider_Id;
 
                 //prog.Populations_List = selectedPops;
             }
 
-            Console.WriteLine("prog.Organization_Id: " + prog.Organization_Id);
+            Console.WriteLine("prog.Organization_Id: " + prog.OrganizationId);
             _db.Programs.Update(prog);
 
             var result1 = await _db.SaveChangesAsync();
@@ -2165,7 +2165,7 @@ namespace SkillBridge.CMS.Controllers
                             if (IsValidEmail(email))
                             {
                                 //Console.WriteLine("EMAIL NOTIFICATION BEING SENT TO " + email);
-                                await _emailSender.SendEmailAsync(email, "SkillBridge System Program Change Accepted", "The update to your organization's information has been made.<br/><br/>The SkillBridge website should reflect the change after the next site update, which should be no later than Friday, at 5:00 PM EST<br/><br/>Organization: " + org.Name + "<br/>Program: " + prog.Program_Name);
+                                await _emailSender.SendEmailAsync(email, "SkillBridge System Program Change Accepted", "The update to your organization's information has been made.<br/><br/>The SkillBridge website should reflect the change after the next site update, which should be no later than Friday, at 5:00 PM EST<br/><br/>Organization: " + org.Name + "<br/>Program: " + prog.ProgramName);
                             }
                         }
                     }
@@ -2194,7 +2194,7 @@ namespace SkillBridge.CMS.Controllers
                         {
                             foreach (OpportunityModel o in oppsToUpdate)
                             {
-                                o.Program_Name = prog.Program_Name;
+                                o.Program_Name = prog.ProgramName;
                                 _db.Opportunities.Update(o);
                             }
                         }
@@ -2383,7 +2383,7 @@ namespace SkillBridge.CMS.Controllers
                             if (IsValidEmail(email))
                             {
                                 //Console.WriteLine("EMAIL NOTIFICATION BEING SENT TO " + email);
-                                await _emailSender.SendEmailAsync(email, "SkillBridge System Opportunity Change Accepted", "The update to your organization's information has been made.<br/><br/>The SkillBridge website should reflect the change after the next site update, which should be no later than Friday, at 5:00 PM EST<br/><br/>Organization: " + org.Name + "<br/>Program: " + prog.Program_Name);
+                                await _emailSender.SendEmailAsync(email, "SkillBridge System Opportunity Change Accepted", "The update to your organization's information has been made.<br/><br/>The SkillBridge website should reflect the change after the next site update, which should be no later than Friday, at 5:00 PM EST<br/><br/>Organization: " + org.Name + "<br/>Program: " + prog.ProgramName);
                             }
                         }
                     }
@@ -2423,79 +2423,79 @@ namespace SkillBridge.CMS.Controllers
                 {
                     ProgramModel prog = new ProgramModel
                     {
-                        Program_Name = GlobalFunctions.RemoveSpecialCharacters(model.Program_Name),
-                        Program_Status = model.Program_Status,
-                        Organization_Id = model.Organization_Id,
-                        Organization_Name = GlobalFunctions.RemoveSpecialCharacters(org.Name),
-                        Is_Active = model.Is_Active,
-                        Created_By = userName,
-                        Updated_By = userName,
-                        Date_Authorized = mou.Creation_Date,   // Date the 
-                        Mou_Creation_Date = mou.Creation_Date,
-                        Mou_Expiration_Date = mou.Expiration_Date,
-                        Mou_Link = mou.Url,
-                        Date_Created = DateTime.Now,  // Date program was created in system
-                        Date_Updated = DateTime.Now,  // Date program was last edited/updated in the system
-                        Program_Duration = model.Program_Duration,
-                        Opportunity_Type = GlobalFunctions.RemoveSpecialCharacters(model.Opportunity_Type),
-                        Admin_Poc_First_Name = GlobalFunctions.RemoveSpecialCharacters(model.Admin_Poc_First_Name),
-                        Admin_Poc_Last_Name = GlobalFunctions.RemoveSpecialCharacters(model.Admin_Poc_Last_Name),
-                        Admin_Poc_Email = GlobalFunctions.RemoveSpecialCharacters(model.Admin_Poc_Email),
-                        Admin_Poc_Phone = GlobalFunctions.RemoveSpecialCharacters(model.Admin_Poc_Phone),
-                        Public_Poc_Name = GlobalFunctions.RemoveSpecialCharacters(model.Public_Poc_Name),
-                        Public_Poc_Email = GlobalFunctions.RemoveSpecialCharacters(model.Public_Poc_Email),
+                        ProgramName = GlobalFunctions.RemoveSpecialCharacters(model.Program_Name),
+                        ProgramStatus = model.Program_Status,
+                        OrganizationId = model.Organization_Id,
+                        OrganizationName = GlobalFunctions.RemoveSpecialCharacters(org.Name),
+                        IsActive = model.Is_Active,
+                        CreatedBy = userName,
+                        UpdatedBy = userName,
+                        DateAuthorized = mou.Creation_Date,   // Date the 
+                        MouCreationDate = mou.Creation_Date,
+                        MouExpirationDate = mou.Expiration_Date,
+                        MouLink = mou.Url,
+                        DateCreated = DateTime.Now,  // Date program was created in system
+                        DateUpdated = DateTime.Now,  // Date program was last edited/updated in the system
+                        ProgramDuration = model.Program_Duration,
+                        OpportunityType = GlobalFunctions.RemoveSpecialCharacters(model.Opportunity_Type),
+                        AdminPocFirstName = GlobalFunctions.RemoveSpecialCharacters(model.Admin_Poc_First_Name),
+                        AdminPocLastName = GlobalFunctions.RemoveSpecialCharacters(model.Admin_Poc_Last_Name),
+                        AdminPocEmail = GlobalFunctions.RemoveSpecialCharacters(model.Admin_Poc_Email),
+                        AdminPocPhone = GlobalFunctions.RemoveSpecialCharacters(model.Admin_Poc_Phone),
+                        PublicPocName = GlobalFunctions.RemoveSpecialCharacters(model.Public_Poc_Name),
+                        PublicPocEmail = GlobalFunctions.RemoveSpecialCharacters(model.Public_Poc_Email),
                         //Delivery_Method = model.Delivery_Method,
                         //Services_Supported = model.Services_Supported,
-                        Legacy_Program_Id = -1,
-                        Legacy_Provider_Id = org.Legacy_Provider_Id,
+                        LegacyProgramId = -1,
+                        LegacyProviderId = org.Legacy_Provider_Id,
                         // Generate these
-                        Participation_Populations = "",
-                        Job_Family = "",
-                        Services_Supported = "",
-                        Intake_Form_Version = model.Intake_Form_Version != "" ? GlobalFunctions.RemoveSpecialCharacters(model.Intake_Form_Version) : "N/A",
-                        Qp_Intake_Submission_Id = model.Qp_Intake_Submission_Id != "" ? GlobalFunctions.RemoveSpecialCharacters(model.Qp_Intake_Submission_Id) : "N/A",
-                        Qp_Location_Submission_Id = model.Qp_Location_Submission_Id != "" ? GlobalFunctions.RemoveSpecialCharacters(model.Qp_Location_Submission_Id) : "N/A",
-                        Lhn_Location_Ticket_Id = model.Lhn_Location_Ticket_Id != "" ? GlobalFunctions.RemoveSpecialCharacters(model.Lhn_Location_Ticket_Id) : "N/A",
-                        Delivery_Method = "",
+                        ParticipationPopulations = "",
+                        JobFamily = "",
+                        ServicesSupported = "",
+                        IntakeFormVersion = model.Intake_Form_Version != "" ? GlobalFunctions.RemoveSpecialCharacters(model.Intake_Form_Version) : "N/A",
+                        QpIntakeSubmissionId = model.Qp_Intake_Submission_Id != "" ? GlobalFunctions.RemoveSpecialCharacters(model.Qp_Intake_Submission_Id) : "N/A",
+                        QpLocationSubmissionId = model.Qp_Location_Submission_Id != "" ? GlobalFunctions.RemoveSpecialCharacters(model.Qp_Location_Submission_Id) : "N/A",
+                        LhnLocationTicketId = model.Lhn_Location_Ticket_Id != "" ? GlobalFunctions.RemoveSpecialCharacters(model.Lhn_Location_Ticket_Id) : "N/A",
+                        DeliveryMethod = "",
                         Nationwide = model.Online == true ? true : false,   // Setting up nationwide for the first time, if online is true or more than 3 states (unknown at this point)
-                        Support_Cohorts = model.Support_Cohorts,
+                        SupportCohorts = model.Support_Cohorts,
                         Online = model.Online,
-                        Enrollment_Dates = GlobalFunctions.RemoveSpecialCharacters(model.Enrollment_Dates),
-                        Program_Url = GlobalFunctions.RemoveSpecialCharacters(model.Program_Url),
-                        States_Of_Program_Delivery = GlobalFunctions.RemoveSpecialCharacters(model.States_Of_Program_Delivery),
-                        Has_Consent = model.Has_Consent,
-                        Has_Multiple_Locations = model.Has_Multiple_Locations,
-                        Reporting_Form_2020 = model.Reporting_Form_2020,
-                        Has_Intake = model.Has_Intake,
-                        Location_Details_Available = model.Location_Details_Available,
-                        For_Spouses = model.For_Spouses,
+                        EnrollmentDates = GlobalFunctions.RemoveSpecialCharacters(model.Enrollment_Dates),
+                        ProgramUrl = GlobalFunctions.RemoveSpecialCharacters(model.Program_Url),
+                        StatesOfProgramDelivery = GlobalFunctions.RemoveSpecialCharacters(model.States_Of_Program_Delivery),
+                        HasConsent = model.Has_Consent,
+                        HasMultipleLocations = model.Has_Multiple_Locations,
+                        ReportingForm2020 = model.Reporting_Form_2020,
+                        HasIntake = model.Has_Intake,
+                        LocationDetailsAvailable = model.Location_Details_Available,
+                        ForSpouses = model.For_Spouses,
                         Notes = model.Notes
                     };
 
                     // Save to DB
-                    if (model.Lhn_Intake_Ticket_Id == null) { prog.Lhn_Intake_Ticket_Id = ""; }
+                    if (model.Lhn_Intake_Ticket_Id == null) { prog.LhnIntakeTicketId = ""; }
 
-                    if (model.Intake_Form_Version == null) { prog.Intake_Form_Version = ""; }
+                    if (model.Intake_Form_Version == null) { prog.IntakeFormVersion = ""; }
 
-                    if (model.Qp_Intake_Submission_Id == null) { prog.Qp_Intake_Submission_Id = ""; }
+                    if (model.Qp_Intake_Submission_Id == null) { prog.QpIntakeSubmissionId = ""; }
 
-                    if (model.Qp_Intake_Submission_Id == null) { prog.Qp_Intake_Submission_Id = ""; }
+                    if (model.Qp_Intake_Submission_Id == null) { prog.QpIntakeSubmissionId = ""; }
 
-                    if (model.Qp_Location_Submission_Id == null) { prog.Qp_Location_Submission_Id = ""; }
+                    if (model.Qp_Location_Submission_Id == null) { prog.QpLocationSubmissionId = ""; }
 
-                    if (model.Lhn_Location_Ticket_Id == null) { prog.Lhn_Location_Ticket_Id = ""; }
+                    if (model.Lhn_Location_Ticket_Id == null) { prog.LhnLocationTicketId = ""; }
 
-                    if (model.Mou_Link == null) { prog.Mou_Link = ""; }
+                    if (model.Mou_Link == null) { prog.MouLink = ""; }
 
-                    if (model.States_Of_Program_Delivery == null) { prog.States_Of_Program_Delivery = ""; }
+                    if (model.States_Of_Program_Delivery == null) { prog.StatesOfProgramDelivery = ""; }
 
-                    if (model.Job_Family == null) { prog.Job_Family = ""; }
+                    if (model.Job_Family == null) { prog.JobFamily = ""; }
 
-                    if (model.Services_Supported == null) { prog.Services_Supported = ""; }
+                    if (model.Services_Supported == null) { prog.ServicesSupported = ""; }
 
-                    if (model.Enrollment_Dates == null) { prog.Enrollment_Dates = ""; }
+                    if (model.Enrollment_Dates == null) { prog.EnrollmentDates = ""; }
 
-                    if (model.Program_Url == null) { prog.Program_Url = ""; }
+                    if (model.Program_Url == null) { prog.ProgramUrl = ""; }
 
                     if (model.Notes == null) { prog.Notes = ""; }
 
@@ -2691,13 +2691,13 @@ namespace SkillBridge.CMS.Controllers
                                 }
                             }
 
-                            prog.Services_Supported = GetServiceListForProg(prog);
-                            prog.Job_Family = GetJobFamiliesListForProg(prog);
-                            prog.Participation_Populations = GetParticipationPopulationStringFromProgram(prog);
+                            prog.ServicesSupported = GetServiceListForProg(prog);
+                            prog.JobFamily = GetJobFamiliesListForProg(prog);
+                            prog.ParticipationPopulations = GetParticipationPopulationStringFromProgram(prog);
 
-                            pendingAddition.Services_Supported = prog.Services_Supported;
-                            pendingAddition.Job_Family = prog.Job_Family;
-                            pendingAddition.Participation_Populations = prog.Participation_Populations;
+                            pendingAddition.Services_Supported = prog.ServicesSupported;
+                            pendingAddition.Job_Family = prog.JobFamily;
+                            pendingAddition.Participation_Populations = prog.ParticipationPopulations;
 
 
                             _db.Programs.Update(prog);
@@ -2783,20 +2783,20 @@ namespace SkillBridge.CMS.Controllers
                     }
 
                     model.Program_Type = newProgType;
-                    model.Mou_Link = prog.Mou_Link;
+                    model.Mou_Link = prog.MouLink;
 
-                    if (prog.Legacy_Program_Id != 0 && prog.Legacy_Program_Id != -1)
+                    if (prog.LegacyProgramId != 0 && prog.LegacyProgramId != -1)
                     {
-                        model.Legacy_Program_Id = prog.Legacy_Program_Id;
+                        model.Legacy_Program_Id = prog.LegacyProgramId;
                     }
                     else
                     {
                         model.Legacy_Program_Id = 0;
                     }
 
-                    if (prog.Legacy_Provider_Id != 0 && prog.Legacy_Provider_Id != -1)
+                    if (prog.LegacyProviderId != 0 && prog.LegacyProviderId != -1)
                     {
-                        model.Legacy_Provider_Id = prog.Legacy_Provider_Id;
+                        model.Legacy_Provider_Id = prog.LegacyProviderId;
                     }
                     else
                     {
@@ -2813,8 +2813,8 @@ namespace SkillBridge.CMS.Controllers
                         Organization_Id = int.Parse(organizationId),
                         Opportunity_Url = GlobalFunctions.RemoveSpecialCharacters(model.Opportunity_Url),
                         //Organization_Name = org.Name,
-                        Date_Program_Initiated = prog.Date_Created,
-                        Program_Name = prog.Program_Name,
+                        Date_Program_Initiated = prog.DateCreated,
+                        Program_Name = prog.ProgramName,
                         Program_Id = int.Parse(programId),
                         Job_Families = newJobFamilies,    // This is just an optimized field
                         Participation_Populations = newPartPop,   // This is just an optimized field
@@ -2850,9 +2850,9 @@ namespace SkillBridge.CMS.Controllers
                         For_Spouses = model.For_Spouses,
                         Is_Active = model.Is_Active,
                         Service = GlobalFunctions.RemoveSpecialCharacters(model.Service),
-                        Admin_Poc_Email = prog.Admin_Poc_Email,
-                        Admin_Poc_First_Name = prog.Admin_Poc_First_Name,
-                        Admin_Poc_Last_Name = prog.Admin_Poc_Last_Name,
+                        Admin_Poc_Email = prog.AdminPocEmail,
+                        Admin_Poc_First_Name = prog.AdminPocFirstName,
+                        Admin_Poc_Last_Name = prog.AdminPocLastName,
                         Organization_Name = org.Name,
                         Mou_Link = mou.Url
                     };
@@ -2933,7 +2933,7 @@ namespace SkillBridge.CMS.Controllers
                         //var result2 = await _db.SaveChangesAsync();
                         pendingAddition.Opportunity_Url = GlobalFunctions.RemoveSpecialCharacters(model.Opportunity_Url);
                         //Organization_Name = org.Name,
-                        pendingAddition.Date_Program_Initiated = prog.Date_Created;
+                        pendingAddition.Date_Program_Initiated = prog.DateCreated;
                         pendingAddition.Job_Families = newJobFamilies;  // This is just an optimized field
                         pendingAddition.Participation_Populations = newPartPop;   // This is just an optimized field
                         pendingAddition.Employer_Poc_Email = GlobalFunctions.RemoveSpecialCharacters(model.Employer_Poc_Email);
@@ -3124,7 +3124,7 @@ namespace SkillBridge.CMS.Controllers
 
             var ps = _db.ProgramService.Where(x => x.Program_Id == prog.Id).ToList();
 
-            Console.WriteLine("==ps.Count for " + prog.Program_Name + " = " + ps.Count);
+            Console.WriteLine("==ps.Count for " + prog.ProgramName + " = " + ps.Count);
 
             int count = ps.Count;
             int i = 0;
@@ -3631,7 +3631,7 @@ namespace SkillBridge.CMS.Controllers
 
             ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
 
-            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.OrganizationId);
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -3664,7 +3664,7 @@ namespace SkillBridge.CMS.Controllers
                         if (IsValidEmail(email))
                         {
                             //Console.WriteLine("EMAIL NOTIFICATION BEING SENT TO " + email);
-                            await _emailSender.SendEmailAsync(email, "SkillBridge System Program Change Rejected", "This email is being sent to notify you that your recent SkillBridge Program update for the " + model.Program_Name + " Program has been rejected.<br/><br/>Reason:<br/>" + model.Rejection_Reason + "<br/><br/> Organization: " + org.Name + " < br /> Program: " + prog.Program_Name);
+                            await _emailSender.SendEmailAsync(email, "SkillBridge System Program Change Rejected", "This email is being sent to notify you that your recent SkillBridge Program update for the " + model.Program_Name + " Program has been rejected.<br/><br/>Reason:<br/>" + model.Rejection_Reason + "<br/><br/> Organization: " + org.Name + " < br /> Program: " + prog.ProgramName);
                         }
                     }
                 }
@@ -3693,7 +3693,7 @@ namespace SkillBridge.CMS.Controllers
             var originalOpportunity = _db.Opportunities.FirstOrDefault(e => e.Id == pendingChange.Opportunity_Id);
 
             var prog = _db.Programs.FirstOrDefault(e => e.Id == originalOpportunity.Program_Id);
-            var org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            var org = _db.Organizations.FirstOrDefault(e => e.Id == prog.OrganizationId);
 
             string userName = HttpContext.User.Identity.Name;
 
@@ -3726,7 +3726,7 @@ namespace SkillBridge.CMS.Controllers
                         if (IsValidEmail(email))
                         {
                             //Console.WriteLine("EMAIL NOTIFICATION BEING SENT TO " + email);
-                            await _emailSender.SendEmailAsync(email, "SkillBridge System Opportunity Change Rejected", "This email is being sent to notify you that your recent SkillBridge Opportunity update for the " + model.Program_Name + " Program has been rejected.<br/><br/>Reason:<br/>" + model.Rejection_Reason + "<br/><br/>Organization: " + org.Name + "<br/>Program: " + prog.Program_Name);
+                            await _emailSender.SendEmailAsync(email, "SkillBridge System Opportunity Change Rejected", "This email is being sent to notify you that your recent SkillBridge Opportunity update for the " + model.Program_Name + " Program has been rejected.<br/><br/>Reason:<br/>" + model.Rejection_Reason + "<br/><br/>Organization: " + org.Name + "<br/>Program: " + prog.ProgramName);
                         }
                     }
                 }
@@ -3888,7 +3888,7 @@ namespace SkillBridge.CMS.Controllers
         {
             if (!String.IsNullOrWhiteSpace(term))
             {
-                var progs = await _db.Programs.Where(o => o.Organization_Id == organizationId && o.Program_Name.ToLower().Contains(term.ToLower())).OrderBy(o => o.Program_Name).Select(o => new { id = o.Id, text = o.Program_Name }).ToListAsync();
+                var progs = await _db.Programs.Where(o => o.OrganizationId == organizationId && o.ProgramName.ToLower().Contains(term.ToLower())).OrderBy(o => o.ProgramName).Select(o => new { id = o.Id, text = o.ProgramName }).ToListAsync();
                 return new JsonResult(new { results = progs });
             }
             else

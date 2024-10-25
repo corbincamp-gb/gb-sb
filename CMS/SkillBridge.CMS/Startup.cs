@@ -43,42 +43,65 @@ namespace SkillBridge.CMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connStr = $"SBConnectionString{(_dev ? "Test" : "Production")}";
-          
+
+            var connStr = Configuration.GetConnectionString("SBConnection");
+
             /* BEFORE PUBLISHING ANYTHING, MAKE SURE THE APPROPRIATE DB CONNECTION IS UNCOMMENTED HERE, 
              * IF PUBLISHING TO PRODUCTION SITE, MAKE SURE HEADER REWRITE CODE ON LINE 168 IS UNCOMMENTED AS WELL */
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetValue<string>(connStr)));
+                options.UseSqlServer(connStr));
 
             // Intake form context
             services.AddDbContext<Intake.Data.IntakeFormContext>(options =>
-                options.UseSqlServer(Configuration.GetValue<string>(connStr)));
+                options.UseSqlServer(connStr));
 
 
             #region Dependency Injection
-            // commands
-            services.AddScoped<ISerializeObjectCommand, SerializeObjectCommand>();
-            services.AddScoped<IRenderDropDownJsFileCommand, RenderDropDownJsFileCommand>();
+
+            // Dependency Injection
+
+            var components = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.IsClass)
+                .Where(t => t.Namespace != null)
+                .Where(t => t.Namespace.StartsWith("SkillBridge.Business")
+                                    || t.Namespace.StartsWith("Taku"))
+                .Where(b => b.Name.EndsWith("Query")
+                            || b.Name.EndsWith("Mapping")
+                            || b.Name.EndsWith("Command"));
+
+               foreach (var comp in components)
+            {
+                if (typeof(IQuery).IsAssignableFrom(comp)
+                    || typeof(IMapping).IsAssignableFrom(comp)
+                    || typeof(IRenderingCommand).IsAssignableFrom(comp))
+                {
+                    services.AddScoped(comp.GetInterface($"I{comp.Name}")!, comp);
+                }
+            }
+            //// commands
+            //services.AddScoped<ISerializeObjectCommand, SerializeObjectCommand>();
+            //services.AddScoped<IRenderDropDownJsFileCommand, RenderDropDownJsFileCommand>();
 
 
-            // Mappings
-            services.AddScoped<IDropDownDataMapping, DropDownDataMapping>();
-            services.AddScoped<IRelatedOrganizationMapping, RelatedOrganizationMapping>();
-            services.AddScoped<IRelatedOrganizationCollectionMapping, RelatedOrganizationCollectionMapping>();
+            //// Mappings
+            //services.AddScoped<IDropDownDataMapping, DropDownDataMapping>();
+            //services.AddScoped<IRelatedOrganizationMapping, RelatedOrganizationMapping>();
+            //services.AddScoped<IRelatedOrganizationCollectionMapping, RelatedOrganizationCollectionMapping>();
 
-            // Repositories
-            services.AddScoped<ITemplateRepository, Intake.Data.TemplateRepository>();
-            services.AddScoped<IFormRepository, FormRepository>();
-          
+            //// Repositories
+            //services.AddScoped<ITemplateRepository, Intake.Data.TemplateRepository>();
+            //services.AddScoped<IFormRepository, FormRepository>();
 
-            // Queries
-            services.AddScoped<IDeliveryMethodQuery, DeliveryMethodQuery>();
-            services.AddScoped<IMilitaryBranchCollectionQuery, MilitaryBranchCollectionQuery>();
-            services.AddScoped<IOpportunityCollectionQuery, OpportunityCollectionQuery>();
-            services.AddScoped<IProgramOrganizationCollectionQuery, ProgramOrganizationCollectionQuery>();
-            services.AddScoped<IRelatedOrganizationCollectionQuery, RelatedOrganizationCollectionQuery>();
-            services.AddScoped<IDropdownDataQuery, DropdownDataQuery>();
+
+            //// Queries
+            //services.AddScoped<IDeliveryMethodQuery, DeliveryMethodQuery>();
+            //services.AddScoped<IMilitaryBranchCollectionQuery, MilitaryBranchCollectionQuery>();
+            //services.AddScoped<IOpportunityCollectionQuery, OpportunityCollectionQuery>();
+            //services.AddScoped<IProgramOrganizationCollectionQuery, ProgramOrganizationCollectionQuery>();
+            //services.AddScoped<IRelatedOrganizationCollectionQuery, RelatedOrganizationCollectionQuery>();
+            //services.AddScoped<IDropdownDataQuery, DropdownDataQuery>();
 
             #endregion
 

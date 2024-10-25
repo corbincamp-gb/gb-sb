@@ -1005,7 +1005,7 @@ namespace SkillBridge.CMS.Controllers
             // Find the existing Program in the current database
             ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(id));
 
-            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.OrganizationId);
 
             // Populate Dropdown info for Participation Population Dropdown
             List<ParticipationPopulation> pops = new List<ParticipationPopulation>();
@@ -1124,50 +1124,50 @@ namespace SkillBridge.CMS.Controllers
             var model = new EditProgramModel
             {
                 Id = prog.Id.ToString(),
-                Program_Name = prog.Program_Name,
-                Is_Active = prog.Is_Active,
-                Organization_Name = prog.Organization_Name,
-                Organization_Id = prog.Organization_Id,
+                Program_Name = prog.ProgramName,
+                Is_Active = prog.IsActive,
+                Organization_Name = prog.OrganizationName,
+                Organization_Id = prog.OrganizationId,
                 Program_Id = prog.Id,
-                Lhn_Intake_Ticket_Id = prog.Lhn_Intake_Ticket_Id,  // LHN Intake Ticket Number
-                Has_Intake = prog.Has_Intake,        // Do we have a completed QuestionPro intake form from them
-                Intake_Form_Version = prog.Intake_Form_Version,  // Which version of the QuestionPro intake form did they fill out
-                Qp_Intake_Submission_Id = prog.Qp_Intake_Submission_Id, // The ID of the QuestionPro intake form submission
-                Location_Details_Available = prog.Location_Details_Available, // From col O of master spreadsheet
-                Has_Consent = prog.Has_Consent,
-                Qp_Location_Submission_Id = prog.Qp_Location_Submission_Id,
-                Lhn_Location_Ticket_Id = prog.Lhn_Location_Ticket_Id,
-                Has_Multiple_Locations = prog.Has_Multiple_Locations,
-                Reporting_Form_2020 = prog.Reporting_Form_2020,
-                Date_Authorized = prog.Date_Authorized,  // Date the 
-                Mou_Link = prog.Mou_Link,      // URL link to actual MOU packet
-                Mou_Creation_Date = prog.Mou_Creation_Date,
-                Mou_Expiration_Date = prog.Mou_Expiration_Date,
+                Lhn_Intake_Ticket_Id = prog.LhnIntakeTicketId,  // LHN Intake Ticket Number
+                Has_Intake = prog.HasIntake,        // Do we have a completed QuestionPro intake form from them
+                Intake_Form_Version = prog.IntakeFormVersion,  // Which version of the QuestionPro intake form did they fill out
+                Qp_Intake_Submission_Id = prog.QpIntakeSubmissionId, // The ID of the QuestionPro intake form submission
+                Location_Details_Available = prog.LocationDetailsAvailable, // From col O of master spreadsheet
+                Has_Consent = prog.HasConsent,
+                Qp_Location_Submission_Id = prog.QpLocationSubmissionId,
+                Lhn_Location_Ticket_Id = prog.LhnLocationTicketId,
+                Has_Multiple_Locations = prog.HasMultipleLocations,
+                Reporting_Form_2020 = prog.ReportingForm2020,
+                Date_Authorized = prog.DateAuthorized,  // Date the 
+                Mou_Link = prog.MouLink,      // URL link to actual MOU packet
+                Mou_Creation_Date = prog.MouCreationDate,
+                Mou_Expiration_Date = prog.MouExpirationDate,
                 Nationwide = prog.Nationwide,
                 Online = prog.Online,
-                Participation_Populations = prog.Participation_Populations, // Might want enum for this
+                Participation_Populations = prog.ParticipationPopulations, // Might want enum for this
                 //Delivery_Method = prog.Delivery_Method,
-                States_Of_Program_Delivery = prog.States_Of_Program_Delivery,
-                Program_Duration = prog.Program_Duration,
-                Support_Cohorts = prog.Support_Cohorts,
-                Opportunity_Type = prog.Opportunity_Type,
-                Job_Family = prog.Job_Family,
-                Services_Supported = prog.Services_Supported,
-                Enrollment_Dates = prog.Enrollment_Dates,
-                Date_Created = prog.Date_Created, // Date program was created in system
-                Date_Updated = prog.Date_Updated, // Date program was last edited/updated in the system
-                Created_By = prog.Created_By,
-                Updated_By = prog.Updated_By,
-                Program_Url = prog.Program_Url,
-                Program_Status = prog.Program_Status, // 0 is disabled, 1 is enabled
-                Admin_Poc_First_Name = prog.Admin_Poc_First_Name,
-                Admin_Poc_Last_Name = prog.Admin_Poc_Last_Name,
-                Admin_Poc_Email = prog.Admin_Poc_Email,
-                Admin_Poc_Phone = prog.Admin_Poc_Phone,
-                Public_Poc_Name = prog.Public_Poc_Name,
-                Public_Poc_Email = prog.Public_Poc_Email,
+                States_Of_Program_Delivery = prog.StatesOfProgramDelivery,
+                Program_Duration = prog.ProgramDuration,
+                Support_Cohorts = prog.SupportCohorts,
+                Opportunity_Type = prog.OpportunityType,
+                Job_Family = prog.JobFamily,
+                Services_Supported = prog.ServicesSupported,
+                Enrollment_Dates = prog.EnrollmentDates,
+                Date_Created = prog.DateCreated, // Date program was created in system
+                Date_Updated = prog.DateUpdated, // Date program was last edited/updated in the system
+                Created_By = prog.CreatedBy,
+                Updated_By = prog.UpdatedBy,
+                Program_Url = prog.ProgramUrl,
+                Program_Status = prog.ProgramStatus, // 0 is disabled, 1 is enabled
+                Admin_Poc_First_Name = prog.AdminPocFirstName,
+                Admin_Poc_Last_Name = prog.AdminPocLastName,
+                Admin_Poc_Email = prog.AdminPocEmail,
+                Admin_Poc_Phone = prog.AdminPocPhone,
+                Public_Poc_Name = prog.PublicPocName,
+                Public_Poc_Email = prog.PublicPocEmail,
                 Notes = prog.Notes,
-                For_Spouses = prog.For_Spouses,
+                For_Spouses = prog.ForSpouses,
                 Pending_Fields = new List<string>(),
                 Populations_List = selectedPops,
                 Job_Family_List = selectedJfs,
@@ -2115,11 +2115,11 @@ namespace SkillBridge.CMS.Controllers
             bool DeliveryMethodChanged = CheckForDeliveryMethodChange(model, origProg);
 
             // Check if any of the fields that require OSD approval are changed
-            if (model.Program_Name != origProg.Program_Name ||
+            if (model.Program_Name != origProg.ProgramName ||
                 DeliveryMethodChanged == true ||
                //model.Delivery_Method != origProg.Delivery_Method ||
-               model.Program_Duration != origProg.Program_Duration ||
-               model.Opportunity_Type != origProg.Opportunity_Type ||
+               model.Program_Duration != origProg.ProgramDuration ||
+               model.Opportunity_Type != origProg.OpportunityType ||
                model.Online != origProg.Online)
             {
                 required = true;
@@ -2132,7 +2132,7 @@ namespace SkillBridge.CMS.Controllers
         {
             ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(progId));
 
-            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.OrganizationId);
 
             if(org.Is_Active)
             {

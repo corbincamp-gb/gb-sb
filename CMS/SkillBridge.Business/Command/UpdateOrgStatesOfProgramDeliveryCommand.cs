@@ -14,41 +14,30 @@ namespace SkillBridge.Business.Command
         public void Execute(OrganizationModel org, ApplicationDbContext _db)
         {
             // Get all programs from org
-            var progs = _db.Programs.Where(e => e.Organization_Id == org.Id).ToList();
+            var progs = _db.Programs.Where(e => e.OrganizationId == org.Id).ToList();
 
-            List<string> states = new List<string>();
+            var states = new List<string>();
 
 
             foreach (var p in progs)
             {
-                string progStates = "";
-                progStates = p.States_Of_Program_Delivery;
+                var progStates = "";
+                progStates = p.StatesOfProgramDelivery;
                 Console.WriteLine("progStates: " + progStates);
 
                 // Split out each programs states of program delivery, and add them to the states array
                 progStates = progStates.Replace(" ", "");
-                string[] splitStates = progStates.Split(",");
+                var splitStates = progStates.Split(",");
 
-                foreach (string s in splitStates)
+                foreach (var s in splitStates)
                 {
-                    if (s != "" && s != " ")
+                    if (s == "" || s == " ") continue;
+                    Console.WriteLine("s in splitstates: " + s);
+                    var found = states.Any(st => s == st);
+
+                    if (found == false)
                     {
-                        Console.WriteLine("s in splitstates: " + s);
-                        bool found = false;
-
-                        foreach (string st in states)
-                        {
-                            if (s == st)
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-
-                        if (found == false)
-                        {
-                            states.Add(s);
-                        }
+                        states.Add(s);
                     }
                 }
             }
@@ -57,10 +46,10 @@ namespace SkillBridge.Business.Command
             states.Sort();
 
             // Go through and remove duplicate entries
-            int count = 0;
-            string orgStates = "";
+            var count = 0;
+            var orgStates = "";
 
-            foreach (string s in states)
+            foreach (var s in states)
             {
                 Console.WriteLine("Checking state s: " + s);
 

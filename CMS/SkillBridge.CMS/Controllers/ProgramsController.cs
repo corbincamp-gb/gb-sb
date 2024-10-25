@@ -61,10 +61,10 @@ namespace SkillBridge.CMS.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateProgram()
         {
-            List<OrganizationModel> orgs = new List<OrganizationModel>();
+            var orgs = new List<OrganizationModel>();
 
             // Populate org and program lists
-            foreach (OrganizationModel org in _db.Organizations)
+            foreach (var org in _db.Organizations)
             {
                 orgs.Add(org);
             };
@@ -75,10 +75,10 @@ namespace SkillBridge.CMS.Controllers
             ViewBag.Orgs = orgs;
 
             // Participation Population Dropdown
-            List<ParticipationPopulation> pops = new List<ParticipationPopulation>();
+            var pops = new List<ParticipationPopulation>();
 
             // Populate org and program lists
-            foreach (ParticipationPopulation pop in _db.ParticipationPopulations)
+            foreach (var pop in _db.ParticipationPopulations)
             {
                 pops.Add(pop);
             };
@@ -88,9 +88,9 @@ namespace SkillBridge.CMS.Controllers
             ViewBag.Participation_Population_List = pops;
 
             // Job Family dropdown
-            List<JobFamily> jfs = new List<JobFamily>();
+            var jfs = new List<JobFamily>();
 
-            foreach (JobFamily jf in _db.JobFamilies)
+            foreach (var jf in _db.JobFamilies)
             {
                 jfs.Add(jf);
             };
@@ -100,10 +100,10 @@ namespace SkillBridge.CMS.Controllers
             ViewBag.Job_Family_List = jfs;
 
             // Services Supported dropdown
-            List<MilitaryBranchModel> ss = new List<MilitaryBranchModel>();
+            var ss = new List<MilitaryBranchModel>();
             Console.WriteLine("should be looking at services");
 
-            foreach (MilitaryBranchModel s in _db.MilitaryBranches)
+            foreach (var s in _db.MilitaryBranches)
             {
                 Console.WriteLine("s: " + s);
                 ss.Add(s);
@@ -114,10 +114,10 @@ namespace SkillBridge.CMS.Controllers
             ViewBag.Services_Supported_List = ss;
 
             // Delivery Method dropdown
-            List<DeliveryMethod> dm = new List<DeliveryMethod>();
+            var dm = new List<DeliveryMethod>();
             Console.WriteLine("should be looking at delivery method");
 
-            foreach (DeliveryMethod m in _db.DeliveryMethods)
+            foreach (var m in _db.DeliveryMethods)
             {
                 Console.WriteLine("m: " + m);
                 dm.Add(m);
@@ -133,7 +133,7 @@ namespace SkillBridge.CMS.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProgram(CreateProgramViewModel model)
         {
-            string userName = HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity.Name;
 
             var org = _db.Organizations.FirstOrDefault(e => e.Id == model.Organization_Id);
             var mou = _db.Mous.FirstOrDefault(e => e.Id == org.Mou_Id);
@@ -195,7 +195,7 @@ namespace SkillBridge.CMS.Controllers
             {
                 try
                 {
-                    PendingProgramAdditionModel prog = new PendingProgramAdditionModel
+                    var prog = new PendingProgramAdditionModel
                     {
                         Program_Name = GlobalFunctions.RemoveSpecialCharacters(model.Program_Name),
                         Program_Status = model.Program_Status,
@@ -285,11 +285,11 @@ namespace SkillBridge.CMS.Controllers
                             Console.WriteLine("Posted program has participation populations of: " + model.Populations_List);
                             Console.WriteLine("Posted program has participation populations count of: " + model.Populations_List.Count);
 
-                            foreach (int p in model.Populations_List)
+                            foreach (var p in model.Populations_List)
                             {
                                 Console.WriteLine("adding population to program: " + p);
 
-                                PendingProgramAdditionParticipationPopulation pp = new PendingProgramAdditionParticipationPopulation
+                                var pp = new PendingProgramAdditionParticipationPopulation
                                 {
                                     Pending_Program_Id = prog.Id,
                                     Participation_Population_Id = p
@@ -305,11 +305,11 @@ namespace SkillBridge.CMS.Controllers
                             Console.WriteLine("Posted program has job family of: " + model.Job_Family_List);
                             Console.WriteLine("Posted program has job family count of: " + model.Job_Family_List.Count);
 
-                            foreach (int j in model.Job_Family_List)
+                            foreach (var j in model.Job_Family_List)
                             {
                                 Console.WriteLine("adding job family to program: " + j);
 
-                                PendingProgramAdditionJobFamily jf = new PendingProgramAdditionJobFamily
+                                var jf = new PendingProgramAdditionJobFamily
                                 {
                                     Pending_Program_Id = prog.Id,
                                     Job_Family_Id = j
@@ -325,11 +325,11 @@ namespace SkillBridge.CMS.Controllers
                             Console.WriteLine("Posted program has service of: " + model.Services_Supported_List);
                             Console.WriteLine("Posted program has service count of: " + model.Services_Supported_List.Count);
 
-                            foreach (int s in model.Services_Supported_List)
+                            foreach (var s in model.Services_Supported_List)
                             {
                                 Console.WriteLine("adding service to program: " + s);
 
-                                PendingProgramAdditionService ps = new PendingProgramAdditionService
+                                var ps = new PendingProgramAdditionService
                                 {
                                     Pending_Program_Id = prog.Id,
                                     Service_Id = s
@@ -345,11 +345,11 @@ namespace SkillBridge.CMS.Controllers
                             Console.WriteLine("Posted program has delivery method of: " + model.Delivery_Method_List);
                             Console.WriteLine("Posted program has delivery method count of: " + model.Delivery_Method_List.Count);
 
-                            foreach (int m in model.Delivery_Method_List)
+                            foreach (var m in model.Delivery_Method_List)
                             {
                                 Console.WriteLine("adding delivery method to program: " + m);
 
-                                PendingProgramAdditionDeliveryMethod dm = new PendingProgramAdditionDeliveryMethod
+                                var dm = new PendingProgramAdditionDeliveryMethod
                                 {
                                     Pending_Program_Id = prog.Id,
                                     Delivery_Method_Id = m
@@ -392,7 +392,7 @@ namespace SkillBridge.CMS.Controllers
 
         public string GetProgramServiceNameFromId(int id)
         {
-            string name = "";
+            var name = "";
 
             var service = _db.MilitaryBranches.FirstOrDefault(e => e.Id == id);
 
@@ -406,19 +406,19 @@ namespace SkillBridge.CMS.Controllers
 
         private string GetServiceListForAdditionalProg(PendingProgramAdditionModel prog)
         {
-            string services = "";
+            var services = "";
 
             var ps = _db.PendingProgramAdditionsService.Where(x => x.Pending_Program_Id == prog.Id).ToList();
 
             Console.WriteLine("==ps.Count for " + prog.Program_Name + " = " + ps.Count);
 
-            int count = ps.Count;
-            int i = 0;
+            var count = ps.Count;
+            var i = 0;
 
             foreach (var s in ps)
             {
                 Console.WriteLine("s: " + s.Service_Id);
-                MilitaryBranchModel service = _db.MilitaryBranches.FirstOrDefault(x => x.Id == s.Service_Id);
+                var service = _db.MilitaryBranches.FirstOrDefault(x => x.Id == s.Service_Id);
 
                 if (count == 1)
                 {
@@ -522,19 +522,19 @@ namespace SkillBridge.CMS.Controllers
 
         private string GetServiceListForProg(ProgramModel prog)
         {
-            string services = "";
+            var services = "";
 
             var ps = _db.ProgramService.Where(x => x.Program_Id == prog.Id).ToList();
 
-            Console.WriteLine("==ps.Count for " + prog.Program_Name + " = " + ps.Count);
+            Console.WriteLine("==ps.Count for " + prog.ProgramName + " = " + ps.Count);
 
-            int count = ps.Count;
-            int i = 0;
+            var count = ps.Count;
+            var i = 0;
 
             foreach (var s in ps)
             {
                 Console.WriteLine("s: " + s.Service_Id);
-                MilitaryBranchModel service = _db.MilitaryBranches.FirstOrDefault(x => x.Id == s.Service_Id);
+                var service = _db.MilitaryBranches.FirstOrDefault(x => x.Id == s.Service_Id);
 
                 if (count == 1)
                 {
@@ -638,19 +638,19 @@ namespace SkillBridge.CMS.Controllers
 
         private string GetJobFamiliesListForAdditionalProg(PendingProgramAdditionModel prog)
         {
-            string jfs = "";
+            var jfs = "";
 
             var pjf = _db.PendingProgramAdditionsJobFamily.Where(x => x.Pending_Program_Id == prog.Id).ToList();
 
             //Console.WriteLine("==pjf.Count for " + prog.Program_Name + " = " + pjf.Count);
 
-            int count = pjf.Count;
-            int i = 0;
+            var count = pjf.Count;
+            var i = 0;
 
             foreach (var jf in pjf)
             {
                 Console.WriteLine("jf: " + jf.Job_Family_Id);
-                JobFamily fam = _db.JobFamilies.FirstOrDefault(x => x.Id == jf.Job_Family_Id);
+                var fam = _db.JobFamilies.FirstOrDefault(x => x.Id == jf.Job_Family_Id);
 
                 if (count == 1)
                 {
@@ -733,19 +733,19 @@ namespace SkillBridge.CMS.Controllers
 
         private string GetJobFamiliesListForProg(ProgramModel prog)
         {
-            string jfs = "";
+            var jfs = "";
 
             var pjf = _db.ProgramJobFamily.Where(x => x.Program_Id == prog.Id).ToList();
 
             //Console.WriteLine("==pjf.Count for " + prog.Program_Name + " = " + pjf.Count);
 
-            int count = pjf.Count;
-            int i = 0;
+            var count = pjf.Count;
+            var i = 0;
 
             foreach (var jf in pjf)
             {
                 Console.WriteLine("jf: " + jf.Job_Family_Id);
-                JobFamily fam = _db.JobFamilies.FirstOrDefault(x => x.Id == jf.Job_Family_Id);
+                var fam = _db.JobFamilies.FirstOrDefault(x => x.Id == jf.Job_Family_Id);
 
                 if (count == 1)
                 {
@@ -828,19 +828,19 @@ namespace SkillBridge.CMS.Controllers
 
         private string GetParticipationPopulationStringFromProgram(ProgramModel prog)
         {
-            string pps = "";
+            var pps = "";
 
             var ppps = _db.ProgramParticipationPopulation.Where(x => x.Program_Id == prog.Id).ToList();
 
             //Console.WriteLine("==pjf.Count for " + prog.Program_Name + " = " + pjf.Count);
 
-            int count = ppps.Count;
-            int i = 0;
+            var count = ppps.Count;
+            var i = 0;
 
             foreach (var pp in ppps)
             {
                 Console.WriteLine("pp: " + pp.Participation_Population_Id);
-                ParticipationPopulation p = _db.ParticipationPopulations.FirstOrDefault(x => x.Id == pp.Participation_Population_Id);
+                var p = _db.ParticipationPopulations.FirstOrDefault(x => x.Id == pp.Participation_Population_Id);
 
                 if (count == 1)
                 {
@@ -926,20 +926,20 @@ namespace SkillBridge.CMS.Controllers
 
         private string GetParticipationPopulationStringFromAdditionalProgram(PendingProgramAdditionModel prog)
         {
-            string pps = "";
+            var pps = "";
 
             var ppps = _db.PendingProgramAdditionsParticipationPopulation.Where(x => x.Pending_Program_Id == prog.Id).ToList();
 
 
             //Console.WriteLine("==pjf.Count for " + prog.Program_Name + " = " + pjf.Count);
 
-            int count = ppps.Count;
-            int i = 0;
+            var count = ppps.Count;
+            var i = 0;
 
             foreach (var pp in ppps)
             {
                 Console.WriteLine("pp: " + pp.Participation_Population_Id);
-                ParticipationPopulation p = _db.ParticipationPopulations.FirstOrDefault(x => x.Id == pp.Participation_Population_Id);
+                var p = _db.ParticipationPopulations.FirstOrDefault(x => x.Id == pp.Participation_Population_Id);
 
                 if (count == 1)
                 {
@@ -1033,7 +1033,7 @@ namespace SkillBridge.CMS.Controllers
         [HttpGet]
         public IActionResult ListProgramsServerSide()
         {
-            List<ListProgramModel> model = new List<ListProgramModel>();
+            var model = new List<ListProgramModel>();
             return View(model);
         }
 
@@ -1042,7 +1042,7 @@ namespace SkillBridge.CMS.Controllers
         public async Task<IActionResult> EditProgram(string id, bool edit)
         {
             // Find any pending changes for this Program
-            PendingProgramChangeModel pendingChange = await _db.PendingProgramChanges.FirstOrDefaultAsync(e => e.Program_Id == int.Parse(id) && e.Pending_Change_Status == 0);
+            var pendingChange = await _db.PendingProgramChanges.FirstOrDefaultAsync(e => e.Program_Id == int.Parse(id) && e.Pending_Change_Status == 0);
 
             // Check for pending change, if it exists, redirect analyst user to the pending change instead
             if (pendingChange != null)
@@ -1052,9 +1052,9 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Populate Dropdown info for Participation Population Dropdown
-            List<ParticipationPopulation> pops = new List<ParticipationPopulation>();
+            var pops = new List<ParticipationPopulation>();
 
-            foreach (ParticipationPopulation pop in _db.ParticipationPopulations)
+            foreach (var pop in _db.ParticipationPopulations)
             {
                 pops.Add(pop);
             };
@@ -1064,20 +1064,20 @@ namespace SkillBridge.CMS.Controllers
             ViewBag.Participation_Population_List = pops;
 
             // Populate selected Participation Populations
-            List<ProgramParticipationPopulation> popsList = await _db.ProgramParticipationPopulation.Where(e => e.Program_Id == int.Parse(id)).ToListAsync();
+            var popsList = await _db.ProgramParticipationPopulation.Where(e => e.Program_Id == int.Parse(id)).ToListAsync();
 
-            List<int> selectedPops = new List<int>();
+            var selectedPops = new List<int>();
 
-            foreach (ProgramParticipationPopulation p in popsList)
+            foreach (var p in popsList)
             {
                 selectedPops.Add(p.Participation_Population_Id);
                 Console.WriteLine("Adding participation population to selected pops w id: " + p.Participation_Population_Id);
             }
 
             // Populate Dropdown info for Job Family Dropdown
-            List<JobFamily> jfs = new List<JobFamily>();
+            var jfs = new List<JobFamily>();
 
-            foreach (JobFamily jf in _db.JobFamilies)
+            foreach (var jf in _db.JobFamilies)
             {
                 jfs.Add(jf);
             };
@@ -1088,20 +1088,20 @@ namespace SkillBridge.CMS.Controllers
 
             // Populate selected Job Family
 
-            List<ProgramJobFamily> jfsList = await _db.ProgramJobFamily.Where(e => e.Program_Id == int.Parse(id)).ToListAsync();
+            var jfsList = await _db.ProgramJobFamily.Where(e => e.Program_Id == int.Parse(id)).ToListAsync();
 
-            List<int> selectedJfs = new List<int>();
+            var selectedJfs = new List<int>();
 
-            foreach (ProgramJobFamily j in jfsList)
+            foreach (var j in jfsList)
             {
                 selectedJfs.Add(j.Job_Family_Id);
                 Console.WriteLine("Adding job family to selected jfs w id: " + j.Job_Family_Id);
             }
 
             // Populate Dropdown info for Service Dropdown
-            List<MilitaryBranchModel> ss = new List<MilitaryBranchModel>();
+            var ss = new List<MilitaryBranchModel>();
 
-            foreach (MilitaryBranchModel s in _db.MilitaryBranches)
+            foreach (var s in _db.MilitaryBranches)
             {
                 ss.Add(s);
             };
@@ -1112,20 +1112,20 @@ namespace SkillBridge.CMS.Controllers
 
             // Populate selected Services
 
-            List<ProgramService> ssList = await _db.ProgramService.Where(e => e.Program_Id == int.Parse(id)).ToListAsync();
+            var ssList = await _db.ProgramService.Where(e => e.Program_Id == int.Parse(id)).ToListAsync();
 
-            List<int> selectedSs = new List<int>();
+            var selectedSs = new List<int>();
 
-            foreach (ProgramService s in ssList)
+            foreach (var s in ssList)
             {
                 selectedSs.Add(s.Service_Id);
                 Console.WriteLine("Adding service to selected ss w id: " + s.Service_Id);
             }
 
             // Populate Dropdown info for Delivery Method Dropdown
-            List<DeliveryMethod> dms = new List<DeliveryMethod>();
+            var dms = new List<DeliveryMethod>();
 
-            foreach (DeliveryMethod dm in await _db.DeliveryMethods.ToListAsync())
+            foreach (var dm in await _db.DeliveryMethods.ToListAsync())
             {
                 dms.Add(dm);
             };
@@ -1136,11 +1136,11 @@ namespace SkillBridge.CMS.Controllers
 
             // Populate selected Delivery Method
 
-            List<ProgramDeliveryMethod> dmsList = await _db.ProgramDeliveryMethod.Where(e => e.Program_Id == int.Parse(id)).ToListAsync();
+            var dmsList = await _db.ProgramDeliveryMethod.Where(e => e.Program_Id == int.Parse(id)).ToListAsync();
 
-            List<int> selectedDms = new List<int>();
+            var selectedDms = new List<int>();
 
-            foreach (ProgramDeliveryMethod m in dmsList)
+            foreach (var m in dmsList)
             {
                 selectedDms.Add(m.Delivery_Method_Id);
                 Console.WriteLine("Adding delivery method to selected dms w id: " + m.Delivery_Method_Id);
@@ -1150,9 +1150,9 @@ namespace SkillBridge.CMS.Controllers
             //Populations_List = selectedPops;
 
             // Find the existing Program in the current database
-            ProgramModel prog = await _db.Programs.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
+            var prog = await _db.Programs.FirstOrDefaultAsync(e => e.Id == int.Parse(id));
 
-            OrganizationModel org = await _db.Organizations.FirstOrDefaultAsync(e => e.Id == prog.Organization_Id);
+            var org = await _db.Organizations.FirstOrDefaultAsync(e => e.Id == prog.OrganizationId);
 
             if (org.Is_Active == false)
             {
@@ -1175,50 +1175,50 @@ namespace SkillBridge.CMS.Controllers
             var model = new EditProgramModel
             {
                 Id = prog.Id.ToString(),
-                Program_Name = prog.Program_Name,
-                Is_Active = prog.Is_Active,
-                Organization_Name = prog.Organization_Name,
-                Organization_Id = prog.Organization_Id,
+                Program_Name = prog.ProgramName,
+                Is_Active = prog.IsActive,
+                Organization_Name = prog.OrganizationName,
+                Organization_Id = prog.OrganizationId,
                 Program_Id = prog.Id,
-                Lhn_Intake_Ticket_Id = prog.Lhn_Intake_Ticket_Id,  // LHN Intake Ticket Number
-                Has_Intake = prog.Has_Intake,        // Do we have a completed QuestionPro intake form from them
-                Intake_Form_Version = prog.Intake_Form_Version,  // Which version of the QuestionPro intake form did they fill out
-                Qp_Intake_Submission_Id = prog.Qp_Intake_Submission_Id, // The ID of the QuestionPro intake form submission
-                Location_Details_Available = prog.Location_Details_Available, // From col O of master spreadsheet
-                Has_Consent = prog.Has_Consent,
-                Qp_Location_Submission_Id = prog.Qp_Location_Submission_Id,
-                Lhn_Location_Ticket_Id = prog.Lhn_Location_Ticket_Id,
-                Has_Multiple_Locations = prog.Has_Multiple_Locations,
-                Reporting_Form_2020 = prog.Reporting_Form_2020,
-                Date_Authorized = prog.Date_Authorized,  // Date the 
-                Mou_Link = prog.Mou_Link,      // URL link to actual MOU packet
-                Mou_Creation_Date = prog.Mou_Creation_Date,
-                Mou_Expiration_Date = prog.Mou_Expiration_Date,
+                Lhn_Intake_Ticket_Id = prog.LhnIntakeTicketId,  // LHN Intake Ticket Number
+                Has_Intake = prog.HasIntake,        // Do we have a completed QuestionPro intake form from them
+                Intake_Form_Version = prog.IntakeFormVersion,  // Which version of the QuestionPro intake form did they fill out
+                Qp_Intake_Submission_Id = prog.QpIntakeSubmissionId, // The ID of the QuestionPro intake form submission
+                Location_Details_Available = prog.LocationDetailsAvailable, // From col O of master spreadsheet
+                Has_Consent = prog.HasConsent,
+                Qp_Location_Submission_Id = prog.QpLocationSubmissionId,
+                Lhn_Location_Ticket_Id = prog.LhnLocationTicketId,
+                Has_Multiple_Locations = prog.HasMultipleLocations,
+                Reporting_Form_2020 = prog.ReportingForm2020,
+                Date_Authorized = prog.DateAuthorized,  // Date the 
+                Mou_Link = prog.MouLink,      // URL link to actual MOU packet
+                Mou_Creation_Date = prog.MouCreationDate,
+                Mou_Expiration_Date = prog.MouExpirationDate,
                 Nationwide = prog.Nationwide,
                 Online = prog.Online,
-                Participation_Populations = prog.Participation_Populations, // Might want enum for this
+                Participation_Populations = prog.ParticipationPopulations, // Might want enum for this
                 //Delivery_Method = prog.Delivery_Method,
-                States_Of_Program_Delivery = prog.States_Of_Program_Delivery,
-                Program_Duration = prog.Program_Duration,
-                Support_Cohorts = prog.Support_Cohorts,
-                Opportunity_Type = prog.Opportunity_Type,
-                Job_Family = prog.Job_Family,
-                Services_Supported = prog.Services_Supported,
-                Enrollment_Dates = prog.Enrollment_Dates,
-                Date_Created = prog.Date_Created, // Date program was created in system
-                Date_Updated = prog.Date_Updated, // Date program was last edited/updated in the system
-                Created_By = prog.Created_By,
-                Updated_By = prog.Updated_By,
-                Program_Url = prog.Program_Url,
-                Program_Status = prog.Program_Status, // 0 is disabled, 1 is enabled
-                Admin_Poc_First_Name = prog.Admin_Poc_First_Name,
-                Admin_Poc_Last_Name = prog.Admin_Poc_Last_Name,
-                Admin_Poc_Email = prog.Admin_Poc_Email,
-                Admin_Poc_Phone = prog.Admin_Poc_Phone,
-                Public_Poc_Name = prog.Public_Poc_Name,
-                Public_Poc_Email = prog.Public_Poc_Email,
+                States_Of_Program_Delivery = prog.StatesOfProgramDelivery,
+                Program_Duration = prog.ProgramDuration,
+                Support_Cohorts = prog.SupportCohorts,
+                Opportunity_Type = prog.OpportunityType,
+                Job_Family = prog.JobFamily,
+                Services_Supported = prog.ServicesSupported,
+                Enrollment_Dates = prog.EnrollmentDates,
+                Date_Created = prog.DateCreated, // Date program was created in system
+                Date_Updated = prog.DateUpdated, // Date program was last edited/updated in the system
+                Created_By = prog.CreatedBy,
+                Updated_By = prog.UpdatedBy,
+                Program_Url = prog.ProgramUrl,
+                Program_Status = prog.ProgramStatus, // 0 is disabled, 1 is enabled
+                Admin_Poc_First_Name = prog.AdminPocFirstName,
+                Admin_Poc_Last_Name = prog.AdminPocLastName,
+                Admin_Poc_Email = prog.AdminPocEmail,
+                Admin_Poc_Phone = prog.AdminPocPhone,
+                Public_Poc_Name = prog.PublicPocName,
+                Public_Poc_Email = prog.PublicPocEmail,
                 Notes = prog.Notes,
-                For_Spouses = prog.For_Spouses,
+                For_Spouses = prog.ForSpouses,
                 Pending_Fields = new List<string>(),
                 Populations_List = selectedPops,
                 Job_Family_List = selectedJfs,
@@ -1326,21 +1326,21 @@ namespace SkillBridge.CMS.Controllers
             if (model.Online != pendingChange.Online) { model.Online = pendingChange.Online; model.Pending_Fields.Add("Online"); }
 
             // Populate selected Participation Populations
-            List<PendingProgramParticipationPopulation> popsList = _db.PendingProgramParticipationPopulation.Where(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Program_Id == pendingChange.Id).ToList();
+            var popsList = _db.PendingProgramParticipationPopulation.Where(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Program_Id == pendingChange.Id).ToList();
 
-            List<int> selectedPops = new List<int>();
+            var selectedPops = new List<int>();
 
-            foreach (PendingProgramParticipationPopulation p in popsList)
+            foreach (var p in popsList)
             {
                 selectedPops.Add(p.Participation_Population_Id);
                 //Console.WriteLine("Adding pending participation population to selected pops w id: " + p.Participation_Population_Id);
             }
 
-            List<ProgramParticipationPopulation> oldPopsList = _db.ProgramParticipationPopulation.Where(e => e.Program_Id == int.Parse(model.Id)).ToList();
+            var oldPopsList = _db.ProgramParticipationPopulation.Where(e => e.Program_Id == int.Parse(model.Id)).ToList();
 
-            List<int> oldPops = new List<int>();
+            var oldPops = new List<int>();
 
-            foreach (ProgramParticipationPopulation p in oldPopsList)
+            foreach (var p in oldPopsList)
             {
                 oldPops.Add(p.Participation_Population_Id);
                 //Console.WriteLine("Adding pending participation population to selected pops w id: " + p.Participation_Population_Id);
@@ -1351,17 +1351,17 @@ namespace SkillBridge.CMS.Controllers
             selectedPops.Sort();
             oldPops.Sort();
 
-            List<int> dups = selectedPops.Intersect(oldPops).ToList();
-            List<int> distinct = selectedPops.Except(oldPops).ToList();
+            var dups = selectedPops.Intersect(oldPops).ToList();
+            var distinct = selectedPops.Except(oldPops).ToList();
 
             //Console.WriteLine("distinct.count in analystController for PP: " + distinct.Count);
 
-            foreach (int i in dups)
+            foreach (var i in dups)
             {
                 //Console.WriteLine("duplicate item: " + i);
             }
 
-            foreach (int j in distinct)
+            foreach (var j in distinct)
             {
                 //Console.WriteLine("distinct item: " + j);
             }
@@ -1383,21 +1383,21 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Populate selected Job Family
-            List<PendingProgramJobFamily> jfList = _db.PendingProgramJobFamily.Where(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Program_Id == pendingChange.Id).ToList();
+            var jfList = _db.PendingProgramJobFamily.Where(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Program_Id == pendingChange.Id).ToList();
 
-            List<int> selectedJfs = new List<int>();
+            var selectedJfs = new List<int>();
 
-            foreach (PendingProgramJobFamily j in jfList)
+            foreach (var j in jfList)
             {
                 selectedJfs.Add(j.Job_Family_Id);
                 //Console.WriteLine("Adding pending job family to selected jf w id: " + j.Job_Family_Id);
             }
 
-            List<ProgramJobFamily> oldJFList = _db.ProgramJobFamily.Where(e => e.Program_Id == int.Parse(model.Id)).ToList();
+            var oldJFList = _db.ProgramJobFamily.Where(e => e.Program_Id == int.Parse(model.Id)).ToList();
 
-            List<int> oldJFs = new List<int>();
+            var oldJFs = new List<int>();
 
-            foreach (ProgramJobFamily p in oldJFList)
+            foreach (var p in oldJFList)
             {
                 oldJFs.Add(p.Job_Family_Id);
                 //Console.WriteLine("Adding pending participation population to selected pops w id: " + p.Participation_Population_Id);
@@ -1411,9 +1411,9 @@ namespace SkillBridge.CMS.Controllers
             oldJFs.Sort();
 
             // Duplicate vals
-            List<int> dups2 = selectedJfs.Intersect(oldJFs).ToList();
+            var dups2 = selectedJfs.Intersect(oldJFs).ToList();
             // Distinct vals
-            List<int> distinct2 = selectedJfs.Except(oldJFs).ToList();
+            var distinct2 = selectedJfs.Except(oldJFs).ToList();
 
             //Console.WriteLine("distinct2.count in analystController for JF: " + distinct2.Count);
 
@@ -1434,21 +1434,21 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Populate selected Services Selected
-            List<PendingProgramService> ssList = _db.PendingProgramService.Where(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Program_Id == pendingChange.Id).ToList();
+            var ssList = _db.PendingProgramService.Where(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Program_Id == pendingChange.Id).ToList();
 
-            List<int> selectedSs = new List<int>();
+            var selectedSs = new List<int>();
 
-            foreach (PendingProgramService s in ssList)
+            foreach (var s in ssList)
             {
                 selectedSs.Add(s.Service_Id);
                 //Console.WriteLine("Adding pending service to selected s w id: " + s.Service_Id);
             }
 
-            List<ProgramService> oldSsList = _db.ProgramService.Where(e => e.Program_Id == int.Parse(model.Id)).ToList();
+            var oldSsList = _db.ProgramService.Where(e => e.Program_Id == int.Parse(model.Id)).ToList();
 
-            List<int> oldSs = new List<int>();
+            var oldSs = new List<int>();
 
-            foreach (ProgramService p in oldSsList)
+            foreach (var p in oldSsList)
             {
                 oldSs.Add(p.Service_Id);
                 //Console.WriteLine("Adding pending service to selected pops w id: " + p.Service_Id);
@@ -1460,9 +1460,9 @@ namespace SkillBridge.CMS.Controllers
             oldSs.Sort();
 
             // Duplicate vals
-            List<int> dups3 = selectedSs.Intersect(oldSs).ToList();
+            var dups3 = selectedSs.Intersect(oldSs).ToList();
             // Distinct vals
-            List<int> distinct3 = selectedSs.Except(oldSs).ToList();
+            var distinct3 = selectedSs.Except(oldSs).ToList();
 
             //Console.WriteLine("distinct2.count in analystController for JF: " + distinct2.Count);
 
@@ -1483,21 +1483,21 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Populate selected Delivery Methods
-            List<PendingProgramDeliveryMethod> dmsList = _db.PendingProgramDeliveryMethod.Where(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Program_Id == pendingChange.Id).ToList();
+            var dmsList = _db.PendingProgramDeliveryMethod.Where(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Program_Id == pendingChange.Id).ToList();
 
-            List<int> selectedDms = new List<int>();
+            var selectedDms = new List<int>();
 
-            foreach (PendingProgramDeliveryMethod p in dmsList)
+            foreach (var p in dmsList)
             {
                 selectedDms.Add(p.Delivery_Method_Id);
                 //Console.WriteLine("Adding pending participation population to selected pops w id: " + p.Participation_Population_Id);
             }
 
-            List<ProgramDeliveryMethod> oldDmsList = _db.ProgramDeliveryMethod.Where(e => e.Program_Id == int.Parse(model.Id)).ToList();
+            var oldDmsList = _db.ProgramDeliveryMethod.Where(e => e.Program_Id == int.Parse(model.Id)).ToList();
 
-            List<int> oldDms = new List<int>();
+            var oldDms = new List<int>();
 
-            foreach (ProgramDeliveryMethod m in oldDmsList)
+            foreach (var m in oldDmsList)
             {
                 oldDms.Add(m.Delivery_Method_Id);
                 //Console.WriteLine("Adding pending participation population to selected pops w id: " + p.Participation_Population_Id);
@@ -1508,17 +1508,17 @@ namespace SkillBridge.CMS.Controllers
             selectedDms.Sort();
             oldDms.Sort();
 
-            List<int> dups4 = selectedDms.Intersect(oldDms).ToList();
-            List<int> distinct4 = selectedDms.Except(oldDms).ToList();
+            var dups4 = selectedDms.Intersect(oldDms).ToList();
+            var distinct4 = selectedDms.Except(oldDms).ToList();
 
             //Console.WriteLine("distinct.count in analystController for PP: " + distinct.Count);
 
-            foreach (int i in dups4)
+            foreach (var i in dups4)
             {
                 //Console.WriteLine("duplicate item: " + i);
             }
 
-            foreach (int j in distinct4)
+            foreach (var j in distinct4)
             {
                 //Console.WriteLine("distinct item: " + j);
             }
@@ -1653,22 +1653,22 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Get Original Program
-            ProgramModel origProg = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(model.Id));
+            var origProg = _db.Programs.FirstOrDefault(e => e.Id == int.Parse(model.Id));
 
             // Find any pending changes for this organization
-            PendingProgramChangeModel pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
+            var pendingChange = _db.PendingProgramChanges.FirstOrDefault(e => e.Program_Id == int.Parse(model.Id) && e.Pending_Change_Status == 0);
 
-            string userName = HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity.Name;
 
-            bool newForSpouses = false;
+            var newForSpouses = false;
 
             //string userName = HttpContext.User.Identity.Name;
 
-            bool updateEnabledFields = false;
-            bool updateOptimizationFields = false;
-            bool updateOnlineNationwideFields = false;
+            var updateEnabledFields = false;
+            var updateOptimizationFields = false;
+            var updateOnlineNationwideFields = false;
 
-            bool sendOSDEmailNotification = false;
+            var sendOSDEmailNotification = false;
 
             if (model == null)
             {
@@ -1677,9 +1677,9 @@ namespace SkillBridge.CMS.Controllers
             }
             else
             {
-                int numStatesFound = new NumberOfStatesInProgramQuery().Get(origProg, _db);
+                var numStatesFound = new NumberOfStatesInProgramQuery().Get(origProg, _db);
 
-                PendingProgramChangeModel prog = new PendingProgramChangeModel { };
+                var prog = new PendingProgramChangeModel { };
 
                 // If theres already a unresolved pending change, update it
                 if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
@@ -1805,7 +1805,7 @@ namespace SkillBridge.CMS.Controllers
 
                 if (model.Populations_List != null)
                 {
-                    foreach (int p in model.Populations_List)
+                    foreach (var p in model.Populations_List)
                     {
                         if (GetParticipationPopNameFromId(p).Equals("Military Spouses"))
                         {
@@ -1822,7 +1822,7 @@ namespace SkillBridge.CMS.Controllers
                 }
 
                 // Set optimization fields to update on child program/opportunity records if we have a name change
-                if (!String.Equals(origProg.Program_Name, model.Program_Name, StringComparison.Ordinal))
+                if (!String.Equals(origProg.ProgramName, model.Program_Name, StringComparison.Ordinal))
                 {
                     updateOptimizationFields = true;
                 }
@@ -1841,7 +1841,7 @@ namespace SkillBridge.CMS.Controllers
                 if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
                 {
                     // Remove existing pending changes for this dropdown before adding any
-                    List<PendingProgramParticipationPopulation> popsList = _db.PendingProgramParticipationPopulation.Where(e => e.Pending_Program_Id == pendingChange.Id).ToList();
+                    var popsList = _db.PendingProgramParticipationPopulation.Where(e => e.Pending_Program_Id == pendingChange.Id).ToList();
 
                     // If we have existing population items for this pending change, remove them first
                     if (popsList.Count > 0)
@@ -1862,7 +1862,7 @@ namespace SkillBridge.CMS.Controllers
                     if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
                     {
                         // Check each population type and add if it doesnt exist for this pending change
-                        foreach (int p in model.Populations_List)
+                        foreach (var p in model.Populations_List)
                         {
                             //PendingProgramParticipationPopulation existingPop = _db.PendingProgramParticipationPopulation.FirstOrDefault(e => e.Program_Id == pendingChange.Id && e.Participation_Population_Id == p);
 
@@ -1871,7 +1871,7 @@ namespace SkillBridge.CMS.Controllers
                             //{
                             //Console.WriteLine("adding population to pending program change: " + p);
 
-                            PendingProgramParticipationPopulation pp = new PendingProgramParticipationPopulation
+                            var pp = new PendingProgramParticipationPopulation
                             {
                                 Program_Id = pendingChange.Program_Id,
                                 Pending_Program_Id = pendingChange.Id,
@@ -1886,11 +1886,11 @@ namespace SkillBridge.CMS.Controllers
                     {
                         if (model.Populations_List != null)
                         {
-                            foreach (int p in model.Populations_List)
+                            foreach (var p in model.Populations_List)
                             {
                                 //Console.WriteLine("adding population to pending program change: " + p);
 
-                                PendingProgramParticipationPopulation pp = new PendingProgramParticipationPopulation
+                                var pp = new PendingProgramParticipationPopulation
                                 {
                                     Program_Id = prog.Program_Id,
                                     Pending_Program_Id = prog.Id,
@@ -1907,7 +1907,7 @@ namespace SkillBridge.CMS.Controllers
                 if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
                 {
                     // Remove existing pending changes for this dropdown before adding any
-                    List<PendingProgramJobFamily> jfsList = _db.PendingProgramJobFamily.Where(e => e.Pending_Program_Id == pendingChange.Id).ToList();
+                    var jfsList = _db.PendingProgramJobFamily.Where(e => e.Pending_Program_Id == pendingChange.Id).ToList();
 
                     // If we have existing population items for this pending change, remove them first
                     if (jfsList.Count > 0)
@@ -1928,7 +1928,7 @@ namespace SkillBridge.CMS.Controllers
                     if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
                     {
                         // Check each population type and add if it doesnt exist for this pending change
-                        foreach (int j in model.Job_Family_List)
+                        foreach (var j in model.Job_Family_List)
                         {
                             //PendingProgramParticipationPopulation existingPop = _db.PendingProgramParticipationPopulation.FirstOrDefault(e => e.Program_Id == pendingChange.Id && e.Participation_Population_Id == p);
 
@@ -1937,7 +1937,7 @@ namespace SkillBridge.CMS.Controllers
                             //{
                             //Console.WriteLine("adding jf to pending program change: " + j);
 
-                            PendingProgramJobFamily jf = new PendingProgramJobFamily
+                            var jf = new PendingProgramJobFamily
                             {
                                 Program_Id = pendingChange.Program_Id,
                                 Pending_Program_Id = pendingChange.Id,
@@ -1950,11 +1950,11 @@ namespace SkillBridge.CMS.Controllers
                     }
                     else
                     {
-                        foreach (int j in model.Job_Family_List)
+                        foreach (var j in model.Job_Family_List)
                         {
                             //Console.WriteLine("adding jf to pending program change: " + j);
 
-                            PendingProgramJobFamily jf = new PendingProgramJobFamily
+                            var jf = new PendingProgramJobFamily
                             {
                                 Program_Id = prog.Program_Id,
                                 Pending_Program_Id = prog.Id,
@@ -1970,7 +1970,7 @@ namespace SkillBridge.CMS.Controllers
                 if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
                 {
                     // Remove existing pending changes for this dropdown before adding any
-                    List<PendingProgramService> ssList = _db.PendingProgramService.Where(e => e.Pending_Program_Id == pendingChange.Id).ToList();
+                    var ssList = _db.PendingProgramService.Where(e => e.Pending_Program_Id == pendingChange.Id).ToList();
 
                     // If we have existing population items for this pending change, remove them first
                     if (ssList.Count > 0)
@@ -1991,7 +1991,7 @@ namespace SkillBridge.CMS.Controllers
                     if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
                     {
                         // Check each population type and add if it doesnt exist for this pending change
-                        foreach (int s in model.Services_Supported_List)
+                        foreach (var s in model.Services_Supported_List)
                         {
                             //PendingProgramParticipationPopulation existingPop = _db.PendingProgramParticipationPopulation.FirstOrDefault(e => e.Program_Id == pendingChange.Id && e.Participation_Population_Id == p);
 
@@ -2000,7 +2000,7 @@ namespace SkillBridge.CMS.Controllers
                             //{
                             Console.WriteLine("adding ss to pending program change: " + s);
 
-                            PendingProgramService ss = new PendingProgramService
+                            var ss = new PendingProgramService
                             {
                                 Program_Id = pendingChange.Program_Id,
                                 Pending_Program_Id = pendingChange.Id,
@@ -2013,11 +2013,11 @@ namespace SkillBridge.CMS.Controllers
                     }
                     else
                     {
-                        foreach (int j in model.Services_Supported_List)
+                        foreach (var j in model.Services_Supported_List)
                         {
                             Console.WriteLine("adding ss to pending program change: " + j);
 
-                            PendingProgramService s = new PendingProgramService
+                            var s = new PendingProgramService
                             {
                                 Program_Id = prog.Program_Id,
                                 Pending_Program_Id = prog.Id,
@@ -2033,7 +2033,7 @@ namespace SkillBridge.CMS.Controllers
                 if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
                 {
                     // Remove existing pending changes for this dropdown before adding any
-                    List<PendingProgramDeliveryMethod> dmsList = _db.PendingProgramDeliveryMethod.Where(e => e.Pending_Program_Id == pendingChange.Id).ToList();
+                    var dmsList = _db.PendingProgramDeliveryMethod.Where(e => e.Pending_Program_Id == pendingChange.Id).ToList();
 
                     // If we have existing population items for this pending change, remove them first
                     if (dmsList.Count > 0)
@@ -2054,7 +2054,7 @@ namespace SkillBridge.CMS.Controllers
                     if (pendingChange != null && pendingChange.Pending_Change_Status == 0)
                     {
                         // Check each population type and add if it doesnt exist for this pending change
-                        foreach (int m in model.Delivery_Method_List)
+                        foreach (var m in model.Delivery_Method_List)
                         {
                             //PendingProgramParticipationPopulation existingPop = _db.PendingProgramParticipationPopulation.FirstOrDefault(e => e.Program_Id == pendingChange.Id && e.Participation_Population_Id == p);
 
@@ -2063,7 +2063,7 @@ namespace SkillBridge.CMS.Controllers
                             //{
                             Console.WriteLine("adding delivery method to pending program change: " + m);
 
-                            PendingProgramDeliveryMethod dm = new PendingProgramDeliveryMethod
+                            var dm = new PendingProgramDeliveryMethod
                             {
                                 Program_Id = pendingChange.Program_Id,
                                 Pending_Program_Id = pendingChange.Id,
@@ -2078,11 +2078,11 @@ namespace SkillBridge.CMS.Controllers
                     {
                         if (model.Delivery_Method_List != null)
                         {
-                            foreach (int m in model.Delivery_Method_List)
+                            foreach (var m in model.Delivery_Method_List)
                             {
                                 Console.WriteLine("adding delivery method to pending program change: " + m);
 
-                                PendingProgramDeliveryMethod dm = new PendingProgramDeliveryMethod
+                                var dm = new PendingProgramDeliveryMethod
                                 {
                                     Program_Id = prog.Program_Id,
                                     Pending_Program_Id = prog.Id,
@@ -2101,13 +2101,13 @@ namespace SkillBridge.CMS.Controllers
 
                 if (result1 >= 1)
                 {
-                    int pendingId = pendingChange != null ? pendingChange.Id : prog.Id;
+                    var pendingId = pendingChange != null ? pendingChange.Id : prog.Id;
 
                     if (sendOSDEmailNotification)
                     {
-                        string currentHost = $"{Request.Host}";
-                        string notificationEmail = _configuration["OsdNotificationEmail"];
-                        string currentURI = $"{Request.Scheme}://{Request.Host}";
+                        var currentHost = $"{Request.Host}";
+                        var notificationEmail = _configuration["OsdNotificationEmail"];
+                        var currentURI = $"{Request.Scheme}://{Request.Host}";
                         // Send confirmation Email
                         await _emailSender.SendEmailAsync(notificationEmail, "Program Change Requires OSD Approval", "A recent program change requires OSD approval.<br/><a href='" + currentURI + "/Analyst/ReviewPendingProgramChange/" + pendingId + "?progId=" + origProg.Id + "'>Click here to review it</a>");
                     }
@@ -2427,7 +2427,7 @@ namespace SkillBridge.CMS.Controllers
 
         private int GetDeliveryMethodId(string dm)
         {
-            int newDeliveryMethod = -1;
+            var newDeliveryMethod = -1;
 
             if (dm == "In-person")
             {
@@ -2447,15 +2447,15 @@ namespace SkillBridge.CMS.Controllers
 
         private List<int> CheckForDeliveryMethodChange(List<int> dmsList, ProgramModel origProg)
         {
-            bool changed = false;
+            var changed = false;
 
-            List<ProgramDeliveryMethod> oldDmsList = _db.ProgramDeliveryMethod.Where(e => e.Program_Id == origProg.Id).ToList();
+            var oldDmsList = _db.ProgramDeliveryMethod.Where(e => e.Program_Id == origProg.Id).ToList();
 
-            List<int> selectedDms = new List<int>();
+            var selectedDms = new List<int>();
 
             if (dmsList != null)
             {
-                foreach (int p in dmsList)
+                foreach (var p in dmsList)
                 {
                     selectedDms.Add(p);
                     //Console.WriteLine("Adding pending participation population to selected pops w id: " + p.Participation_Population_Id);
@@ -2463,9 +2463,9 @@ namespace SkillBridge.CMS.Controllers
             }
 
 
-            List<int> oldDms = new List<int>();
+            var oldDms = new List<int>();
 
-            foreach (ProgramDeliveryMethod m in oldDmsList)
+            foreach (var m in oldDmsList)
             {
                 oldDms.Add(m.Delivery_Method_Id);
                 //Console.WriteLine("Adding pending participation population to selected pops w id: " + p.Participation_Population_Id);
@@ -2476,27 +2476,27 @@ namespace SkillBridge.CMS.Controllers
             selectedDms.Sort();
             oldDms.Sort();
 
-            foreach (int i in selectedDms)
+            foreach (var i in selectedDms)
             {
                 Console.WriteLine("selectedDms item: " + i);
             }
 
-            foreach (int i in oldDms)
+            foreach (var i in oldDms)
             {
                 Console.WriteLine("oldDms item: " + i);
             }
 
-            List<int> dups4 = selectedDms.Intersect(oldDms).ToList();
-            List<int> distinct4 = selectedDms.Except(oldDms).ToList();
+            var dups4 = selectedDms.Intersect(oldDms).ToList();
+            var distinct4 = selectedDms.Except(oldDms).ToList();
 
             //Console.WriteLine("distinct.count in analystController for PP: " + distinct.Count);
 
-            foreach (int i in dups4)
+            foreach (var i in dups4)
             {
                 Console.WriteLine("duplicate item: " + i);
             }
 
-            foreach (int j in distinct4)
+            foreach (var j in distinct4)
             {
                 Console.WriteLine("distinct item: " + j);
             }
@@ -2511,10 +2511,10 @@ namespace SkillBridge.CMS.Controllers
 
         private bool CheckForOSDApprovalNecessary(EditProgramModel model, ProgramModel origProg)
         {
-            bool required = false;
+            var required = false;
 
             var newDeliveryMethods = CheckForDeliveryMethodChange(model.Delivery_Method_List, origProg);
-            bool DeliveryMethodChanged = (model.Delivery_Method_List != null ? String.Join(",", model.Delivery_Method_List.OrderBy(o => o).ToList()) : String.Empty) != String.Join(",", newDeliveryMethods.OrderBy(o => o).ToList());
+            var DeliveryMethodChanged = (model.Delivery_Method_List != null ? String.Join(",", model.Delivery_Method_List.OrderBy(o => o).ToList()) : String.Empty) != String.Join(",", newDeliveryMethods.OrderBy(o => o).ToList());
 
             model.Delivery_Method_List = newDeliveryMethods;
 
@@ -2524,11 +2524,11 @@ namespace SkillBridge.CMS.Controllers
             }
 
             // Check if any of the fields that require OSD approval are changed
-            if (model.Program_Name != origProg.Program_Name ||
+            if (model.Program_Name != origProg.ProgramName ||
                 DeliveryMethodChanged == true ||
                //model.Delivery_Method != origProg.Delivery_Method || // null vs "0"
-               model.Program_Duration != origProg.Program_Duration ||
-               model.Opportunity_Type != origProg.Opportunity_Type ||
+               model.Program_Duration != origProg.ProgramDuration ||
+               model.Opportunity_Type != origProg.OpportunityType ||
                model.Online != origProg.Online)
             {
                 required = true;
@@ -2539,20 +2539,20 @@ namespace SkillBridge.CMS.Controllers
 
         private bool CheckForOSDApprovalNecessary(ProgramModel model, ProgramModel origProg)
         {
-            bool required = false;
+            var required = false;
 
             var oldDeliveryMethods = model.ProgramDeliveryMethods.Select(o => o.Delivery_Method_Id).ToList();
             var newDeliveryMethods = CheckForDeliveryMethodChange(oldDeliveryMethods, origProg);
-            bool DeliveryMethodChanged = oldDeliveryMethods != newDeliveryMethods;
+            var DeliveryMethodChanged = oldDeliveryMethods != newDeliveryMethods;
 
             model.ProgramDeliveryMethods = newDeliveryMethods.Select(o => new ProgramDeliveryMethod { Delivery_Method_Id = o }).ToList();
 
             // Check if any of the fields that require OSD approval are changed
-            if (model.Program_Name != origProg.Program_Name ||
+            if (model.ProgramName != origProg.ProgramName ||
                 DeliveryMethodChanged == true ||
                //model.Delivery_Method != origProg.Delivery_Method || // null vs "0"
-               model.Program_Duration != origProg.Program_Duration ||
-               model.Opportunity_Type != origProg.Opportunity_Type ||
+               model.ProgramDuration != origProg.ProgramDuration ||
+               model.OpportunityType != origProg.OpportunityType ||
                model.Online != origProg.Online)
             {
                 required = true;
@@ -2563,7 +2563,7 @@ namespace SkillBridge.CMS.Controllers
 
         public string GetParticipationPopNameFromId(int id)
         {
-            foreach (ParticipationPopulation pop in _db.ParticipationPopulations)
+            foreach (var pop in _db.ParticipationPopulations)
             {
                 if (id == pop.Id)
                 {
@@ -2584,9 +2584,9 @@ namespace SkillBridge.CMS.Controllers
 
         public bool CanPostEdit(int progId)
         {
-            ProgramModel prog = _db.Programs.FirstOrDefault(e => e.Id == progId);
+            var prog = _db.Programs.FirstOrDefault(e => e.Id == progId);
 
-            OrganizationModel org = _db.Organizations.FirstOrDefault(e => e.Id == prog.Organization_Id);
+            var org = _db.Organizations.FirstOrDefault(e => e.Id == prog.OrganizationId);
 
             if (org.Is_Active)
             {
@@ -2638,47 +2638,47 @@ namespace SkillBridge.CMS.Controllers
 
             try
             {
-                StringBuilder stringBuilder = new StringBuilder();
+                var stringBuilder = new StringBuilder();
 
                 stringBuilder.AppendLine("Id,Program_Name,Organization_Id,Lhn_Intake_Ticket_Id,Has_Intake,Intake_Form_Version,Qp_Intake_Submission_Id,Location_Details_Available,Has_Consent,Qp_Location_Submission_Id,Lhn_Location_Ticket_Id,Has_Multiple_Locations,Reporting_Form_2020,Date_Authorized,Mou_Link,Mou_Creation_Date,Mou_Expiration_Date,Nationwide,Online,Participation_Populations,Delivery_Method,States_Of_Program_Delivery,Program_Duration,Support_Cohorts,Opportunity_Type,Job_Family,Services_Supported,Enrollment_Dates,Date_Created,Date_Updated,Created_By,Updated_By,Program_Url,Program_Status,Admin_Poc_First_Name,Admin_Poc_Last_Name,Admin_Poc_Email,Admin_Poc_Phone,Public_Poc_Name,Public_Poc_Email,Notes,For_Spouses,Legacy_Program_Id,Legacy_Provider_Id");
 
-                foreach (ProgramModel prog in progs)
+                foreach (var prog in progs)
                 {
-                    string newProgramName = EscCommas(prog.Program_Name.Replace(System.Environment.NewLine, ""));
-                    string Lhn_Intake_Ticket_Id = EscCommas(prog.Lhn_Intake_Ticket_Id.Replace(System.Environment.NewLine, ""));
-                    string Intake_Form_Version = EscCommas(prog.Intake_Form_Version.Replace(System.Environment.NewLine, ""));
-                    string Qp_Intake_Submission_Id = EscCommas(prog.Qp_Intake_Submission_Id.Replace(System.Environment.NewLine, ""));
-                    string Qp_Location_Submission_Id = EscCommas(prog.Qp_Location_Submission_Id.Replace(System.Environment.NewLine, ""));
-                    string Lhn_Location_Ticket_Id = EscCommas(prog.Lhn_Location_Ticket_Id.Replace(System.Environment.NewLine, ""));
-                    string Participation_Populations = EscCommas(prog.Participation_Populations.Replace(System.Environment.NewLine, ""));
+                    var newProgramName = EscCommas(prog.ProgramName.Replace(System.Environment.NewLine, ""));
+                    var Lhn_Intake_Ticket_Id = EscCommas(prog.LhnIntakeTicketId.Replace(System.Environment.NewLine, ""));
+                    var Intake_Form_Version = EscCommas(prog.IntakeFormVersion.Replace(System.Environment.NewLine, ""));
+                    var Qp_Intake_Submission_Id = EscCommas(prog.QpIntakeSubmissionId.Replace(System.Environment.NewLine, ""));
+                    var Qp_Location_Submission_Id = EscCommas(prog.QpLocationSubmissionId.Replace(System.Environment.NewLine, ""));
+                    var Lhn_Location_Ticket_Id = EscCommas(prog.LhnLocationTicketId.Replace(System.Environment.NewLine, ""));
+                    var Participation_Populations = EscCommas(prog.ParticipationPopulations.Replace(System.Environment.NewLine, ""));
                     //string Delivery_Method = EscCommas(prog.Delivery_Method.Replace(System.Environment.NewLine, ""));
 
-                    string States_Of_Program_Delivery = EscCommas(prog.States_Of_Program_Delivery.Replace(System.Environment.NewLine, ""));
+                    var States_Of_Program_Delivery = EscCommas(prog.StatesOfProgramDelivery.Replace(System.Environment.NewLine, ""));
 
-                    string Program_Duration = EscCommas(prog.Program_Duration.ToString().Replace(System.Environment.NewLine, ""));
+                    var Program_Duration = EscCommas(prog.ProgramDuration.ToString().Replace(System.Environment.NewLine, ""));
 
-                    string Opportunity_Type = EscCommas(prog.Opportunity_Type.Replace(System.Environment.NewLine, ""));
+                    var Opportunity_Type = EscCommas(prog.OpportunityType.Replace(System.Environment.NewLine, ""));
 
-                    string Job_Family = EscCommas(prog.Job_Family.Replace(System.Environment.NewLine, ""));
+                    var Job_Family = EscCommas(prog.JobFamily.Replace(System.Environment.NewLine, ""));
 
-                    string Services_Supported = EscCommas(prog.Services_Supported.Replace(System.Environment.NewLine, ""));
+                    var Services_Supported = EscCommas(prog.ServicesSupported.Replace(System.Environment.NewLine, ""));
 
-                    string Enrollment_Dates = EscCommas(prog.Enrollment_Dates.Replace(System.Environment.NewLine, ""));
+                    var Enrollment_Dates = EscCommas(prog.EnrollmentDates.Replace(System.Environment.NewLine, ""));
 
-                    string Program_Url = EscCommas(prog.Program_Url.Replace(System.Environment.NewLine, ""));
+                    var Program_Url = EscCommas(prog.ProgramUrl.Replace(System.Environment.NewLine, ""));
 
-                    string Public_Poc_Name = EscCommas(prog.Public_Poc_Name.Replace(System.Environment.NewLine, ""));
+                    var Public_Poc_Name = EscCommas(prog.PublicPocName.Replace(System.Environment.NewLine, ""));
 
-                    string Public_Poc_Email = EscCommas(prog.Public_Poc_Email.Replace(System.Environment.NewLine, ""));
+                    var Public_Poc_Email = EscCommas(prog.PublicPocEmail.Replace(System.Environment.NewLine, ""));
 
-                    string Notes = prog.Notes == null ? "" : EscCommas(prog.Notes.Replace(System.Environment.NewLine, ""));
+                    var Notes = prog.Notes == null ? "" : EscCommas(prog.Notes.Replace(System.Environment.NewLine, ""));
 
-                    string Mou_Link = EscCommas(prog.Mou_Link.Replace(System.Environment.NewLine, ""));
+                    var Mou_Link = EscCommas(prog.MouLink.Replace(System.Environment.NewLine, ""));
                     //string Employer_Poc_Name = org.Employer_Poc_Name.Replace(System.Environment.NewLine, ""); //add a line terminating ;
                     //string summaryDescription = org.Summary_Description.Replace(System.Environment.NewLine, ""); //add a line /terminating ;
                     //string jobDescription = org.Jobs_Description.Replace(System.Environment.NewLine, ""); //add a line terminating ;
 
-                    stringBuilder.AppendLine($"{prog.Id},{newProgramName},{prog.Organization_Id},{Lhn_Intake_Ticket_Id},{prog.Has_Intake},{Intake_Form_Version},{Qp_Intake_Submission_Id},{prog.Location_Details_Available},{prog.Has_Consent},{Qp_Location_Submission_Id},{Lhn_Location_Ticket_Id},{prog.Has_Multiple_Locations},{prog.Reporting_Form_2020},{prog.Date_Authorized},{Mou_Link},{prog.Mou_Creation_Date},{prog.Mou_Expiration_Date},{prog.Nationwide},{prog.Online},{Participation_Populations},{prog.Delivery_Method},{States_Of_Program_Delivery},{Program_Duration},{prog.Support_Cohorts},{Opportunity_Type},{Job_Family},{Services_Supported},{Enrollment_Dates},{prog.Date_Created},{prog.Date_Updated},{prog.Created_By},{prog.Updated_By},{Program_Url},{prog.Program_Status},{prog.Admin_Poc_First_Name},{prog.Admin_Poc_Last_Name},{prog.Admin_Poc_Email},{prog.Admin_Poc_Phone},{Public_Poc_Name},{Public_Poc_Email},{Notes},{prog.For_Spouses},{prog.Legacy_Program_Id},{prog.Legacy_Provider_Id}");
+                    stringBuilder.AppendLine($"{prog.Id},{newProgramName},{prog.OrganizationId},{Lhn_Intake_Ticket_Id},{prog.HasIntake},{Intake_Form_Version},{Qp_Intake_Submission_Id},{prog.LocationDetailsAvailable},{prog.HasConsent},{Qp_Location_Submission_Id},{Lhn_Location_Ticket_Id},{prog.HasMultipleLocations},{prog.ReportingForm2020},{prog.DateAuthorized},{Mou_Link},{prog.MouCreationDate},{prog.MouExpirationDate},{prog.Nationwide},{prog.Online},{Participation_Populations},{prog.DeliveryMethod},{States_Of_Program_Delivery},{Program_Duration},{prog.SupportCohorts},{Opportunity_Type},{Job_Family},{Services_Supported},{Enrollment_Dates},{prog.DateCreated},{prog.DateUpdated},{prog.CreatedBy},{prog.UpdatedBy},{Program_Url},{prog.ProgramStatus},{prog.AdminPocFirstName},{prog.AdminPocLastName},{prog.AdminPocEmail},{prog.AdminPocPhone},{Public_Poc_Name},{Public_Poc_Email},{Notes},{prog.ForSpouses},{prog.LegacyProgramId},{prog.LegacyProviderId}");
                 }
 
                 //return File(Encoding.UTF8.GetBytes(stringBuilder.ToString()), "text/csv", "Programs-FULL-" + DateTime.Today.ToString("MM-dd-yy") + ".csv");
@@ -2694,7 +2694,7 @@ namespace SkillBridge.CMS.Controllers
         {
             var result = WriteCsvToMemory(_db.Programs);
             var memoryStream = new MemoryStream(result);
-            CookieOptions options = new CookieOptions();
+            var options = new CookieOptions();
             options.Expires = DateTime.Now.AddSeconds(2);
             options.Path = "/Programs";
             _httpContextAccessor.HttpContext.Response.Cookies.Append("programsDownloadStarted", "1", options);
@@ -2716,10 +2716,10 @@ namespace SkillBridge.CMS.Controllers
                 csvWriter.WriteField("Job_Family");
                 csvWriter.WriteField("Supported_Service");
                 csvWriter.NextRecord();
-                foreach (ProgramModel p in records)
+                foreach (var p in records)
                 {
                     csvWriter.WriteRecord(p);
-                    csvWriter.WriteField($"{GetProgDuration(p.Program_Duration)}");
+                    csvWriter.WriteField($"{GetProgDuration(p.ProgramDuration)}");
                     csvWriter.WriteField($"{GetPartPop(p.Id)}");
                     csvWriter.WriteField($"{GetJobFam(p.Id)}");
                     csvWriter.WriteField($"{GetService(p.Id)}");
@@ -2733,7 +2733,7 @@ namespace SkillBridge.CMS.Controllers
 
         public string GetProgDuration(int i)
         {
-            string newVal = "";
+            var newVal = "";
             if (i == 0)
             {
                 newVal = "1 - 30 days";
@@ -2771,16 +2771,16 @@ namespace SkillBridge.CMS.Controllers
 
         public string GetPartPop(int id)
         {
-            string newVal = "";
-            int i = 0;
+            var newVal = "";
+            var i = 0;
 
-            List<ProgramParticipationPopulation> popsList = _db.ProgramParticipationPopulation.Where(e => e.Program_Id == id).ToList();
+            var popsList = _db.ProgramParticipationPopulation.Where(e => e.Program_Id == id).ToList();
 
             if (popsList != null)
             {
                 if (popsList.Count > 0)
                 {
-                    foreach (ProgramParticipationPopulation p in popsList)
+                    foreach (var p in popsList)
                     {
                         newVal += ConvertPartPopIdToName(p.Participation_Population_Id);
 
@@ -2798,16 +2798,16 @@ namespace SkillBridge.CMS.Controllers
 
         public string GetJobFam(int id)
         {
-            string newVal = "";
-            int i = 0;
+            var newVal = "";
+            var i = 0;
 
-            List<ProgramJobFamily> jfList = _db.ProgramJobFamily.Where(e => e.Program_Id == id).ToList();
+            var jfList = _db.ProgramJobFamily.Where(e => e.Program_Id == id).ToList();
 
             if (jfList != null)
             {
                 if (jfList.Count > 0)
                 {
-                    foreach (ProgramJobFamily jf in jfList)
+                    foreach (var jf in jfList)
                     {
                         newVal += ConvertJobFamIdToName(jf.Job_Family_Id);
 
@@ -2825,16 +2825,16 @@ namespace SkillBridge.CMS.Controllers
 
         public string GetService(int id)
         {
-            string newVal = "";
-            int i = 0;
+            var newVal = "";
+            var i = 0;
 
-            List<ProgramService> ssList = _db.ProgramService.Where(e => e.Program_Id == id).ToList();
+            var ssList = _db.ProgramService.Where(e => e.Program_Id == id).ToList();
 
             if (ssList != null)
             {
                 if (ssList.Count > 0)
                 {
-                    foreach (ProgramService ss in ssList)
+                    foreach (var ss in ssList)
                     {
                         newVal += ConvertServiceIdToName(ss.Service_Id);
 
@@ -2852,7 +2852,7 @@ namespace SkillBridge.CMS.Controllers
 
         public string ConvertPartPopIdToName(int id)
         {
-            string newName = "";
+            var newName = "";
             if (id == 1)
             {
                 newName = "Service Members";
@@ -2870,7 +2870,7 @@ namespace SkillBridge.CMS.Controllers
 
         public string ConvertJobFamIdToName(int id)
         {
-            string newName = "";
+            var newName = "";
             if (id == 1)
             {
                 newName = "Architecture and Engineering";
@@ -2972,7 +2972,7 @@ namespace SkillBridge.CMS.Controllers
 
         public string ConvertServiceIdToName(int id)
         {
-            string newName = "";
+            var newName = "";
             if (id == 1)
             {
                 newName = "Air Force";
@@ -3029,11 +3029,11 @@ namespace SkillBridge.CMS.Controllers
         public ProgramMap()
         {
             AutoMap(CultureInfo.InvariantCulture);
-            Map(m => m.Legacy_Program_Id).Ignore();
-            Map(m => m.Legacy_Provider_Id).Ignore();
-            Map(m => m.Program_Duration).Ignore();
-            Map(m => m.Participation_Populations).Ignore();
-            Map(m => m.Job_Family).Ignore();
+            Map(m => m.LegacyProgramId).Ignore();
+            Map(m => m.LegacyProviderId).Ignore();
+            Map(m => m.ProgramDuration).Ignore();
+            Map(m => m.ParticipationPopulations).Ignore();
+            Map(m => m.JobFamily).Ignore();
             //Map(m => m.Program_Duration).Convert(row => GetProgDuration(row.Row.GetField("Program_Duration")));
         }
     }

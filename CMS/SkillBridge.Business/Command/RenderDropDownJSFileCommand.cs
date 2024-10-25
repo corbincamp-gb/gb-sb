@@ -10,14 +10,9 @@ namespace SkillBridge.Business.Command
         void Execute(IDropDownData data, out string result);
     }
 
-    public class RenderDropDownJsFileCommand : IRenderDropDownJsFileCommand
+    public class RenderDropDownJsFileCommand(ISerializeObjectCommand serializeObjectCommand)
+        : IRenderDropDownJsFileCommand
     {
-        private readonly ISerializeObjectCommand _serialize;
-
-        public RenderDropDownJsFileCommand(ISerializeObjectCommand serializeObjectCommand)
-        {
-            _serialize = serializeObjectCommand;
-        }
         public void Execute(IDropDownData data, out string result)
         {
             var dict = new Dictionary<string, IEnumerable<string>>
@@ -35,10 +30,10 @@ namespace SkillBridge.Business.Command
             sb.AppendLine($"// Created {DateTime.Now.ToString("G")}");
             foreach (var dd in dict.Keys)
             {
-                _serialize.Execute(dict[dd], out var arrString);
+                serializeObjectCommand.Execute(dict[dd], out var arrString);
                 sb.AppendLine($"const {dd}Dropdown = {arrString}");
             }
-            _serialize.Execute(data.RelatedOrganizations, out var relatedOrgs);
+            serializeObjectCommand.Execute(data.RelatedOrganizations, out var relatedOrgs);
             sb.AppendLine($"var relatedOrgs = {relatedOrgs}");
 
             result = sb.ToString();

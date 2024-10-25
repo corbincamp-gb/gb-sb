@@ -93,58 +93,58 @@
                         }
                     }
                 </td>
-                <td>@prog.Is_Active</td>
-                <td>@prog.Program_Name</td>
-                <td>@prog.Organization_Name</td>
-                <!--<td data-sort='@prog.Date_Authorized.Year@prog.Date_Authorized.Month@prog.Date_Authorized.Day'>@prog.Date_Authorized.ToString("MM/dd/yyyy")</td>
+                <td>@prog.IsActive</td>
+                <td>@prog.ProgramName</td>
+                <td>@prog.OrganizationName</td>
+                <!--<td data-sort='@prog.DateAuthorized.Year@prog.DateAuthorized.Month@prog.DateAuthorized.Day'>@prog.DateAuthorized.ToString("MM/dd/yyyy")</td>
     <td>prog.Mou_Link</td>
-                <td data-sort='@prog.Mou_Creation_Date.Year.ToString("0000")@prog.Mou_Creation_Date.Month.ToString("00")@prog.Mou_Creation_Date.Day.ToString("00")'>@prog.Mou_Creation_Date.ToString("MM/dd/yyyy")</td>
-                <td data-sort='@prog.Mou_Expiration_Date.Year.ToString("0000")@prog.Mou_Expiration_Date.Month.ToString("00")@prog.Mou_Expiration_Date.Day.ToString("00")'>@prog.Mou_Expiration_Date.ToString("MM/dd/yyyy")</td>-->
-                <td>@(prog.Admin_Poc_First_Name + " " + prog.Admin_Poc_Last_Name)</td>
-                <td>@prog.Admin_Poc_Email</td>
-                <td>@prog.Admin_Poc_Phone</td>
-                <td>@prog.Delivery_Method</td>
+                <td data-sort='@prog.MouCreationDate.Year.ToString("0000")@prog.MouCreationDate.Month.ToString("00")@prog.MouCreationDate.Day.ToString("00")'>@prog.MouCreationDate.ToString("MM/dd/yyyy")</td>
+                <td data-sort='@prog.MouExpirationDate.Year.ToString("0000")@prog.MouExpirationDate.Month.ToString("00")@prog.MouExpirationDate.Day.ToString("00")'>@prog.MouExpirationDate.ToString("MM/dd/yyyy")</td>-->
+                <td>@(prog.AdminPocFirstName + " " + prog.AdminPocLastName)</td>
+                <td>@prog.AdminPocEmail</td>
+                <td>@prog.AdminPocPhone</td>
+                <td>@prog.DeliveryMethod</td>
 
                 <td>
-                    @if (prog.Program_Duration == 0)
+                    @if (prog.ProgramDuration == 0)
                     {
                         <span>1 - 30 days</span>
                     }
-                    else if (prog.Program_Duration == 1)
+                    else if (prog.ProgramDuration == 1)
                     {
                         <span>31 - 60 days</span>
                     }
-                    else if (prog.Program_Duration == 2)
+                    else if (prog.ProgramDuration == 2)
                     {
                         <span>61 - 90 days</span>
                     }
-                    else if (prog.Program_Duration == 3)
+                    else if (prog.ProgramDuration == 3)
                     {
                         <span>91 - 120 days</span>
                     }
-                    else if (prog.Program_Duration == 4)
+                    else if (prog.ProgramDuration == 4)
                     {
                         <span>121 - 150 days</span>
                     }
-                    else if (prog.Program_Duration == 5)
+                    else if (prog.ProgramDuration == 5)
                     {
                         <span>151 - 180 days</span>
                     }
-                    else if (prog.Program_Duration == 6)
+                    else if (prog.ProgramDuration == 6)
                     {
                         <span>Individually Developed – not to exceed 40 hours</span>
                     }
-                    else if (prog.Program_Duration == 7)
+                    else if (prog.ProgramDuration == 7)
                     {
                         <span>Self-paced</span>
                     }
                 </td>
-                <td>@prog.Job_Family</td>
-                <td>@prog.Services_Supported</td>
-                <!--<td>@prog.Program_Status</td>-->
+                <td>@prog.JobFamily</td>
+                <td>@prog.ServicesSupported</td>
+                <!--<td>@prog.ProgramStatus</td>-->
 
-                <td>@prog.Public_Poc_Name</td>
-                <td>@prog.Public_Poc_Email</td>
+                <td>@prog.PublicPocName</td>
+                <td>@prog.PublicPocEmail</td>
             </tr>
             }
         </tbody>

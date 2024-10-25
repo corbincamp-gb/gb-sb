@@ -11,89 +11,59 @@ namespace SkillBridge.Business.Command
 
     public class UpdateStatesOfProgramDeliveryCommand : IUpdateStatesOfProgramDeliveryCommand
     {
-        public  void Execute(ProgramModel prog, List<OpportunityModel> opps, ApplicationDbContext _db)
+        public void Execute(ProgramModel prog, List<OpportunityModel> opps, ApplicationDbContext _db)
         {
             // Update Program
-            string newStateList = "";
-            int num = 0;
-            int activeOppsCount = 0;
-            int individualActiveOppStates = 0;
-            bool locationsAvailable = false;
+            var newStateList = "";
+            var num = 0;
+            var activeOppsCount = 0;
+            var individualActiveOppStates = 0;
+            var locationsAvailable = false;
 
-            List<string> states = new List<string>();
+            var states = new List<string>();
 
             // Make sure there aren't duplicate states in list
-            foreach (var o in opps)
+            foreach (var o in opps.Where(o => o.Is_Active))
             {
-                if (o.Is_Active == true)
+                locationsAvailable = true;
+                var found = false;
+
+                foreach (var s in states.Where(s => s == o.State))
                 {
-                    locationsAvailable = true;
-                    bool found = false;
-
-                    foreach (string s in states)
-                    {
-                        if (s == o.State)
-                        {
-                            found = true;
-                            continue;
-                        }
-                    }
-
-                    if (found == false)
-                    {
-                        if (o.State != "" && o.State != " ")
-                        {
-                            states.Add(o.State);
-                            individualActiveOppStates++;
-                        }
-                    }
-
-                    activeOppsCount++;
+                    found = true;
+                    continue;
                 }
+
+                if (found == false)
+                {
+                    if (o.State != "" && o.State != " ")
+                    {
+                        states.Add(o.State);
+                        individualActiveOppStates++;
+                    }
+                }
+
+                activeOppsCount++;
             }
 
             // Sort states alphabetically
             states.Sort();
 
             // Format states in string
-            foreach (string s in states)
-            {
-                if (num == 0)
-                {
-                    newStateList += s;
-                }
-                else
-                {
-                    newStateList += ", " + s;
-                }
-                num++;
-            }
+            newStateList = string.Join(", ", states);
 
-            prog.States_Of_Program_Delivery = newStateList;
+            prog.StatesOfProgramDelivery = newStateList;
 
             // If more than one active opportunity, or if more than 2 states overall in opps, prog has multiple locations
-            if (activeOppsCount > 1 || num > 1)
-            {
-                prog.Has_Multiple_Locations = true;
-            }
-            else
-            {
-                prog.Has_Multiple_Locations = false;
-            }
+            prog.HasMultipleLocations = activeOppsCount > 1;
 
-            if (individualActiveOppStates >= Taku.Core.Global.GlobalFunctions.MIN_STATES_FOR_NATIONWIDE || prog.Online)
-            {
-                prog.Nationwide = true;
-            }
-            else
-            {
-                prog.Nationwide = false;
-            }
+            prog.Nationwide =
+                (individualActiveOppStates >= Taku.Core.Global.GlobalFunctions.MIN_STATES_FOR_NATIONWIDE ||
+                 prog.Online);
 
-            prog.Location_Details_Available = locationsAvailable;
+            prog.LocationDetailsAvailable = locationsAvailable;
 
             _db.SaveChanges();
         }
-
     }
 }

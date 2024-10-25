@@ -25,7 +25,7 @@ namespace SkillBridge.Business.Command
                 }
             }
 
-            prog.Location_Details_Available = locationsAvailable;
+            prog.LocationDetailsAvailable = locationsAvailable;
 
             _db.SaveChanges();
         }

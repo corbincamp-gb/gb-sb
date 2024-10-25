@@ -1,14 +1,47 @@
+//{
+//  "profiles": {
+//    "SkillBridge.CMS": {
+//      "commandName": "Project",
+//      "launchBrowser": true,
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "Development",
+//        "AZURE_USERNAME": "corbin.camp@takuhealthservices.onmicrosoft.us",
+//        "SMTP": "{\"Server\":\"email-smtp.us-gov-west-1.amazonaws.com\",\"Port\":25,\"Account\":\"AKIAWNCRBJEX7VIMXC75\",\"Password\":\"kfRJc9jb79zdiK\\u002BWIRWXIXXsT4HNuBBtdO2ZIPNd\",\"SecureSocketOptions\":1,\"SenderEmail\":\"support@skillbridge.org\",\"SenderName\":\"SkillBridge Support\"}",
+//        "VaultUri": "https://skillbridgecmskeyvault.vault.usgovcloudapi.net/"
+//      },
+//      "applicationUrl": "http://skillbridge.org:8888"
+//    }
+//  }
+//}
+
 {
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:1990",
+      "sslPort": 44305
+    }
+  },
   "profiles": {
-    "SkillBridge.CMS": {
+    "https": {
       "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
+      "applicationUrl": "http://localhost:8888",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "VaultUri": "https://skillbridgecmskeyvault.vault.usgovcloudapi.net/",
-        "AZURE_USERNAME": "corbin.camp@takuhealthservices.onmicrosoft.us"
-      },
-      "applicationUrl": "http://localhost:65173"
+        "AZURE_USERNAME": "corbin.camp@takuhealthservices.onmicrosoft.us",
+        "SMTP": "{\"Server\":\"email-smtp.us-gov-west-1.amazonaws.com\",\"Port\":25,\"Account\":\"AKIAWNCRBJEX7VIMXC75\",\"Password\":\"kfRJc9jb79zdiK\\u002BWIRWXIXXsT4HNuBBtdO2ZIPNd\",\"SecureSocketOptions\":1,\"SenderEmail\":\"support@skillbridge.org\",\"SenderName\":\"SkillBridge Support\"}",
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

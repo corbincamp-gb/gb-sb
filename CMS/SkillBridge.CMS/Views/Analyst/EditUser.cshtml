@@ -108,7 +108,7 @@
                                     <tr>
                                         <td></td>
                                         <td>@Html.Raw(auth.Organization.Name)</td>
-                                        <td>@Html.Raw(auth.Program?.Program_Name ?? "All Programs")</td>
+                                        <td>@Html.Raw(auth.Program?.ProgramName ?? "All Programs")</td>
                                         <td class="text-right"><a href="/analyst/removeauthority/@auth.Id" class="btn btn-danger">Remove</a></td>
                                     </tr>
                                 }

@@ -144,17 +144,17 @@ namespace SkillBridge.CMS.Controllers
                 }
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    progData = progData.Where(m => m.Program_Name.Contains(searchValue)
-                                                || m.Organization_Name.Contains(searchValue)
-                                                || m.Admin_Poc_First_Name.Contains(searchValue)
-                                                || m.Admin_Poc_Last_Name.Contains(searchValue)
-                                                || m.Admin_Poc_Email.Contains(searchValue)
-                                                || m.Admin_Poc_Phone.Contains(searchValue)
-                                                || m.Delivery_Method.Contains(searchValue)
-                                                || m.Job_Family.Contains(searchValue)
-                                                || m.Services_Supported.Contains(searchValue)
-                                                || m.Public_Poc_Name.Contains(searchValue)
-                                                || m.Public_Poc_Email.Contains(searchValue));
+                    progData = progData.Where(m => m.ProgramName.Contains(searchValue)
+                                                || m.OrganizationName.Contains(searchValue)
+                                                || m.AdminPocFirstName.Contains(searchValue)
+                                                || m.AdminPocLastName.Contains(searchValue)
+                                                || m.AdminPocEmail.Contains(searchValue)
+                                                || m.AdminPocPhone.Contains(searchValue)
+                                                || m.DeliveryMethod.Contains(searchValue)
+                                                || m.JobFamily.Contains(searchValue)
+                                                || m.ServicesSupported.Contains(searchValue)
+                                                || m.PublicPocName.Contains(searchValue)
+                                                || m.PublicPocEmail.Contains(searchValue));
                 }
 
                 /*foreach(var o in oppData)

@@ -132,7 +132,7 @@ namespace SkillBridge.CMS.Controllers
 
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
-            var progs = _db.Programs.Where(s => s.Date_Updated > pastDate).ToList();
+            var progs = _db.Programs.Where(s => s.DateUpdated > pastDate).ToList();
 
             ViewBag.numDays = 30;
 
@@ -145,7 +145,7 @@ namespace SkillBridge.CMS.Controllers
             DateTime startDate = DateTime.Now;
             DateTime pastDate = startDate.AddDays(-numDays);
 
-            var progs = _db.Programs.Where(s => s.Date_Updated > pastDate).ToList();
+            var progs = _db.Programs.Where(s => s.DateUpdated > pastDate).ToList();
 
             ViewBag.numDays = numDays;
 

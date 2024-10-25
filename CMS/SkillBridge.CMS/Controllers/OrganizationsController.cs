@@ -453,7 +453,7 @@ namespace SkillBridge.CMS.Controllers
                         //{
                             if (updateEnabledFields)
                             {
-                                var progsToUpdate = _db.Programs.Where(p => p.Organization_Id == origOrg.Id);
+                                var progsToUpdate = _db.Programs.Where(p => p.OrganizationId == origOrg.Id);
                                 var oppsToUpdate = _db.Opportunities.Where(p => p.Organization_Id == origOrg.Id);
 
                                 if (progsToUpdate.ToList<ProgramModel>().Count > 0)
@@ -461,8 +461,8 @@ namespace SkillBridge.CMS.Controllers
                                     Console.WriteLine("There are programs to update on disable");
                                     foreach (ProgramModel p in progsToUpdate)
                                     {
-                                        p.Is_Active = false;
-                                        p.Date_Deactivated = DateTime.Now;
+                                        p.IsActive = false;
+                                        p.DateDeactivated = DateTime.Now;
                                         _db.Programs.Update(p);
                                     }
                                 }
@@ -482,14 +482,14 @@ namespace SkillBridge.CMS.Controllers
                             // We need to update the optimization fields for programs and opportunities now if the name changed
                             if (updateOptimizationFields)
                             {
-                                var progsToUpdate = _db.Programs.Where(p => p.Organization_Id == origOrg.Id);
+                                var progsToUpdate = _db.Programs.Where(p => p.OrganizationId == origOrg.Id);
                                 var oppsToUpdate = _db.Opportunities.Where(p => p.Organization_Id == origOrg.Id);
 
                                 if (progsToUpdate.ToList<ProgramModel>().Count > 0 || oppsToUpdate.ToList<OpportunityModel>().Count > 0)
                                 {
                                     foreach (ProgramModel p in progsToUpdate)
                                     {
-                                        p.Organization_Name = origOrg.Name;
+                                        p.OrganizationName = origOrg.Name;
                                         _db.Programs.Update(p);
                                     }
 
